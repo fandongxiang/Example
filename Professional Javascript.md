@@ -118,3 +118,66 @@ console.log(parseInt("0xF"));             // 15
 console.log(parseFloat("0xF"));           // 0
 console.log(parseFloat("22.25.32"));      // 22.25
 ```
+#### 3.4.6 String 类型
+##### 3.4.6.1 基础知识
+1. 转义字符按照单个字符计算长度；
+2. 数值、布尔值、对象和字符串值都有 `toString()` 方法，但 `null` 和 `undefined` 没有；
+3. 数值可以在转换为字符串时，加入第二个底数参数，表示转换为多少进制；
+4. `string()` 函数：
+   (1) 如果值有 `toString()` 方法，则调用该方法，返回相应结果；
+   (2) `null` 和 `undefined` 使用 `string()` 函数，直接返回 `null` 、`undefined`。等价于 `typeof` 操作符判断;
+5. 除了 `toString()` 方法，加号操作符也能将数值隐式转换为字符串；
+``` js
+// 转义字符按单个字符算
+let text1 = "This is the letter sigma: \u03a3."  // This is the letter sigma: Σ.
+let text2 = "This is the letter sigma: ."
+console.log(text1.length);            // 28
+console.log(text2.length);            // 27
+// toString() 方法传入底数参数
+let value = 10;
+console.log(value.toString(2));       // "1010"
+console.log(value.toString(8));       // "12" 
+console.log(value.toString(16));      // "a"
+// null、undefined使用String()函数
+let object1 = null;
+let nothing;
+console.log(String(object1));        // null
+console.log(String(nothing));        // undefined
+```
+
+##### 3.4.6.2 模板字面量 ``
+1. 模板字面量可实现换行功能；
+2. 模板字面量空格和换行会计入字符；
+3. 使用 `${ }` 实现字符串插值操作，所有的插值都会调用 `toString()` 方法，并且可以调用函数和方法；
+4. 模板字面量与标签函数；
+5. 模板字面量与原始字符串；
+``` js
+// 模板字面量空格和换行
+let myTemplateLitteral1 = `first line
+second line`
+let myTemplateLitteral2 = `
+first line
+  second line`
+console.log(myTemplateLitteral2[1]);        // f
+console.log(myTemplateLitteral1.length);    // 23
+console.log(myTemplateLitteral2.length);    // 25
+// 模板字面量调用函数和方法
+function capitalize(word) {
+  return word[0].toUpperCase() + word.slice(1)
+}
+console.log(`${ capitalize("hello")},${ capitalize("world")}!`);   // Hello,World!
+```
+#### symbol 类型
+#### Object 类型
+### 3.5 操作符
+#### 3.5.5 指数操作符
+1. ECMAScript 7新增了指数操作符，`Math.pow()` 现在有了自己的操作符 `**`；
+2. 指数操作符也有了自己的指数赋值操作符 `**=`；
+``` js
+// 指数操作符
+console.log(Math.pow(3,2));        // 9
+console.log(3 ** 2);               // 9
+let squared = 3;
+squared **= 2;
+console.log(squared);              // 9
+```
