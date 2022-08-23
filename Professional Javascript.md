@@ -181,3 +181,86 @@ let squared = 3;
 squared **= 2;
 console.log(squared);              // 9
 ```
+
+## 第四章 作用域与内存
+### 4.1 原始值与引用值
+#### 4.1.1 动态属性
+1. 引用值可以随时增加、删除和修改属性，而原始值不行；
+``` js
+// 动态属性
+let person = new Object();
+person.name = "Nicholas";
+console.log(person.name);           // "Nicaholas"
+
+let name = "Nicholas";
+name.age = 27;
+console.log(name.age);              // undefined
+```
+#### 4.1.2 复制值
+1. 引用类型赋【引用】，原始类型赋【值】；
+``` js
+// 复制值
+let num1 = 5;
+let num2 = num1;
+num2 = 7;
+console.log(num1);            // 5
+
+let obj1 = new Object();
+let obj2 = obj1;
+obj2.name = "Nicholas";
+console.log(obj1.name);      // "Nicholas"
+```
+#### 4.1.3 比较
+1. 原始类型比较的时**值**是否相等，引用类型比较的是**引用**是否指向同一个对象；
+``` js
+// 比较
+let str1 = "hello";
+let str2 = "hello";
+console.log(str1 === str2);         // true
+
+let stu1 = {name: "xiangzai"};      
+let stu2 = {name: "xiangzai"};
+console.log(stu1 == stu2);          // false
+console.log(stu1 === stu2);         // false  
+```
+
+#### 4.1.4 函数传参
+1. 原始类型作为参数，函数内的操作不影响实参的值；引用类型作为参数，函数内的操作会影响实参的值；
+``` js
+// 函数传参
+function addTen(num) {
+  num += 10;
+  return num;
+}
+let number = 5;
+addTen(number)
+console.log(number);          // 5
+
+function arrPush(arr) {
+  arr.push(10);
+}
+let array = [1,2,3]
+arrPush(array)
+console.log(array);           // [1,2,3,10]
+```
+
+#### 4.1.5 确定类型
+1. `typeof` 操作符可以检测到原始类型，但如果具体要知道具体是哪一种引用类型，则需要用`instanceof`操作符来判断；
+``` js 
+// instanceof
+let arr = [1,2,3,4];
+let fn = function fn() {
+  return "hello"
+};
+let obj = new Object();
+let number = "27";
+console.log(arr instanceof Array);         // true
+console.log(fn instanceof Function);       // true
+console.log(obj instanceof Object);        // true 
+console.log(number instanceof String);     // false
+console.log(number instanceof Object);     // false
+```
+> instanceof 不能对原始值的类型进行判断
+
+### 4.2 执行上下文与作用域
+4.2.1 
