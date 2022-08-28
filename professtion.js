@@ -161,15 +161,28 @@
 // arrPush(array)
 // console.log(array);
 
-// instanceof
-let arr = [1,2,3,4];
-let fn = function fn() {
-  return "hello"
-};
-let obj = new Object();
-let number = "27";
-console.log(arr instanceof Array);
-console.log(fn instanceof Function);
-console.log(obj instanceof Object);
-console.log(number instanceof String);
-console.log(number instanceof Object);
+// // instanceof
+// let arr = [1,2,3,4];
+// let fn = function fn() {
+//   return "hello"
+// };
+// let obj = new Object();
+// let number = "27";
+// console.log(arr instanceof Array);
+// console.log(fn instanceof Function);
+// console.log(obj instanceof Object);
+// console.log(number instanceof String);
+// console.log(number instanceof Object);
+
+// for (var i = 1; i <= 5; i++) {
+//   setTimeout(function() {
+//     console.log(i)
+//   }, 1000)
+// }
+
+// 方法2
+for (let i = 1; i <= 5; i++) {
+  setTimeout(function() {
+    console.log(i)
+  }, 1000)
+}
