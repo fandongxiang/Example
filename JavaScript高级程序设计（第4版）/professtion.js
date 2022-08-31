@@ -180,9 +180,51 @@
 //   }, 1000)
 // }
 
-// 方法2
-for (let i = 1; i <= 5; i++) {
-  setTimeout(function() {
-    console.log(i)
-  }, 1000)
-}
+// // 方法2
+// for (let i = 1; i <= 5; i++) {
+//   setTimeout(function() {
+//     console.log(i)
+//   }, 1000)
+// }
+
+// // 执行上下文
+// let fn,bar;              // 1. 进入全局上下文环境
+// bar = function(x) {
+//   let b = 5;
+//   fn(x + b);             // 3. 进入fn函数上下文环境
+// };
+// fn = function(y) {
+//   let c = 5;
+//   console.log(y + c);   // 4. fn出栈，bar出栈
+// };
+// bar(10)                 // 2. 进入bar函数上下文环境
+
+// // this指向问题
+// let fn = function() {
+//   console.log(this.name);
+// };
+// let obj = {
+//   name:'',
+//   fn
+// };
+// fn()                      // 方法1
+// obj.fn()                  // 方法2
+// fn.call(obj)              // 方法3
+// let instance = new fn()   // 方法4
+
+// 闭包
+let single = (function(){
+  let count = 0
+  return {
+    plus(){
+      count++
+      return console.log(count);
+    },
+    minus(){
+      count--
+      return console.log(count);
+    }
+  }
+})()
+single.plus()      // 1
+single.minus()     // 0
