@@ -279,7 +279,7 @@ fn = function(y) {
 bar(10)                 // 2. 进入bar函数上下文环境
 
 ```
-> 每次函数调用时，都会产生一个**新的执行上下文环境**，JavaScript引擎会以栈的方式来处理它们，这个栈，我们称其为**函数调用栈(call stack)**。**栈底**永远都是**全局上下文**，而**栈顶**就是当前处于活动状态的正在执行的上下文，也称为**活动对象**（running execution context），区别与底下被挂起的上下文（变量对象）。
+> 每次函数调用时，都会产生一个**新的执行上下文环境**，JavaScript引擎会以栈的方式来处理它们，这个栈，我们称其为**函数调用栈(call stack)**。**栈底**永远都是**全局上下文**，而**栈顶**就是当前处于活动状态的正在执行的上下文，也称为**活动对象**（running execution context），区别与底下被挂起的上下文（**变量对象**）。
 总结：作用域是在函数声明的时候就确定的一套变量**访问规则**，而执行上下文是函数执行时才产生的一系列**变量的环境**。也就是说作用域定义了执行上下文中的变量的访问规则，执行上下文在这个作用域规则的前提下进行变量查找，函数引用等具体操作。
 #### 4.2.1 函数的执行过程
 1. 函数执行分为两部分：一部分用来生成执行上下文环境，确定this指向、声明变量及生成作用域链；另一部分则是按照顺序逐行执行代码；
@@ -343,6 +343,127 @@ for (let i = 1; i <= 5; i++) {
 > 方法1中，循环设置了五个定时器，一秒后定时器中回调函数将执行，打印变量i的值。毋庸置疑，一秒之后i已经递增到了5，所以定时器打印了五次5 。（定时器中并没有找到当前作用域的变量i，所以沿作用域链找到了全局作用域中的i）
 > 方法2中，由于es6的let会创建局部作用域，所以循环设置了五个作用域，而五个作用域中的变量i分布是1-5，每个作用域中又设置了一个定时器，打印一秒后变量i的值。一秒后，定时器从各自父作用域中分别找到的变量i是1-5 。这是个利用闭包解决循环中变量发生异常的新方法。
 
+#### 4.2.3 变量声明
+1. 使用`var`声明的函数作用域
+   (1) 函数内变量声明有`var`时，变量为局部变量，函数外不可访问；
+   (2) 函数内变量声明无`var`时，变量为全局变量，函数外可以访问；
+   (3) `var`声明会被拿到函数或全局作用域的顶端，提升让同一作用域不必考虑变量是否声明就 可使用；
+ ``` js
+// 函数内有var声明变量
+function add(num1,num2) {
+  var sum = num1 + num2;
+  return sum;
+};
+console.log(add(2,3));           // 5
+console.log(sum);                // sum is not defined
+// 函数内无var声明变量
+function add(num1,num2) {
+  sum = num1 + num2;
+  return sum;
+};
+console.log(add(2,3));           // 5
+console.log(sum);                // 5
+
+// 变量提升
+console.log(sum);               // undefined
+console.log(result);            // Cannot access 'result' before initialization
+var sum = 5 + 3;
+let result = 5 + 3;
+```
+2. 使用`let`的块级作用域声明
+  (1) `let`块级作用域在最近的一对`{}`花括号内界定；
+  (2) `let`不能重复声明变量，也不能用`var`重复声明；
+  (3) `let`不会将函数内迭代变量泄露到函数外部；
+``` js
+// let重复声明
+let a = 3
+let a = 5;          // SyntaxError: Identifier 'a' has already been declared
+console.log(a);
+
+// var声明迭代变量泄露
+for (var i = 0;i < 3;i++) {}
+console.log(i);                 // 3
+for (let j = 0;i < 3;j++) {}
+console.log(j);                 // ReferenceError: j is not defined
+```
+3. 使用`const`的常量声明
+  (1) 使用`const`声明的变量不能重新赋值（语法错误：标识符‘a’已被声明）；
+  (2) `const`声明只应用到顶级原语或者对象，即不能再被赋值为其它引用值，但对象的键不受限制（输入错误：常量变量赋值）；
+  (3) 若要对象整体不被重新赋值，则要用`Object.frezze()`； 
+``` js
+// const 不能被重新赋值
+const a = 3;
+const a = 5;   // SyntaxError: Identifier 'a' has already been declared
+
+// const 限制不了对象键
+const o1 = {};
+o1 = {}           // TypeError: Assignment to constant variable.
+const o2 = {};
+o2.name = "fan";
+console.log(o2.name);  // fan
+
+// Object.freeze()
+const o3 = Object.freeze({})
+o3.name = 'fan';
+console.log(03.name);         // undefined
+```
+#### 4.3.4 标识符查找
+1. 标识符先在局部作用域查找，如果查找到就停止，查找不到就沿作用域链查找直至全局作用域（注意：作用域链中的对象也有一个原型链，搜索会涉及每个对象原型链）；
+2. 局部作用域和全局作用域同一个标识符时，会在搜索到局部作用域时停止；
+``` js
+// 标识符查找
+var color = 'blue';
+function getColor1() {
+  return color
+}
+console.log(getColor1());  // blue
+
+function getColor2() {
+  var color = 'red'
+  return color
+}
+console.log(getColor2());  // red
+ ```
+
+### 第5章 基本引用类型
+> **引用类型**是把数据和功能组织到一起的结构，类似于“类”，有时也被称为**对象定义**，应为它们描述了自己的对象应有的属性和方法。
+> **对象**被认为是某个特定引用类型的**实例**。新对象通过`new`操作符后跟一个**构造函数**来创建。构造函数就是用来创建新对象的函数。
+
+#### 5.1 Date原生引用类型
+
+1. 要创建日期对象，就使用`new`操作符来调用`Date`构造函数；
+2. `new Date()`在不传入任何参数时，创建的**对象**将保存当前的时间和日期；
+3. `new Date()`传入毫秒数参数时，表示基于1970年1月1日午夜之后经过的毫秒数日期对象；
+4. `new Date.(Date.parse(""))`传入一个日期**字符串**，尝试将日期字符串转换为对应毫秒数后再转换为相应日期**对象**，可以有以下4中格式：
+   (1) "月/日/年"，如“9/3/2020”；
+   (2) "月名 日，年"，如"September 3,2022";
+   (3) "周几 月名 日 年 时:分:秒 时区"，如"Saturday September 3 2022 22:37:20";
+   (4) "YYYY-MM-DDTHH:mm:ss.sssZ"，如"2022-09-03T22:46:20"
+5. `new Date(Date.UTC(年,零起点月,日,时,分,秒))`，年和月是必须，如果其余不传默认1日；
+6. `Date.parse()`和`Date.UTC()`都会被`new Date()`隐式调用，但不同的是`Date.UTC()`调用后是本地时间；
+7. `Date.now()`方法表示执行时日期和时间的毫秒数。
+
+
+``` js
+// new Date()
+const now = new Date()
+console.log(now);            // 2022-09-03T14:19:06.427Z
+console.log(typeof now);     // Object
+console.log(new Date(1000)); // 1970-01-01T00:00:01.000Z
+
+// new Date(Date.parse(""))
+console.log(new Date(Date.parse("9/3/2020")));      // 2020-09-02T16:00:00.000Z
+console.log(new Date(Date.parse("September 3,2022")));  // 2022-09-02T16:00:00.000Z
+console.log(new Date(Date.parse("Saturday September 3 2022 22:37:20 527Z")));  // 2022-09-03T22:37:20.000Z
+console.log(new Date(Date.parse("Saturday September 3 2022 22:37:20.527Z")));  // 2022-09-03T22:37:20.527Z
+
+// new Date(Date.UTC())
+console.log(new Date(Date.UTC(2022,8,3,23,1,20))); // 2022-09-03T23:01:20.000Z
+console.log(new Date(2022,8,3,23,1,20)); // 2022-09-03T15:01:20.000Z
+
+// Date.now()
+console.log(Date.now());  // 1662218840486
+ ```
 
 
 

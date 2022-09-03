@@ -212,19 +212,100 @@
 // fn.call(obj)              // 方法3
 // let instance = new fn()   // 方法4
 
-// 闭包
-let single = (function(){
-  let count = 0
-  return {
-    plus(){
-      count++
-      return console.log(count);
-    },
-    minus(){
-      count--
-      return console.log(count);
-    }
-  }
-})()
-single.plus()      // 1
-single.minus()     // 0
+// // 闭包
+// let single = (function(){
+//   let count = 0
+//   return {
+//     plus(){
+//       count++
+//       return console.log(count);
+//     },
+//     minus(){
+//       count--
+//       return console.log(count);
+//     }
+//   }
+// })()
+// single.plus()      // 1
+// single.minus()     // 0
+
+// // 函数内有var声明变量
+// function add(num1,num2) {
+//   var sum = num1 + num2;
+//   return sum;
+// };
+// console.log(add(2,3));           // 5
+// console.log(sum);                // sum is not defined
+
+// // 函数内无var声明变量
+// function add(num1,num2) {
+//   sum = num1 + num2;
+//   return sum;
+// };
+// console.log(add(2,3));           // 5
+// console.log(sum);                // 5
+
+// // 变量提升
+// console.log(sum);
+// console.log(result);
+// var sum = 5 + 3;
+// let result = 5 + 3;
+
+// // let重复声明
+// let a = 3
+// let a = 5;          // SyntaxError: Identifier 'a' has already been declared
+// console.log(a);
+
+// // var声明迭代变量泄露
+// for (var i = 0;i < 3;i++) {}
+// console.log(i);                 // 3
+// for (let j = 0;i < 3;j++) {}
+// console.log(j);                 // ReferenceError: j is not defined
+
+// // const 不能被重新赋值
+// const a = 3;
+// const a = 5;   // SyntaxError: Identifier 'a' has already been declared
+
+// // const 限制不了对象键
+// const o1 = {};
+// o1 = {}           // TypeError: Assignment to constant variable.
+// const o2 = {};
+// o2.name = "fan";
+// console.log(o2.name);  // fan
+
+// // Object.freeze()
+// const o3 = Object.freeze({})
+// o3.name = 'fan';
+// console.log(03.name);         // undefined
+
+// // 标识符查找
+// var color = 'blue';
+// function getColor1() {
+//   return color
+// }
+// console.log(getColor1());  // blue
+
+// function getColor2() {
+//   var color = 'red'
+//   return color
+// }
+// console.log(getColor2());  // red
+
+// new Date()
+const now = new Date()
+console.log(now);            // 2022-09-03T14:19:06.427Z
+console.log(typeof now);     // Object
+console.log(new Date(1000)); // 1970-01-01T00:00:01.000Z
+
+// new Date(Date.parse(""))
+console.log(new Date(Date.parse("9/3/2020")));      // 2020-09-02T16:00:00.000Z
+console.log(new Date(Date.parse("September 3,2022")));  // 2022-09-02T16:00:00.000Z
+console.log(new Date(Date.parse("Saturday September 3 2022 22:37:20 527Z")));  // 2022-09-03T22:37:20.000Z
+console.log(new Date(Date.parse("Saturday September 3 2022 22:37:20.527Z")));  // 2022-09-03T22:37:20.527Z
+
+// new Date(Date.UTC())
+console.log(new Date(Date.UTC(2022,8,3,23,1,20))); // 2022-09-03T23:01:20.000Z
+console.log(new Date(2022,8,3,23,1,20)); // 2022-09-03T15:01:20.000Z
+
+// Date.now()
+console.log(Date.now());  // 1662218840486
