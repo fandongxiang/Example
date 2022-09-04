@@ -291,21 +291,90 @@
 // }
 // console.log(getColor2());  // red
 
-// new Date()
-const now = new Date()
-console.log(now);            // 2022-09-03T14:19:06.427Z
-console.log(typeof now);     // Object
-console.log(new Date(1000)); // 1970-01-01T00:00:01.000Z
+// // new Date()
+// const now = new Date()
+// console.log(now);            // 2022-09-03T14:19:06.427Z
+// console.log(typeof now);     // Object
+// console.log(new Date(1000)); // 1970-01-01T00:00:01.000Z
 
-// new Date(Date.parse(""))
-console.log(new Date(Date.parse("9/3/2020")));      // 2020-09-02T16:00:00.000Z
-console.log(new Date(Date.parse("September 3,2022")));  // 2022-09-02T16:00:00.000Z
-console.log(new Date(Date.parse("Saturday September 3 2022 22:37:20 527Z")));  // 2022-09-03T22:37:20.000Z
-console.log(new Date(Date.parse("Saturday September 3 2022 22:37:20.527Z")));  // 2022-09-03T22:37:20.527Z
+// // new Date(Date.parse(""))
+// console.log(new Date(Date.parse("9/3/2020")));      // 2020-09-02T16:00:00.000Z
+// console.log(new Date(Date.parse("September 3,2022")));  // 2022-09-02T16:00:00.000Z
+// console.log(new Date(Date.parse("Saturday September 3 2022 22:37:20 527Z")));  // 2022-09-03T22:37:20.000Z
+// console.log(new Date(Date.parse("Saturday September 3 2022 22:37:20.527Z")));  // 2022-09-03T22:37:20.527Z
 
-// new Date(Date.UTC())
-console.log(new Date(Date.UTC(2022,8,3,23,1,20))); // 2022-09-03T23:01:20.000Z
-console.log(new Date(2022,8,3,23,1,20)); // 2022-09-03T15:01:20.000Z
+// // new Date(Date.UTC())
+// console.log(new Date(Date.UTC(2022,8,3,23,1,20))); // 2022-09-03T23:01:20.000Z
+// console.log(new Date(2022,8,3,23,1,20)); // 2022-09-03T15:01:20.000Z
 
-// Date.now()
-console.log(Date.now());  // 1662218840486
+// // Date.now()
+// console.log(Date.now());  // 1662218840486
+
+// const now = new Date();
+// console.log(now.toString());
+// console.log(now.toDateString());
+// console.log(new Date(2022,9,4) > new Date(2022,9,3));
+
+// // 日期/时间组件
+// const time = new Date(2022,8,3,12,33,10);
+// console.log(time);                    // 2022-09-03T04:33:10.000Z
+// console.log(time.getTime());          // 1662179590000
+// console.log(time.getFullYear());      // 2022
+// console.log(time.getUTCFullYear());   // 2022
+// console.log(time.getHours());         // 12
+// console.log(time.getUTCHours());      // 4
+// console.log(time.setSeconds(0));      // 1662179580000
+// console.log(time);                    // 2022-09-03T04:33:00.000Z
+
+// // Date.parse()和Date.UTC()的区别
+// const parse_time = Date.parse("2022-09-04T00:00:00")
+// const UTC_time = Date.UTC(2022,8,4,0,0,0)
+// console.log(parse_time);                               // 1662220800000
+// console.log(UTC_time);                                 // 1662249600000
+// console.log((UTC_time - parse_time) / (3600*1000));    // 8
+// console.log(new Date(parse_time));
+// console.log(new Date(UTC_time));
+
+// // 原始值包装类型生命周期
+// let s1 = 'some text';
+// let s1_text = s1.substring(5);
+// console.log(s1_text);          // text
+// s1.color = 'red';
+// console.log(s1.color);         // undefined
+
+// // Object自动判断类型
+// let s2 = new Object('hello');
+// let num = new Object(25);
+// console.log(s2 instanceof String);   // true
+// console.log(num instanceof Number);  // true
+
+// // 构造函数和转型函数
+// let value = "25";
+// let number = Number(value);    // 转型函数
+// console.log(typeof number);    // number
+// let obj = new Number(value);   // 构造函数
+// console.log(typeof obj);       // object
+
+// // Boolean对象
+// let falseObject = new Boolean(false);
+// let falseValue = false;
+// console.log(falseObject && true);       // true
+// console.log(falseValue && true);        // false
+
+// console.log(typeof falseObject);              // object
+// console.log(typeof falseValue);               // boolean
+// console.log(falseObject instanceof Boolean);  // true 
+// console.log(falseValue instanceof Boolean);   // false
+
+// Number原始包装类型
+let num1 = 10;
+console.log(num1.toString(2));       // "1010"
+let num2 = 10.01
+console.log(num2.toFixed(1));        // 10.0
+console.log(num2.toExponential(1));  // 1.0e+1
+let num3 = 99;
+console.log(num3.toPrecision(1));    // 1e+2
+console.log(num3.toPrecision(2));    // 99
+console.log(num3.toPrecision(3));    // 99.0
+console.log(Number.isInteger(1.00)); // true
+console.log(Number.isInteger(1.01)); // false

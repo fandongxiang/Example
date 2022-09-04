@@ -425,11 +425,11 @@ function getColor2() {
 console.log(getColor2());  // red
  ```
 
-### 第5章 基本引用类型
+## 第5章 基本引用类型
 > **引用类型**是把数据和功能组织到一起的结构，类似于“类”，有时也被称为**对象定义**，应为它们描述了自己的对象应有的属性和方法。
 > **对象**被认为是某个特定引用类型的**实例**。新对象通过`new`操作符后跟一个**构造函数**来创建。构造函数就是用来创建新对象的函数。
 
-#### 5.1 Date原生引用类型
+### 5.1 Date原生引用类型
 
 1. 要创建日期对象，就使用`new`操作符来调用`Date`构造函数；
 2. `new Date()`在不传入任何参数时，创建的**对象**将保存当前的时间和日期；
@@ -461,9 +461,159 @@ console.log(new Date(Date.parse("Saturday September 3 2022 22:37:20.527Z")));  /
 console.log(new Date(Date.UTC(2022,8,3,23,1,20))); // 2022-09-03T23:01:20.000Z
 console.log(new Date(2022,8,3,23,1,20)); // 2022-09-03T15:01:20.000Z
 
+// Date.parse()和Date.UTC()的区别
+const parse_time = Date.parse("2022-09-04T00:00:00")
+const UTC_time = Date.UTC(2022,8,4,0,0,0)
+console.log(parse_time);                               // 1662220800000
+console.log(UTC_time);                                 // 1662249600000
+console.log((UTC_time - parse_time) / (3600*1000));    // 8
+
 // Date.now()
 console.log(Date.now());  // 1662218840486
  ```
+
+#### 5.1.1 继承的方法
+待补充
+#### 5.1.2 日期格式化方法
+1. `toDateString()`显示日期的周几、月、日、年（格式特定于实现）；
+2. `toTimeString()`显示日期的时、分、秒、时区（格式特定于实现）；
+3. `toLocaleDateString()`显示日期的周几、月、日、年（格式特定于实现）；
+4. `toLocaleTimeString()`显示日期的时、分、秒、时区（格式特定于实现）；
+5. `toUTCString()`显示完整的UTC日期（格式特定于实现）。
+> 这些方法输出与`toLocaleString()`和`toString()`一样，会因浏览器差异而定，因此不能用于用户界面一致的显示日期。
+
+#### 5.1.3 日期/时间的组件方法
+1. `getTime()`:返回日期的毫秒表示，与`valueof()`相同；
+2. `setTime(milliseconds)`:
+
+|方法|说明|
+|:------------|:----------------------------------|
+|`getTime()`|返回日期的毫秒表示，与`valueof()`相同|
+|`setTime(milliseconds)`|设置日期的毫秒表示，从而修改整个日期|
+|`getFullYear()`|返回4位数年|
+|`getUTCFullYear()`|返回UTC日期的4位数年|
+|`setUTCFullYear(year)`|设置日期的年（year必须是4位数）|
+|`getMonth()`|返回零起点月份（0表示1月份，11表示12月份）|
+|`getUTCMonth()`|返回UTC日期的零起点月份（**0表示1月份，11表示12月份**）|
+|`setUTCFullMonth(month)`|设置日期的月（month为大于0的值，大于11加年）|
+|`getDate()`|返回日期中的月|
+|`getUTCDate()`|返回UTC日期中的月|
+|`setDate(date)`|设置日期中的日，如果日大于当月最大天数则加月|
+|`setUTCDate(date)`|设置UTC日期中的日，如果日大于当月最大天数则加月|
+|`getDay()`|返回日期中周几（**0表示周天**，6表示周六）|
+|`getUTCDay()`|返回UTC日期中周几（**0表示周天**，6表示周六）|
+|`getHours()`|返回日期中的时（0-23）|
+|`getUTCHours()`|返回UTC日期中的时（0-23）|
+|`setHours(hours)`|设置日期中的时，如果时间大于23则日|
+|`setUTCHours(hours)`|设置UTC日期中的时，如果时间大于23则日|
+|`getMinutes()`|返回日期中的分（0-59）|
+|`getUTCMinutes()`|返回UTC日期中的分（0-59）|
+|`setMinutes(minutes)`|设置日期中的分，如果时间大于59则时|
+|`setUTCMinutes(minutes)`|设置UTC日期中的分，如果时间大于59则时|
+|`getSeconds()`|返回日期中的秒（0-59）|
+|`getUTCSeconds()`|返回UTC日期中的秒（0-59）|
+|`setSeconds(seconds)`|设置日期中的秒，如果时间大于59则分|
+|`setUTCSeconds(seconds)`|设置UTC日期中的秒，如果时间大于59则分|
+|`getMilliseconds()`|返回日期中的毫秒|
+|`getUTCMilliseconds()`|返回UTC日期中的毫秒|
+|`setMilliseconds(milliseconds)`|设置日期中的毫秒|
+|`setUTCMilliseconds(milliseconds)`|设置UTC日期中的毫秒|
+|`getTimezoneOfSet()`|返回以分钟计算的UTC与本地时区的偏移量|
+
+``` js
+// 日期/时间组件
+const time = new Date(2022,8,3,12,33,10);
+console.log(time);                    // 2022-09-03T04:33:10.000Z
+console.log(time.getTime());          // 1662179590000
+console.log(time.getFullYear());      // 2022
+console.log(time.getUTCFullYear());   // 2022
+console.log(time.getHours());         // 12
+console.log(time.getUTCHours());      // 4
+console.log(time.setSeconds(0));      // 1662179580000
+console.log(time);                    // 2022-09-03T04:33:00.000Z
+ ```
+
+### 5.2 RegExp方法
+1. 正则表达式的格式为：/pattern(模式)/flags(标记)；
+2. 表示匹配模式的标记主要有以下：
+   (1) `g`：全局模式，表示查找字符串的全部内容，不是查找到第一个就停止；
+   (2) `i`：不区分大小写，表示忽略pattern和字符串大小写；
+   (3) `m`：多行模式，表示查找到一行文本末尾时继续查找；
+   (4) `y`：黏附模式，表示查找从`lastIndex`开始及之后的字符串；
+   (5) `u`：Unicode模式，启用Unicode模式；
+   (6) `s`：dotAll模式，表示元字符，匹配任何字符串（包括\n \r）；
+
+### 5.3 原始值包装类型
+
+> 为了方便操作原始值，ECMAScript提供了3中特殊的引用类型：Boolean、Number和String。它们既具备原始值类型，也具备其它引用类型的特点，用到各自的方法和属性时，后台会创建一个响应的**原始包装类型对象**，从而暴露出操作原始值的各种方法。
+
+1. 引用类型与原始值包装类型的主要区别在于生命周期。通过`new`创建的引用类型的实例，会在离开作用域时销毁，而自动创建的原始值包装类型对象则只存在于访问它的那行代码期间。
+2. 使用`new Object()`传入原始类型时，能够根据原始值的类型返回相应原始值包装类型的实例；
+3. 用`new`调用原始值包装类型的构造函数，与调用同名的转型函数不一致。
+``` js
+// 原始值包装类型生命周期
+let s1 = 'some text';
+let s1_text = s1.substring(5);
+console.log(s1_text);          // text
+s1.color = 'red';
+console.log(s1.color);         // undefined
+
+// Object自动判断类型
+let s2 = new Object('hello');
+let num = new Object(25);
+console.log(s2 instanceof String);   // true
+console.log(num instanceof Number);  // true
+
+// 构造函数和转型函数
+let value = "25";
+let number = Number(value);    // 转型函数
+console.log(typeof number);    // number
+let obj = new Number(value);   // 构造函数
+console.log(typeof obj);       // object
+```
+
+#### 5.3.1 Boolean
+1. 布尔表达式中使用Boolean对象容易引起误会；
+2. `Boolean`对象使用`instanceof`判断时域原始值不同；
+``` js
+// Boolean对象
+let falseObject = new Boolean(false);
+let falseValue = false;
+console.log(falseObject && true);       // true
+console.log(falseValue && true);        // false
+
+console.log(typeof falseObject);              // object
+console.log(typeof falseValue);               // boolean
+console.log(falseObject instanceof Boolean);  // true 
+console.log(falseValue instanceof Boolean);   // false
+```
+#### 5.3.2 Number
+1. `number.toString(底数)`，返回相应基数的字符串参数；
+2. `number.toFixed(位数)`，返回包含指定小数点位数的数值字符串；
+3. `number.toExponenttial(位数)`，返回以科学计数法表示的数值字符串；
+4. `number.toPrecision(总位数)`，根据情况返回最合理的输出结果，可能是科学计数法，也可能是固定长度；
+5. `Number.isInteger()`方法用于辨别一个有小数点的数是否为整数；
+``` js
+// Number原始包装类型
+let num1 = 10;
+console.log(num1.toString(2));       // "1010"
+let num2 = 10.01
+console.log(num2.toFixed(1));        // 10.0
+console.log(num2.toExponential(1));  // 1.0e+1
+let num3 = 99;
+console.log(num3.toPrecision(1));    // 1e+2
+console.log(num3.toPrecision(2));    // 99
+console.log(num3.toPrecision(3));    // 99.0
+console.log(Number.isInteger(1.00)); // true
+console.log(Number.isInteger(1.01)); // false
+```
+
+#### 5.3.3 String
+1. `string.charAt(索引位置)`，返回指定字符串索引位置的字符；
+2. `string.charCodeAt(索引位置)`，返回指定字符串索引位置字符编码
+3. `string.fromCharCode()`，根据指定的UTF-16码元创建字符串中的字符；
+4. `string.concat("s1","s2",...)`，拼接任意多个字符串，类似与`+`；
+5. `string.slice()`
 
 
 
