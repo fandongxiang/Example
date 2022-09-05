@@ -366,15 +366,87 @@
 // console.log(falseObject instanceof Boolean);  // true 
 // console.log(falseValue instanceof Boolean);   // false
 
-// Number原始包装类型
-let num1 = 10;
-console.log(num1.toString(2));       // "1010"
-let num2 = 10.01
-console.log(num2.toFixed(1));        // 10.0
-console.log(num2.toExponential(1));  // 1.0e+1
-let num3 = 99;
-console.log(num3.toPrecision(1));    // 1e+2
-console.log(num3.toPrecision(2));    // 99
-console.log(num3.toPrecision(3));    // 99.0
-console.log(Number.isInteger(1.00)); // true
-console.log(Number.isInteger(1.01)); // false
+// // Number原始包装类型
+// let num1 = 10;
+// console.log(num1.toString(2));       // "1010"
+// let num2 = 10.01
+// console.log(num2.toFixed(1));        // 10.0
+// console.log(num2.toExponential(1));  // 1.0e+1
+// let num3 = 99;
+// console.log(num3.toPrecision(1));    // 1e+2
+// console.log(num3.toPrecision(2));    // 99
+// console.log(num3.toPrecision(3));    // 99.0
+// console.log(Number.isInteger(1.00)); // true
+// console.log(Number.isInteger(1.01)); // false
+
+// 字符串方法
+// const str  = 'hello world';
+// console.log(str.charAt(1));                                  // "e"
+// console.log(str.charCodeAt(1));                              // "101"
+// console.log(String.fromCharCode(97,98,99,100,101));          // "abcde" 
+// console.log(String.fromCharCode(0x61,0x62,0x63,0x64,0x65));  // "abcde"
+// console.log(str.concat(',',' ','h','i','!'));                // "hello world, hi!"
+// console.log(str.slice(5,8));                                 // "  wo"
+// console.log(str.substring(5,8));                             // "  wo"
+// console.log(str.substr(5,3));                                // "  wo"
+// console.log(str.slice(-6,-3));                               // "  wo"            
+// console.log(str.substring(-7,5));                            // "hello"
+// console.log(str.substr(-6,3));                               // "  wo"   
+
+// // 定位字符串
+// console.log(str.indexOf('o'));        // 4
+// console.log(str.indexOf('o',5));      // 7
+// console.log(str.lastIndexOf('o',4));  // 4
+
+// function findStr(str1,str2) {
+//   // 判断输入值是否为字符类型
+//   if (typeof str1 !== 'string') {
+//     return `${str1} is not a string`
+//   }
+//   if (typeof str2 !== 'string') {
+//     return `${str2} is not a string`
+//   }
+//   const arr = [];
+//   let pos = str1.indexOf(str2);
+//   while (pos > -1) {
+//     arr.push(pos);
+//     pos = str1.indexOf(str2,pos + 1)
+//   }
+//   return `${str1}中的${str2}位于：${arr}`;
+// }
+// let arr =  findStr('hello world','o');
+// console.log(arr);
+
+// // 字符串包含方法
+// let message = 'foodbarbaz';
+// console.log(message.startsWith('foo'));        // true
+// console.log(message.startsWith('bar'));        // false
+// console.log(message.startsWith('bar',4));      // true
+ 
+// console.log(message.endsWith('baz'));          // true 
+// console.log(message.endsWith('bar'));          // false
+// console.log(message.endsWith('bar',7));        // true
+ 
+// console.log(message.includes('bar'));          // true
+// console.log(message.includes('baz'));          // true
+
+// // trim()方法
+// let stringValue = ' hello world ';
+// console.log(stringValue.trim());            // 'hello world'
+// console.log(stringValue.trimStart());       // 'hello world '  
+// console.log(stringValue.trimEnd());         // ' hello world'
+ 
+// // repeat()
+// let stringValue = 'ha ';
+// console.log(stringValue.repeat(5) + 'xiangzai');   // ha ha ha ha ha xiangzai
+
+// // padStart() padEnd()
+// let stringValue = 'foo'
+// console.log(stringValue.padStart(8));       // '     foo'
+// console.log(stringValue.padStart(8,'.'));   // '.....foo'
+// console.log(stringValue.padEnd(8,'.'));     // 'foo.....'
+// console.log(stringValue.padEnd(2));         // 'foo'
+
+let stringValue = 'abcde';
+console.log(...stringValue);  // a b c d e
+console.log([...stringValue]);

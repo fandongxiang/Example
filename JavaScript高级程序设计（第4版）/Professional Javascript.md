@@ -609,13 +609,133 @@ console.log(Number.isInteger(1.01)); // false
 ```
 
 #### 5.3.3 String
+##### 5.3.3.1 字符串方法
 1. `string.charAt(索引位置)`，返回指定字符串索引位置的字符；
 2. `string.charCodeAt(索引位置)`，返回指定字符串索引位置字符编码
-3. `string.fromCharCode()`，根据指定的UTF-16码元创建字符串中的字符；
+3. `String.fromCharCode()`，根据指定的UTF-16码元创建字符串中的字符；
 4. `string.concat("s1","s2",...)`，拼接任意多个字符串，类似与`+`；
-5. `string.slice()`
 
+``` js
+// 字符串方法
+const str  = 'hello world';
+console.log(str.charAt(1));                                  // "e"
+console.log(str.charCodeAt(1));                              // "101"
+console.log(String.fromCharCode(97,98,99,100,101));          // "abcde" 
+console.log(String.fromCharCode(0x61,0x62,0x63,0x64,0x65));  // "abcde"
+console.log(str.concat(',',' ','h','i','!'));                // "hello world, hi!"
+```
 
+##### 5.3.3.2 字符串截取方法
+1. `string.slice(参数1，参数2)`，截取从参数1到参数2的字符，当参数为负值时，截取位置变为字符串长度+参数；
+2. `string.substring(参数1，参数2)`，截取从参数1到参数2的字符，当参数为负值时，会将所有参数转化为0；
+3. `string.substr(参数1，参数2)`，截取从参数1开始，长度为参数2的字符，当参数为负值时，将第一个负值参数转换为字符串长度加上该负值，而第二个负值转换为0
+
+``` js
+// 截取字符串
+console.log(str.slice(5,8));                                 // "  wo"
+console.log(str.substring(5,8));                             // "  wo"
+console.log(str.substr(5,3));                                // "  wo"
+console.log(str.slice(-6,-3));                               // "  wo"            
+console.log(str.substring(-7,5));                            // "hello"
+console.log(str.substr(-6,3));                               // "  wo"   
+```
+
+###### 5.3.3.3 字符串定位方法
+1. `string.indexOf("字符",【参数2】)`，从参数2（缺省默认0）位置开始查找从头查找字符的位置，如果不存在返回`-1`；
+2.  `string.lastIndexOf("字符",【餐宿2】)`,从参数2（缺省默认0）位置开始查找从末尾查找字符的位置，如果不存在返回`-1`。
+
+``` js
+// 定位字符串
+console.log(str.indexOf('o'));        // 4
+console.log(str.indexOf('o',5));      // 7
+console.log(str.lastIndexOf('o',4));  // 4
+
+// 利用indexOf()输出字符串中所有匹配字符的数组
+function findStr(str1,str2) {
+  // 判断输入值是否为字符类型
+  if (typeof str1 !== 'string') {
+    return `${str1} is not a string`
+  }
+  if (typeof str2 !== 'string') {
+    return `${str2} is not a string`
+  }
+  const arr = [];
+  let pos = str1.indexOf(str2);
+  while (pos > -1) {
+    arr.push(pos);
+    pos = str1.indexOf(str2,pos + 1)
+  }
+  return `${str1}中的${str2}位于：${arr}`;
+}
+let arr =  findStr('hello world','o');
+console.log(arr);                        // [4,7]
+```
+
+##### 5.3.3.4 字符串包含方法
+1. `string.startsWith('字符串1',[开始位置])`,在开始位置（默认为0）检查字符串是否以字符串1开头，存在返回`true`，不存在返回`false`；
+2. `string.endsWith('字符串1',[长度])`,在给定长度（默认整个字符串）的字符串内，检查字符串是否以字符串1结尾，存在返回`true`，不存在返回`false`；
+3. `string.includes('字符串1')`，检查整个字符串是否包含字符串，存在返回`true`，不存在返回`false`；
+
+``` js
+// 字符串包含方法
+let message = 'foodbarbaz';
+console.log(message.startsWith('foo'));        // true
+console.log(message.startsWith('bar'));        // false
+console.log(message.startsWith('bar',4));      // true
+ 
+console.log(message.endsWith('baz'));          // true 
+console.log(message.endsWith('bar'));          // false
+console.log(message.endsWith('bar',7));        // true
+ 
+console.log(message.includes('bar'));          // true
+console.log(message.includes('baz'));          // true
+```                                                                             
+
+###### 5.3.3.5 trim()方法
+1. `string.trim()`，创建字符串的一个副本，清除字符串的前后空格；
+2. `string.trimStart()`，创建字符串的一个副本，清除字符串的前空格；
+3. `string.trimEnd()`，创建字符串的一个副本，清除字符串的后空格；
+
+``` js
+// trim()方法
+let stringValue = ' hello world ';
+console.log(stringValue.trim());            // 'hello world'
+console.log(stringValue.trimStart());       // 'hello world '  
+console.log(stringValue.trimEnd());         // ' hello world'
+```
+
+###### 5.3.3.6 repeat() 方法
+1. `string.repeat(number)`，表示要将字符串复制多少次；
+
+``` js
+// repeat()
+let stringValue = 'ha ';
+console.log(stringValue.repeat(5) + 'xiangzai');   // ha ha ha ha ha xiangzai
+```
+
+##### 5.3.3.7 padStart()和padEnd()
+1. `string.padStart(填充长度，[‘填充字符串’])`，用填充字符串从头将字符串填充到指定长度，默认用空格填充；
+2. `string.padEnd(填充长度，[‘填充字符串’])`，用填充字符串从尾将字符串填充到指定长度，默认用空格填充；
+3. 填充字符串长度小于原始字符串长度时，返回原始字符串。
+
+``` js
+// padStart() padEnd()
+let stringValue = 'foo'
+console.log(stringValue.padStart(8));       // '     foo'
+console.log(stringValue.padStart(8,'.'));   // '.....foo'
+console.log(stringValue.padEnd(8,'.'));     // 'foo.....'
+console.log(stringValue.padEnd(2));         // 'foo'
+```
+##### 5.3.3.8 字符串迭代与解构
+1. 字符串的原型上暴露了一个@@iterator方法，可将每个字符串进行迭代；
+2. `...string`方法可以方便的将字符串解构成一个个字符；
+
+``` js
+// 字符串迭代与解构
+let stringValue = 'abcde';
+console.log(...stringValue);    // a b c d e
+console.log([...stringValue]);  // [ 'a', 'b', 'c', 'd', 'e' ]
+```
 
 
 
