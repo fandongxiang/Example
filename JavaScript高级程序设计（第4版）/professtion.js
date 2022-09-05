@@ -447,6 +447,7 @@
 // console.log(stringValue.padEnd(8,'.'));     // 'foo.....'
 // console.log(stringValue.padEnd(2));         // 'foo'
 
-let stringValue = 'abcde';
-console.log(...stringValue);  // a b c d e
-console.log([...stringValue]);
+// // 字符串迭代与解构
+// let stringValue = 'abcde';
+// console.log(...stringValue);    // a b c d e
+// console.log([...stringValue]);  // [ 'a', 'b', 'c', 'd', 'e' ]
