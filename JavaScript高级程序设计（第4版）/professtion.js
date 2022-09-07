@@ -451,3 +451,10 @@
 // let stringValue = 'abcde';
 // console.log(...stringValue);    // a b c d e
 // console.log([...stringValue]);  // [ 'a', 'b', 'c', 'd', 'e' ]
+
+// // 字符串大小写转化
+// let stringValue = 'hello world';
+// console.log(stringValue.toUpperCase());                // 'HELLO WORLD'
+// console.log(stringValue.toLocaleUpperCase());          // 'HELLO WORLD'
+// console.log(stringValue.toLowerCase());                // 'hello world'
+// console.log(stringValue.toLocaleLowerCase());          // 'hello world'

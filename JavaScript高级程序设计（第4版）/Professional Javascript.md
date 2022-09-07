@@ -542,6 +542,30 @@ console.log(time);                    // 2022-09-03T04:33:00.000Z
    (4) `y`：黏附模式，表示查找从`lastIndex`开始及之后的字符串；
    (5) `u`：Unicode模式，启用Unicode模式；
    (6) `s`：dotAll模式，表示元字符，匹配任何字符串（包括\n \r）；
+3. 常见限定符号：
+   (1) `?`：表示前面的字符可以出现**0或1次**；
+   (2) `*`：表示前面的字符可以出现**0或多次**；
+   (3) `+`：表示前面的字符可以出现**1或多次**；
+   (4) `{n,m}`：`{n}`表示前面的字符出现**n次**，`{n,}`表示前面的字符出现**n次**以上，`{n,m}`表示前面的字符出现**n-m次**；
+   (5) `(XXX)限定符`：表示将括号内的字符按照限定符匹配；
+4. 或运算符：
+   (1) `(n|m)`：表示或运算符，匹配`n`或`m`；
+   (2) `[abc]`：表示字符只能取自它们，并且数量不限；
+   (3)  `[a-zA-Z0-9]`：表示a-z、A-Z、0-9的字符，如果括号内前面有`^`号，表示匹配除括号内列出的其余字符；
+5. 元字符：
+   (1) `\d`：代表数字字符，等同于`[0-9]`；
+   (2) `\D`：代表非数字字符，等同于`[^0-9]`；
+   (3) `\w`：代表单词字符，表示所有的数字、字母和下划线；
+   (4) `\W`：代表非单词字符，表示除过所有的数字、字母和下划线；
+   (5) `\s`：代表所有的空白字符；包括TAB和换行符；
+   (6) `\S`：代表所有非空白字符；
+   (7) `.`：句点代表任意字符，不限数量，但不包括换行符；
+   (8) `^`：代表匹配行首的字符；
+   (9) `$`：代表匹配行尾的字符；
+6. 贪婪与懒惰匹配：
+举例：`<span><b>This a sample text<b/><span/>``<.+>`会匹配任意多的字符，将整个文本都匹配，但如果用`<.+?>`会将贪婪匹配转换为懒惰匹配，只匹配html标签；
+
+> **注意**：纯`\d`时可匹配任意多个数字，但是前面如果有其它字符时，只能匹配一个。
 
 ### 5.3 原始值包装类型
 
@@ -736,6 +760,26 @@ let stringValue = 'abcde';
 console.log(...stringValue);    // a b c d e
 console.log([...stringValue]);  // [ 'a', 'b', 'c', 'd', 'e' ]
 ```
+
+##### 5.3.3.9 字符串大小写转换
+1. `string.toUpperCase()`和`string.toLocalUpperCase`都可以将字符串转换为大写，但是`string.toLocalUpperCase`会根据特定地区实现；
+2. `string.toLowerCase()`和`string.toLocalLowerCase`都可以将字符串转换为小写，但是`string.toLocalLowerCase`会根据特定地区实现；
+3. 当不知道特定地区时，最好使用特定的转换方法；
+
+``` js
+// 字符串大小写转化
+let stringValue = 'hello world';
+console.log(stringValue.toUpperCase());                // 'HELLO WORLD'
+console.log(stringValue.toLocaleUpperCase());          // 'HELLO WORLD'
+console.log(stringValue.toLowerCase());                // 'hello world'
+console.log(stringValue.toLocaleLowerCase());          // 'hello world'
+```
+
+##### 5.3.3.10 字符串模式匹配方法
+1. `string.match()`，
+2. `string.search()`，
+
+
 
 
 
