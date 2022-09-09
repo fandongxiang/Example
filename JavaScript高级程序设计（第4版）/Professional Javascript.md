@@ -534,6 +534,8 @@ console.log(time);                    // 2022-09-03T04:33:00.000Z
  ```
 
 ### 5.2 RegExp方法
+
+#### 5.2.1 正则表达式基础
 1. 正则表达式的格式为：/pattern(模式)/flags(标记)；
 2. 表示匹配模式的标记主要有以下：
    (1) `g`：全局模式，表示查找字符串的全部内容，不是查找到第一个就停止；
@@ -566,6 +568,98 @@ console.log(time);                    // 2022-09-03T04:33:00.000Z
 举例：`<span><b>This a sample text<b/><span/>``<.+>`会匹配任意多的字符，将整个文本都匹配，但如果用`<.+?>`会将贪婪匹配转换为懒惰匹配，只匹配html标签；
 
 > **注意**：纯`\d`时可匹配任意多个数字，但是前面如果有其它字符时，只能匹配一个。
+
+#### 5.2.2 正则表达式进阶（bilibili）
+##### 1. 正则表达式与传统方法的区别：
+``` js
+// 传统方法提取字符串中的数字
+let str = "abcd1862dcndna1563"
+console.log([...str]);
+let numberArr = [...str].filter(a=> !Number.isNaN(parseInt(a)));
+let numberStr = numberArr.join("")
+console.log(numberStr);
+// 正则表达式提取字符串中的数字
+console.log(str.match(/\d/g).join(""));
+```
+##### 2. 正则表达式的创建方法：
+   (1) `//`字面量创建正则表达式，书写简单但不能识别**变量**；
+   (2) `new RegExp("字符"或变量,"匹配模式")`，对象创建中正则不用用`//`；
+``` js
+// 字面量创建正则表达式
+let name = "fandongxiang";
+console.log(/a/.test(name));          // true
+let str = "a";
+console.log(eval(`/${str}/`).test(name));   // true
+
+// 对象创建正则表达式
+let name = "fandongxiang";
+let str = "a";
+let reg1 = new RegExp("a","g");           // 字符串
+let reg2 = new RegExp(str,"g");           // 变量 
+console.log(reg1.test(name));
+console.log(reg2.test(name));
+```
+###### 3. `|`或运算符：表示或运算；
+``` js
+// 或运算符
+// 检测“010”或“020”地区的电话号码
+let tel1 = "010-12345678";
+let tel2 = "030-12345678";
+let tel3 = "020-123456789";
+let tel4 = "020-123456"
+console.log(/^(010|020)\-\d{7,8}$/.test(tel1));       // true
+console.log(/^(010|020)\-\d{7,8}$/.test(tel3));       // false
+console.log(/^(010|020)\-\d{7,8}$/.test(tel3));       // false
+console.log(/^(010|020)\-\d{7,8}$/.test(tel4));       // false
+```
+> **注意**：这里的`(abc|de)`必须是要么是`abc`要么是`de`，而原子组中的`[abcde]`是`a`、`b`、`c`、`d`、`e`中的任意一个；
+
+##### 4. 转义字符
+(1) 字面量中转义字符用`\`表示即可； 
+(2) 对象创建的正则中，因为传入的是字符串，而字符串的单个`\`是自动忽略的，所以需要用`\\`进行转义；
+``` js
+// 转义
+let str = "2.33";
+let reg1 = new RegExp("\d+\.\d+","g")
+let reg2 = new RegExp("\\d+\\.\\d+","g")
+console.log(/^\d+\.\d+$/.test(str));     // true
+console.log(reg1.test(str));             // false 
+console.log(reg1.test("dddddd"));        // true
+console.log("\d+\.\d+");                 // d+.d+
+console.log(reg2.test(str));             // true
+
+// 网址匹配练习
+let url1 = "https://www.baidu.com";
+let url2 = "www.baidu.com";
+let url3 = "www.baidu.cn";
+let url4 = "baidu.com";
+let url5 = "http://baidu.com";
+console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url1));   // true
+console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url2));   // true
+console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url3));   // true
+console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url4));   // true
+console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url5));   // true
+
+// 关于数字和字母判断
+let str = ".33"
+let num = .33
+console.log(/^\d+\.\d+$/.test(str));    // false
+console.log(/^\d+\.\d+$/.test(num));    // true 
+console.log(.33 === 0.33);              // true
+```
+##### 5. 字符边界
+(1) `//`：没有字符边界时表示字符串中只要包含正则就能匹配成功； 
+(2) `/^$/`：有字符边界时表示字符串必须头尾都符合正则才能匹配成功；
+
+``` js
+// 字符边界
+let str1 = "abc123def";
+let str2 = "123def";
+console.log(/\d/.test(str1));            // true
+console.log(/^\d/.test(str1));           // false
+console.log(/^\d/.test(str2));           // true
+console.log(/^\d$/.test(str2));          // false
+```
 
 ### 5.3 原始值包装类型
 

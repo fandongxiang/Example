@@ -458,3 +458,78 @@
 // console.log(stringValue.toLocaleUpperCase());          // 'HELLO WORLD'
 // console.log(stringValue.toLowerCase());                // 'hello world'
 // console.log(stringValue.toLocaleLowerCase());          // 'hello world'
+
+// 正则表达式
+// // 传统方法提取字符串中的数字
+// let str = "abcd1862dcndna1563"
+// console.log([...str]);
+// let numberArr = [...str].filter(a=> !Number.isNaN(parseInt(a)));
+// let numberStr = numberArr.join("")
+// console.log(numberStr);
+// // 正则表达式提取字符串中的数字
+// console.log(str.match(/\d/g).join(""));
+
+// // 字面量创建正则表达式
+// let name = "fandongxiang";
+// console.log(/a/.test(name));          // true
+// let str = "a";
+// console.log(eval(`/${str}/`).test(name));   // true
+
+// // 对象创建正则表达式
+// let name = "fandongxiang";
+// let str = "a";
+// let reg1 = new RegExp("a","g");           // 字符串
+// let reg2 = new RegExp(str,"g");           // 变量 
+// console.log(reg1.test(name));
+// console.log(reg2.test(name));
+
+// // 或运算符
+// // 检测“010”或“020”地区的电话号码
+// let tel1 = "010-12345678";
+// let tel2 = "030-12345678";
+// let tel3 = "020-123456789";
+// let tel4 = "020-123456"
+// console.log(/^(010|020)\-\d{7,8}$/.test(tel1));
+// console.log(/^(010|020)\-\d{7,8}$/.test(tel3));
+// console.log(/^(010|020)\-\d{7,8}$/.test(tel3));
+// console.log(/^(010|020)\-\d{7,8}$/.test(tel4));
+
+// // 转义
+// let str = "2.33";
+// let reg1 = new RegExp("\d+\.\d+","g")
+// let reg2 = new RegExp("\\d+\\.\\d+","g")
+// console.log(/^\d+\.\d+$/.test(str));     // true
+// console.log(reg1.test(str));             // false 
+// console.log(reg1.test("dddddd"));        // true
+// console.log("\d+\.\d+");                 // d+.d+
+// console.log(reg2.test(str));             // true
+
+// // 关于数字和字母判断
+// let str = ".33"
+// let num = .33
+// console.log(/^\d+\.\d+$/.test(str));    // false
+// console.log(/^\d+\.\d+$/.test(num));    // true 
+// console.log(.33 === 0.33);              // true
+
+// // 网址匹配练习
+// let url1 = "https://www.baidu.com";
+// let url2 = "www.baidu.com";
+// let url3 = "www.baidu.cn";
+// let url4 = "baidu.com";
+// let url5 = "http://baidu.com";
+// console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url1));   // true
+// console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url2));   // true
+// console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url3));   // true
+// console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url4));   // true
+// console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url5));   // true
+
+// 字符边界
+let str1 = "abc123def";
+let str2 = "123def";
+console.log(/\d/.test(str1));            // true
+console.log(/^\d/.test(str1));           // false
+console.log(/^\d/.test(str2));           // true
+console.log(/^\d$/.test(str2));          // false
+
+
+
