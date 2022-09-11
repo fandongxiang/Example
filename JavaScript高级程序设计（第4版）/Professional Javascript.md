@@ -561,11 +561,32 @@ console.log(time);                    // 2022-09-03T04:33:00.000Z
    (4) `\W`：代表非单词字符，表示除过所有的数字、字母和下划线；
    (5) `\s`：代表所有的空白字符；包括TAB和换行符；
    (6) `\S`：代表所有非空白字符；
-   (7) `.`：句点代表任意字符，不限数量，但不包括换行符；
+   (7) `.`：句点代表任意字符，但不包括**换行符**；
    (8) `^`：代表匹配行首的字符；
    (9) `$`：代表匹配行尾的字符；
 6. 贪婪与懒惰匹配：
 举例：`<span><b>This a sample text<b/><span/>``<.+>`会匹配任意多的字符，将整个文本都匹配，但如果用`<.+?>`会将贪婪匹配转换为懒惰匹配，只匹配html标签；
+
+``` js
+let str = "abc1990def288";
+// 无全局匹配模式下单个\d，匹配第一个数字
+console.log(str.match(/\d/));    // ["1"]
+
+// 无全局匹配模式下\d+，匹配第一个连续的数字
+console.log(str.match(/\d+/));   // ["1990"]
+
+// 全局匹配模式下\d，挨个输出每个数字
+console.log(str.match(/\d/g));   // [ '1', '9', '9', '0' , '2' , '8' , '8']
+
+// 全局匹配模式下\d+，挨个输出连续的数字
+console.log(str.match(/\d+/g));  // [ '1990', '288' ]
+
+// 无全局匹配模式下\d\d，输出第一个两位数字
+console.log(str.match(/\d\d/));  // [ '19' ]
+
+// 全局匹配模式下\d\d，依次输出两位数字
+console.log(str.match(/\d\d/g)); // [ '19', '90', '28']
+```
 
 > **注意**：纯`\d`时可匹配任意多个数字，但是前面如果有其它字符时，只能匹配一个。
 
@@ -638,7 +659,7 @@ console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url
 console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url2));   // true
 console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url3));   // true
 console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url4));   // true
-console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url5));   // true
+console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url5));   // false
 
 // 关于数字和字母判断
 let str = ".33"
@@ -661,6 +682,89 @@ console.log(/^\d/.test(str2));           // true
 console.log(/^\d$/.test(str2));          // false
 ```
 
+##### 6. 元字符
+1. `[\s\S]`、`[\d\D]`、`[\w\W]`会匹配任何字符；
+``` js
+// 模板字面量表示字符串
+let message = `
+张三: 010 - 9999999, 
+李四: 020 - 88888888`
+// 匹配姓名
+console.log(message.match(/[^-\d:\s,]+/g));    // [ '张三', '李四' ]
+// 匹配电话
+console.log(message.match(/\d+\s-\s\d+/g));    // [ '010 - 9999999', '020 - 88888888' ]
+
+// \w和\W
+let str = "123_456@qq.com"
+console.log(str.match(/\w+/g));     // [ '123_456', 'qq', 'com' ]
+console.log(str.match(/\W/g));      // [ '@', '.' ]
+
+// 匹配html标签中的所有元素
+// 匹配html标签中的所有元素
+let html = `
+  <span>
+    123abc_&&@@
+  </span>
+`
+let html = `
+  <span>
+    123abc_&&@@
+  </span>
+`
+console.log(html.match(/<span>[\s\S]+<\/span>/));   // '<span>\n    123abc_&&@@\n  </span>'
+console.log(html.match(/<span>[\w\W]+<\/span>/));   // '<span>\n    123abc_&&@@\n  </span>'
+console.log(html.match(/<span>[\D\d]+<\/span>/));   // '<span>\n    123abc_&&@@\n  </span>'
+```
+##### 7. 汉字与字符属性
+1. 匹配汉字与字符可以用`/\p{sc=Han}+/gu`来匹配;
+2. `\p{L}`表示匹配所有字母；
+3. `\p{N}`表示匹配所有数字，类似与`\d`；
+4. `\P{L}`表示匹配所有非字母，类似于`^\p{L}`；
+5. `\P{N}`表示匹配所有非数字，类似于`^\p{N}`或`^\d`；
+``` js
+// 匹配汉字
+let str = "fantasy你好啊,001我很好";
+console.log(str.match(/\p{sc=Han}+/gu));
+console.log(str.match(/\p{L}+/gu));          // [ 'fantasy你好啊', '我很好' ]
+console.log(str.match(/\P{L}+/gu));          // [ ',001' ]
+console.log(str.match(/\p{N}+/gu));          // [ '001' ]
+console.log(str.match(/\P{N}+/gu));          // [ 'fantasy你好啊,', '我很好' ]
+```
+
+##### 8. 原子表
+1. `[]`原子表的使用：匹配原子表中的任意一项字符；
+2. `[]`原子表中的`()`、`.`、`+`就表示普通的符号，不用转义，而`-`在原子表中表示区间匹配，需要转义成`\-`；
+``` js
+// 原子表的使用：匹配日期
+let date1 = "2022-09-11";
+let date2 = "2022/09/11";
+console.log(date1.match(/^\d{4}([-\/])\d{2}\1\d{2}$/));  // [ '2022-09-11', '-', index: 0, input: '2022-09-11', groups: undefined ]
+console.log(date2.match(/^\d{4}([-\/])\d{2}\1\d{2}$/));  // [ '2022/09/11', '/', index: 0, input: '2022/09/11', groups: undefined ]
+
+// 匹配换行的内容
+let str = `
+   fan
+   dong
+
+`
+console.log(str.match(/.+/g));        // [ '   fan', '   dong', '   ' ]
+console.log(str.match(/.+/gs));       // [ '\n   fan\n   dong\n\n' ]
+console.log(str.match(/[\s\S]+/g));   // [ '\n   fan\n   dong\n\n' ]
+```
+##### 9. 原子组
+1. `()`包起来的是原子组，使用后可用`\1`重复对应使用前面的原子组；
+2. 使用原子组后，用`match()`输出后显示原子组的内容；
+
+``` js
+// 原子组
+let str = `
+   <h1>
+   这是一个HTML标签内容
+   </h1>
+`
+let reg = /<(h[1-6])>([\s\S])*<\/\1>/g
+console.log(str.match(reg)[0].replace(/[\n\s]/g,''));  // <h1>这是一个HTML标签内容</h1>
+```
 ### 5.3 原始值包装类型
 
 > 为了方便操作原始值，ECMAScript提供了3中特殊的引用类型：Boolean、Number和String。它们既具备原始值类型，也具备其它引用类型的特点，用到各自的方法和属性时，后台会创建一个响应的**原始包装类型对象**，从而暴露出操作原始值的各种方法。

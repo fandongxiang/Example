@@ -422,11 +422,11 @@
 // console.log(message.startsWith('foo'));        // true
 // console.log(message.startsWith('bar'));        // false
 // console.log(message.startsWith('bar',4));      // true
- 
+
 // console.log(message.endsWith('baz'));          // true 
 // console.log(message.endsWith('bar'));          // false
 // console.log(message.endsWith('bar',7));        // true
- 
+
 // console.log(message.includes('bar'));          // true
 // console.log(message.includes('baz'));          // true
 
@@ -435,7 +435,7 @@
 // console.log(stringValue.trim());            // 'hello world'
 // console.log(stringValue.trimStart());       // 'hello world '  
 // console.log(stringValue.trimEnd());         // ' hello world'
- 
+
 // // repeat()
 // let stringValue = 'ha ';
 // console.log(stringValue.repeat(5) + 'xiangzai');   // ha ha ha ha ha xiangzai
@@ -521,15 +521,111 @@
 // console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url2));   // true
 // console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url3));   // true
 // console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url4));   // true
-// console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url5));   // true
+// console.log(/^((https:\/\/|http:\/\/)www\.|(www\.))?\w+\.(com|cn|org)$/.test(url5));   // false
 
-// 字符边界
-let str1 = "abc123def";
-let str2 = "123def";
-console.log(/\d/.test(str1));            // true
-console.log(/^\d/.test(str1));           // false
-console.log(/^\d/.test(str2));           // true
-console.log(/^\d$/.test(str2));          // false
+// // 字符边界
+// let str1 = "abc123def";
+// let str2 = "123def";
+// console.log(/\d/.test(str1));            // true
+// console.log(/^\d/.test(str1));           // false
+// console.log(/^\d/.test(str2));           // true
+// console.log(/^\d$/.test(str2));          // false
+
+// let str = "abc1990def288";
+// // 无全局匹配模式下单个\d，匹配第一个数字
+// console.log(str.match(/\d/));    // ["1"]
+// // 无全局匹配模式下\d+，匹配第一个连续的数字
+// console.log(str.match(/\d+/));   // ["1990"]
+// // 全局匹配模式下\d，挨个输出每个数字
+// console.log(str.match(/\d/g));   // [ '1', '9', '9', '0' , '2' , '8' , '8']
+// // 全局匹配模式下\d+，挨个输出连续的数字
+// console.log(str.match(/\d+/g));  // [ '1990', '288' ]
+// // 无全局匹配模式下\d\d，输出第一个两位数字
+// console.log(str.match(/\d\d/));  // [ '19' ]
+// // 全局匹配模式下\d\d，依次输出两位数字
+// console.log(str.match(/\d\d/g)); // [ '19', '90', '28']
+
+// // 模板字面量表示字符串
+// let message = `
+// 张三: 010 - 9999999, 
+// 李四: 020 - 88888888`
+// // 匹配姓名
+// console.log(message.match(/[^-\d:\s,]+/g));    // [ '张三', '李四' ]
+// // 匹配电话
+// console.log(message.match(/\d+\s-\s\d+/g));    // [ '010 - 9999999', '020 - 88888888' ]
+
+// // \w和\W
+// let str = "123_456@qq.com"
+// console.log(str.match(/\w+/g));     // [ '123_456', 'qq', 'com' ]
+// console.log(str.match(/\W/g));      // [ '@', '.' ]
+
+// // 匹配html标签中的所有元素
+// let html = `
+//   <span>
+//     123abc_&&@@
+//   </span>
+// `
+// console.log(html.match(/<span>[\s\S]+<\/span>/));   // '<span>\n    123abc_&&@@\n  </span>'
+// console.log(html.match(/<span>[\w\W]+<\/span>/));   // '<span>\n    123abc_&&@@\n  </span>'
+// console.log(html.match(/<span>[\D\d]+<\/span>/));   // '<span>\n    123abc_&&@@\n  </span>'
+
+// // 正则模式修正符 g和i
+// let str = "Hello World";
+// // g
+// console.log(str.match(/l/));          // [ 'l', index: 2, input: 'Hello World', groups: undefined ]
+// console.log(str.match(/l/g));         // [ 'l', 'l', 'l' ]
+// // i
+// console.log(str.match(/w/));          // null
+// console.log(str.match(/w/i));         // [ 'W', index: 6, input: 'Hello World', groups: undefined ]
+
+// // m：将多行文本转为数组对象形式
+// let message = `
+//   #1 js,200元 #
+//   #2 node.js,400元 #
+//   #4 www.baidu.com #
+//   #3 php,300元 # 备注
+// `
+// console.log(message.match(/#.+,.+#/gm));
+// let lessons = message.match(/#.+,.+#/gm).map(v => {
+//   v = v.replace(/#\d+\s*/, '').replace(/\s+#/, '');
+//   // console.log(v);
+//   [name, price] = v.split(",")
+//   return { name, price }
+// });
+// console.log(lessons);
+
+// // 原子表的使用：匹配日期
+// let date1 = "2022-09-11";
+// let date2 = "2022/09/11";
+// console.log(date1.match(/^\d{4}([-\/])\d{2}\1\d{2}$/));  // [ '2022-09-11', '-', index: 0, input: '2022-09-11', groups: undefined ]
+// console.log(date2.match(/^\d{4}([-\/])\d{2}\1\d{2}$/));  // [ '2022/09/11', '/', index: 0, input: '2022/09/11', groups: undefined ]
+
+// // 匹配汉字
+// let str = "fantasy你好啊,001我很好";
+// console.log(str.match(/\p{sc=Han}+/gu));
+// console.log(str.match(/\p{L}+/gu));          // [ 'fantasy你好啊', '我很好' ]
+// console.log(str.match(/\P{L}+/gu));          // [ ',001' ]
+// console.log(str.match(/\p{N}+/gu));          // [ '001' ]
+// console.log(str.match(/\P{N}+/gu));          // [ 'fantasy你好啊,', '我很好' ]
+
+// // 匹配换行的内容
+// let str = `
+//    fan
+//    dong
+
+// `
+// console.log(str.match(/.+/g));        // [ '   fan', '   dong', '   ' ]
+// console.log(str.match(/.+/gs));       // [ '\n   fan\n   dong\n\n' ]
+// console.log(str.match(/[\s\S]+/g));   // [ '\n   fan\n   dong\n\n' ]
+
+// // 原子组
+// let str = `
+//    <h1>
+//    这是一个HTML标签内容
+//    </h1>
+// `
+// let reg = /<(h[1-6])>([\s\S])*<\/\1>/g
+// console.log(str.match(reg)[0].replace(/[\n\s]/g,''));  // <h1>这是一个HTML标签内容</h1>
 
 
 
