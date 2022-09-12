@@ -551,39 +551,39 @@ console.log(Date.now());  // 1662218840486
 1. `getTime()`:返回日期的毫秒表示，与`valueof()`相同；
 2. `setTime(milliseconds)`:
 
-|方法|说明|
-|:------------|:----------------------------------|
-|`getTime()`|返回日期的毫秒表示，与`valueof()`相同|
-|`setTime(milliseconds)`|设置日期的毫秒表示，从而修改整个日期|
-|`getFullYear()`|返回4位数年|
-|`getUTCFullYear()`|返回UTC日期的4位数年|
-|`setUTCFullYear(year)`|设置日期的年（year必须是4位数）|
-|`getMonth()`|返回零起点月份（0表示1月份，11表示12月份）|
-|`getUTCMonth()`|返回UTC日期的零起点月份（**0表示1月份，11表示12月份**）|
-|`setUTCFullMonth(month)`|设置日期的月（month为大于0的值，大于11加年）|
-|`getDate()`|返回日期中的月|
-|`getUTCDate()`|返回UTC日期中的月|
-|`setDate(date)`|设置日期中的日，如果日大于当月最大天数则加月|
-|`setUTCDate(date)`|设置UTC日期中的日，如果日大于当月最大天数则加月|
-|`getDay()`|返回日期中周几（**0表示周天**，6表示周六）|
-|`getUTCDay()`|返回UTC日期中周几（**0表示周天**，6表示周六）|
-|`getHours()`|返回日期中的时（0-23）|
-|`getUTCHours()`|返回UTC日期中的时（0-23）|
-|`setHours(hours)`|设置日期中的时，如果时间大于23则日|
-|`setUTCHours(hours)`|设置UTC日期中的时，如果时间大于23则日|
-|`getMinutes()`|返回日期中的分（0-59）|
-|`getUTCMinutes()`|返回UTC日期中的分（0-59）|
-|`setMinutes(minutes)`|设置日期中的分，如果时间大于59则时|
-|`setUTCMinutes(minutes)`|设置UTC日期中的分，如果时间大于59则时|
-|`getSeconds()`|返回日期中的秒（0-59）|
-|`getUTCSeconds()`|返回UTC日期中的秒（0-59）|
-|`setSeconds(seconds)`|设置日期中的秒，如果时间大于59则分|
-|`setUTCSeconds(seconds)`|设置UTC日期中的秒，如果时间大于59则分|
-|`getMilliseconds()`|返回日期中的毫秒|
-|`getUTCMilliseconds()`|返回UTC日期中的毫秒|
-|`setMilliseconds(milliseconds)`|设置日期中的毫秒|
-|`setUTCMilliseconds(milliseconds)`|设置UTC日期中的毫秒|
-|`getTimezoneOfSet()`|返回以分钟计算的UTC与本地时区的偏移量|
+| 方法                               | 说明                                                    |
+| :--------------------------------- | :------------------------------------------------------ |
+| `getTime()`                        | 返回日期的毫秒表示，与`valueof()`相同                   |
+| `setTime(milliseconds)`            | 设置日期的毫秒表示，从而修改整个日期                    |
+| `getFullYear()`                    | 返回4位数年                                             |
+| `getUTCFullYear()`                 | 返回UTC日期的4位数年                                    |
+| `setUTCFullYear(year)`             | 设置日期的年（year必须是4位数）                         |
+| `getMonth()`                       | 返回零起点月份（0表示1月份，11表示12月份）              |
+| `getUTCMonth()`                    | 返回UTC日期的零起点月份（**0表示1月份，11表示12月份**） |
+| `setUTCFullMonth(month)`           | 设置日期的月（month为大于0的值，大于11加年）            |
+| `getDate()`                        | 返回日期中的月                                          |
+| `getUTCDate()`                     | 返回UTC日期中的月                                       |
+| `setDate(date)`                    | 设置日期中的日，如果日大于当月最大天数则加月            |
+| `setUTCDate(date)`                 | 设置UTC日期中的日，如果日大于当月最大天数则加月         |
+| `getDay()`                         | 返回日期中周几（**0表示周天**，6表示周六）              |
+| `getUTCDay()`                      | 返回UTC日期中周几（**0表示周天**，6表示周六）           |
+| `getHours()`                       | 返回日期中的时（0-23）                                  |
+| `getUTCHours()`                    | 返回UTC日期中的时（0-23）                               |
+| `setHours(hours)`                  | 设置日期中的时，如果时间大于23则日                      |
+| `setUTCHours(hours)`               | 设置UTC日期中的时，如果时间大于23则日                   |
+| `getMinutes()`                     | 返回日期中的分（0-59）                                  |
+| `getUTCMinutes()`                  | 返回UTC日期中的分（0-59）                               |
+| `setMinutes(minutes)`              | 设置日期中的分，如果时间大于59则时                      |
+| `setUTCMinutes(minutes)`           | 设置UTC日期中的分，如果时间大于59则时                   |
+| `getSeconds()`                     | 返回日期中的秒（0-59）                                  |
+| `getUTCSeconds()`                  | 返回UTC日期中的秒（0-59）                               |
+| `setSeconds(seconds)`              | 设置日期中的秒，如果时间大于59则分                      |
+| `setUTCSeconds(seconds)`           | 设置UTC日期中的秒，如果时间大于59则分                   |
+| `getMilliseconds()`                | 返回日期中的毫秒                                        |
+| `getUTCMilliseconds()`             | 返回UTC日期中的毫秒                                     |
+| `setMilliseconds(milliseconds)`    | 设置日期中的毫秒                                        |
+| `setUTCMilliseconds(milliseconds)` | 设置UTC日期中的毫秒                                     |
+| `getTimezoneOfSet()`               | 返回以分钟计算的UTC与本地时区的偏移量                   |
 
 ``` js
 // 日期/时间组件
@@ -780,7 +780,6 @@ console.log(str.match(/\w+/g));     // [ '123_456', 'qq', 'com' ]
 console.log(str.match(/\W/g));      // [ '@', '.' ]
 
 // 匹配html标签中的所有元素
-// 匹配html标签中的所有元素
 let html = `
   <span>
     123abc_&&@@
@@ -842,16 +841,42 @@ console.log(str.match(/[\s\S]+/g));   // [ '\n   fan\n   dong\n\n' ]
 1. `()`包起来的是原子组，使用后可用`\1`重复对应使用前面的原子组；
 2. 使用原子组后，用`match()`输出后显示原子组的内容；
 
-``` js
-// 原子组
-let str = `
-   <h1>
-   这是一个HTML标签内容
-   </h1>
-`
-let reg = /<(h[1-6])>([\s\S])*<\/\1>/g
-console.log(str.match(reg)[0].replace(/[\n\s]/g,''));  // <h1>这是一个HTML标签内容</h1>
+    ``` js
+    // 原子组
+    let str = `
+      <h1>
+      这是一个HTML标签内容
+      </h1>
+    `
+    let reg = /<(h[1-6])>([\s\S])*<\/\1>/g
+    console.log(str.match(reg)[0].replace(/[\n\s]/g,''));  // <h1>这是一个HTML标签内容</h1>
+    ```
+3. 原子组引用：用`()`包裹的原子组可以在后续引用操作；
+``` html
+  <body>
+  <div>
+    <h1>使用原子组引用</h1>
+    <span>将h标签</span>
+    <h3>替换为p标签</h3>
+  </div>
+
+
+  <script>
+    let div = document.querySelector('div');
+    let reg = /<(h[1-6])>([\s\S]+)<\/\1>/gi
+    // 使用直接替换
+    // div.innerHTML = div.innerHTML.replace(reg,`<p>$2</p>`)     // $2就是第二个原子组的内容
+    // 调用replace函数
+    div.innerHTML = div.innerHTML.replace(reg,(p0,p1,p2) => {
+      console.log(p0);    // <h1>使用原子组引用</h1> <h3>替换为p标签</h3>
+      console.log(p1);    // h1 h3
+      console.log(p2);    // 使用原子组引用  替换为p标签
+      return `<p>${p2}</p>`
+    })
+  </script>
+  </body>
 ```
+
 
 ### 5.3 原始值包装类型
 
