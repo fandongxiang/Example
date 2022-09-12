@@ -1,7 +1,11 @@
 # JavaScript高级程序设计（第4版）
+
 ## 第三章 语言基础
+
 ### 3.4 数据类型
+
 #### 3.4.1 typeof 操作符
+
 1. typeof 操作符返回的类型：undefined、Boolean、String、number、Object、function、symbol
 
 ``` js
@@ -13,13 +17,16 @@ console.log(typeof null);   // 输出 object，null 为 object
 console.log(typeof function() {console.log('hello');}); // 输出为 function
 
 ```
+
 > 严格来讲，ECMAScript 中认为函数是一种对象，并不代表一种数据类型，但它有自己的属性。为此，有必要通过 typeof 来区分函数和其它对象。
 
 #### 3.4.2 undefined 类型
+
 1. 声明未初始化的变量，为 `undefined`；
 2. 未声明的变量，报错，只能执行 `typeof` 操作符；
 3. `undefined` 是假值，可用于 `if` 判断；
 4. 引入 `undefined` 是为了明确空对象指针（null）和未初始化变量的区别；
+
 ``` js
 let message;
 console.log(message);               // undefined
@@ -30,18 +37,19 @@ if (message) {
   console.log("message is false");  // 输出 message is false
 }
 ```
+
 #### 3.4.3 null 类型
+
 1. null 是一个空对象指针，所以执行 typeof 操作符输出object；
+2. undefined 值是由 null 派生而来，所以两者表面上相等；
+3. 用 null 初始化空对象，可以避免 if 判断该对象是未声明，还是未保存对象；
+
 ``` js
 let age = null;
 console.log(typeof age);          // 输出 object
-```
-2. undefined 值是由 null 派生而来，所以两者表面上相等；
-``` js 
+
 console.log(null == undefined);   // 输出 true
-```
-3. 用 null 初始化空对象，可以避免 if 判断该对象是未声明，还是未保存对象；
-``` js
+
 let age = null;
 if (age) {
   console.log("age is not null");
@@ -49,10 +57,13 @@ if (age) {
   console.log("age is null");             // 输出 age is null ，排除未初始化可能
 }
 ```
+
 #### 3.4.4 Boolean 类型
+
 1. Boolean() 转型函数可用来判断相应数据类型等价的 Boolean 类型；
 2. String中的空字符串、Number中的0和NaN、Object中的null、Undefined中的undefined都会被转换为false；
 3. 理解以上，可以在if流程中实现判断；
+
 ``` js
 var message = "";
 let a = 0;
@@ -64,7 +75,9 @@ console.log(Boolean(b));               // false
 console.log(Boolean(object));          // false
 console.log(Boolean(c));               // false
 ```
+
 #### 3.4.5 Number 类型
+
 1. 八进制以 0 开头，但如果数字范围超过八进制，则忽略 `0` 按照十进制处理；
 2. 浮点数计算会存在误差，导致`0.1 + 0.2` 实际不等于`0.3`；
 3. js 中最小值为 Number.MIN_VALUE，最大值为Number.MAX_VALUE，判断是否在有效范围可用`isFinite()`函数；
@@ -83,6 +96,7 @@ console.log(Boolean(c));               // false
 7. parseFloat()和parseInt不同：
    (1) 只解析十进制，十六进制始终输出0；
    (2) 第一个小数点有效，遇到第二个小数点无效；
+
 ``` js
 // 八进制超出
 console.log(010);                         // 8
@@ -118,8 +132,11 @@ console.log(parseInt("0xF"));             // 15
 console.log(parseFloat("0xF"));           // 0
 console.log(parseFloat("22.25.32"));      // 22.25
 ```
+
 #### 3.4.6 String 类型
+
 ##### 3.4.6.1 基础知识
+
 1. 转义字符按照单个字符计算长度；
 2. 数值、布尔值、对象和字符串值都有 `toString()` 方法，但 `null` 和 `undefined` 没有；
 3. 数值可以在转换为字符串时，加入第二个底数参数，表示转换为多少进制；
@@ -127,6 +144,7 @@ console.log(parseFloat("22.25.32"));      // 22.25
    (1) 如果值有 `toString()` 方法，则调用该方法，返回相应结果；
    (2) `null` 和 `undefined` 使用 `string()` 函数，直接返回 `null` 、`undefined`。等价于 `typeof` 操作符判断;
 5. 除了 `toString()` 方法，加号操作符也能将数值隐式转换为字符串；
+
 ``` js
 // 转义字符按单个字符算
 let text1 = "This is the letter sigma: \u03a3."  // This is the letter sigma: Σ.
@@ -146,11 +164,13 @@ console.log(String(nothing));        // undefined
 ```
 
 ##### 3.4.6.2 模板字面量 ``
+
 1. 模板字面量可实现换行功能；
 2. 模板字面量空格和换行会计入字符；
 3. 使用 `${ }` 实现字符串插值操作，所有的插值都会调用 `toString()` 方法，并且可以调用函数和方法；
 4. 模板字面量与标签函数；
 5. 模板字面量与原始字符串；
+
 ``` js
 // 模板字面量空格和换行
 let myTemplateLitteral1 = `first line
@@ -167,12 +187,18 @@ function capitalize(word) {
 }
 console.log(`${ capitalize("hello")},${ capitalize("world")}!`);   // Hello,World!
 ```
+
 #### symbol 类型
+
 #### Object 类型
+
 ### 3.5 操作符
+
 #### 3.5.5 指数操作符
+
 1. ECMAScript 7新增了指数操作符，`Math.pow()` 现在有了自己的操作符 `**`；
 2. 指数操作符也有了自己的指数赋值操作符 `**=`；
+
 ``` js
 // 指数操作符
 console.log(Math.pow(3,2));        // 9
@@ -183,9 +209,13 @@ console.log(squared);              // 9
 ```
 
 ## 第四章 作用域与内存
+
 ### 4.1 原始值与引用值
+
 #### 4.1.1 动态属性
+
 1. 引用值可以随时增加、删除和修改属性，而原始值不行；
+
 ``` js
 // 动态属性
 let person = new Object();
@@ -196,8 +226,11 @@ let name = "Nicholas";
 name.age = 27;
 console.log(name.age);              // undefined
 ```
+
 #### 4.1.2 复制值
+
 1. 引用类型赋【引用】，原始类型赋【值】；
+
 ``` js
 // 复制值
 let num1 = 5;
@@ -210,8 +243,11 @@ let obj2 = obj1;
 obj2.name = "Nicholas";
 console.log(obj1.name);      // "Nicholas"
 ```
+
 #### 4.1.3 比较
+
 1. 原始类型比较的时**值**是否相等，引用类型比较的是**引用**是否指向同一个对象；
+
 ``` js
 // 比较
 let str1 = "hello";
@@ -225,7 +261,9 @@ console.log(stu1 === stu2);         // false
 ```
 
 #### 4.1.4 函数传参
+
 1. 原始类型作为参数，函数内的操作不影响实参的值；引用类型作为参数，函数内的操作会影响实参的值；
+
 ``` js
 // 函数传参
 function addTen(num) {
@@ -245,8 +283,10 @@ console.log(array);           // [1,2,3,10]
 ```
 
 #### 4.1.5 确定类型
+
 1. `typeof` 操作符可以检测到原始类型，但如果具体要知道具体是哪一种引用类型，则需要用`instanceof`操作符来判断；
-``` js 
+
+``` js
 // instanceof
 let arr = [1,2,3,4];
 let fn = function fn() {
@@ -260,11 +300,14 @@ console.log(obj instanceof Object);        // true
 console.log(number instanceof String);     // false
 console.log(number instanceof Object);     // false
 ```
+
 > instanceof 不能对原始值的类型进行判断
 
 ### 4.2 执行上下文与作用域
+
 1. 变量或函数的上下文决定了它们可以访问哪些数据，以及它们的行为；
 2. 执行上下文是**函数调用**时产生的**变量对象**，这个变量对象我们无法直接访问，但可以访问其中的变量、this对象等，例如：
+
 ``` js
 // 执行上下文
 let fn,bar;              // 1. 进入全局上下文环境
@@ -277,13 +320,16 @@ fn = function(y) {
   console.log(y + c);   // 4. fn出栈，bar出栈
 };
 bar(10)                 // 2. 进入bar函数上下文环境
-
 ```
+
 > 每次函数调用时，都会产生一个**新的执行上下文环境**，JavaScript引擎会以栈的方式来处理它们，这个栈，我们称其为**函数调用栈(call stack)**。**栈底**永远都是**全局上下文**，而**栈顶**就是当前处于活动状态的正在执行的上下文，也称为**活动对象**（running execution context），区别与底下被挂起的上下文（**变量对象**）。
 总结：作用域是在函数声明的时候就确定的一套变量**访问规则**，而执行上下文是函数执行时才产生的一系列**变量的环境**。也就是说作用域定义了执行上下文中的变量的访问规则，执行上下文在这个作用域规则的前提下进行变量查找，函数引用等具体操作。
+
 #### 4.2.1 函数的执行过程
+
 1. 函数执行分为两部分：一部分用来生成执行上下文环境，确定this指向、声明变量及生成作用域链；另一部分则是按照顺序逐行执行代码；
 2. this指向问题：
+
 ``` js
 // this指向问题
 let fn = function() {
@@ -298,10 +344,12 @@ obj.fn()                  // 方法2：对象调用函数，this指向被调用�
 fn.call(obj)              // 方法3：call函数调用，this指向第一个参数obj
 let instance = new fn()   // 方法4：new实例对象，this指向实例instance
 ```
+
 > 四种指向中优先级：
 > fn() < obj.fn() < fn.call(obj) < new fn()
 
 #### 4.2.2 闭包
+
 > 当函数能够记住并访问所在的词法作用域时，就产生了闭包。
 
 例1：
@@ -323,9 +371,11 @@ let single = (function(){
 single.plus()      // 1
 single.minus()     // 0
 ```
+
 > 这是个单例模式，这个模式返回了一个对象single，对象中包含两个函数plus和minus，而这两个函数都用到了所在词法作用域中的变量count，所以在函数执行结束时count所在的执行环境不会被销毁，这就产生了闭包。每次调用single.plus()或者single.minus()，就会对闭包中的count变量进行修改，这两个函数保持住了对所在的词法作用域的引用。闭包其实是一种特殊的函数，它可以访问函数内部的变量，还可以让这些变量的值始终保持在内存中，不会在函数调用后被垃圾回收机制清除。
 
 例2：
+
 ``` js
 // 方法1
 for (var i = 1; i <= 5; i++) {
@@ -340,76 +390,86 @@ for (let i = 1; i <= 5; i++) {
   }, 1000)
 }                                  // 1,2,3,4,5
 ```
+
 > 方法1中，循环设置了五个定时器，一秒后定时器中回调函数将执行，打印变量i的值。毋庸置疑，一秒之后i已经递增到了5，所以定时器打印了五次5 。（定时器中并没有找到当前作用域的变量i，所以沿作用域链找到了全局作用域中的i）
 > 方法2中，由于es6的let会创建局部作用域，所以循环设置了五个作用域，而五个作用域中的变量i分布是1-5，每个作用域中又设置了一个定时器，打印一秒后变量i的值。一秒后，定时器从各自父作用域中分别找到的变量i是1-5 。这是个利用闭包解决循环中变量发生异常的新方法。
 
 #### 4.2.3 变量声明
+
 1. 使用`var`声明的函数作用域
    (1) 函数内变量声明有`var`时，变量为局部变量，函数外不可访问；
    (2) 函数内变量声明无`var`时，变量为全局变量，函数外可以访问；
    (3) `var`声明会被拿到函数或全局作用域的顶端，提升让同一作用域不必考虑变量是否声明就 可使用；
- ``` js
-// 函数内有var声明变量
-function add(num1,num2) {
-  var sum = num1 + num2;
-  return sum;
-};
-console.log(add(2,3));           // 5
-console.log(sum);                // sum is not defined
-// 函数内无var声明变量
-function add(num1,num2) {
-  sum = num1 + num2;
-  return sum;
-};
-console.log(add(2,3));           // 5
-console.log(sum);                // 5
 
-// 变量提升
-console.log(sum);               // undefined
-console.log(result);            // Cannot access 'result' before initialization
-var sum = 5 + 3;
-let result = 5 + 3;
-```
+    ``` js
+    // 函数内有var声明变量
+    function add(num1,num2) {
+      var sum = num1 + num2;
+      return sum;
+    };
+    console.log(add(2,3));           // 5
+    console.log(sum);                // sum is not defined
+    // 函数内无var声明变量
+    function add(num1,num2) {
+      sum = num1 + num2;
+      return sum;
+    };
+    console.log(add(2,3));           // 5
+    console.log(sum);                // 5
+
+    // 变量提升
+    console.log(sum);               // undefined
+    console.log(result);            // Cannot access 'result' before initialization
+    var sum = 5 + 3;
+    let result = 5 + 3;
+    ```
+
 2. 使用`let`的块级作用域声明
   (1) `let`块级作用域在最近的一对`{}`花括号内界定；
   (2) `let`不能重复声明变量，也不能用`var`重复声明；
   (3) `let`不会将函数内迭代变量泄露到函数外部；
-``` js
-// let重复声明
-let a = 3
-let a = 5;          // SyntaxError: Identifier 'a' has already been declared
-console.log(a);
 
-// var声明迭代变量泄露
-for (var i = 0;i < 3;i++) {}
-console.log(i);                 // 3
-for (let j = 0;i < 3;j++) {}
-console.log(j);                 // ReferenceError: j is not defined
-```
+    ``` js
+    // let重复声明
+    let a = 3
+    let a = 5;          // SyntaxError: Identifier 'a' has already been declared
+    console.log(a);
+
+    // var声明迭代变量泄露
+    for (var i = 0;i < 3;i++) {}
+    console.log(i);                 // 3
+    for (let j = 0;i < 3;j++) {}
+    console.log(j);                 // ReferenceError: j is not defined
+    ```
+
 3. 使用`const`的常量声明
   (1) 使用`const`声明的变量不能重新赋值（语法错误：标识符‘a’已被声明）；
   (2) `const`声明只应用到顶级原语或者对象，即不能再被赋值为其它引用值，但对象的键不受限制（输入错误：常量变量赋值）；
-  (3) 若要对象整体不被重新赋值，则要用`Object.frezze()`； 
-``` js
-// const 不能被重新赋值
-const a = 3;
-const a = 5;   // SyntaxError: Identifier 'a' has already been declared
+  (3) 若要对象整体不被重新赋值，则要用`Object.frezze()`；
 
-// const 限制不了对象键
-const o1 = {};
-o1 = {}           // TypeError: Assignment to constant variable.
-const o2 = {};
-o2.name = "fan";
-console.log(o2.name);  // fan
+    ``` js
+    // const 不能被重新赋值
+    const a = 3;
+    const a = 5;   // SyntaxError: Identifier 'a' has already been declared
 
-// Object.freeze()
-const o3 = Object.freeze({})
-o3.name = 'fan';
-console.log(03.name);         // undefined
-```
+    // const 限制不了对象键
+    const o1 = {};
+    o1 = {}           // TypeError: Assignment to constant variable.
+    const o2 = {};
+    o2.name = "fan";
+    console.log(o2.name);  // fan
+
+    // Object.freeze()
+    const o3 = Object.freeze({})
+    o3.name = 'fan';
+    console.log(03.name);         // undefined
+    ```
+
 #### 4.3.4 标识符查找
+
 1. 标识符先在局部作用域查找，如果查找到就停止，查找不到就沿作用域链查找直至全局作用域（注意：作用域链中的对象也有一个原型链，搜索会涉及每个对象原型链）；
 2. 局部作用域和全局作用域同一个标识符时，会在搜索到局部作用域时停止；
+
 ``` js
 // 标识符查找
 var color = 'blue';
@@ -426,6 +486,7 @@ console.log(getColor2());  // red
  ```
 
 ## 第5章 基本引用类型
+
 > **引用类型**是把数据和功能组织到一起的结构，类似于“类”，有时也被称为**对象定义**，应为它们描述了自己的对象应有的属性和方法。
 > **对象**被认为是某个特定引用类型的**实例**。新对象通过`new`操作符后跟一个**构造函数**来创建。构造函数就是用来创建新对象的函数。
 
@@ -442,7 +503,6 @@ console.log(getColor2());  // red
 5. `new Date(Date.UTC(年,零起点月,日,时,分,秒))`，年和月是必须，如果其余不传默认1日；
 6. `Date.parse()`和`Date.UTC()`都会被`new Date()`隐式调用，但不同的是`Date.UTC()`调用后是本地时间；
 7. `Date.now()`方法表示执行时日期和时间的毫秒数。
-
 
 ``` js
 // new Date()
@@ -473,16 +533,21 @@ console.log(Date.now());  // 1662218840486
  ```
 
 #### 5.1.1 继承的方法
+
 待补充
+
 #### 5.1.2 日期格式化方法
+
 1. `toDateString()`显示日期的周几、月、日、年（格式特定于实现）；
 2. `toTimeString()`显示日期的时、分、秒、时区（格式特定于实现）；
 3. `toLocaleDateString()`显示日期的周几、月、日、年（格式特定于实现）；
 4. `toLocaleTimeString()`显示日期的时、分、秒、时区（格式特定于实现）；
 5. `toUTCString()`显示完整的UTC日期（格式特定于实现）。
+
 > 这些方法输出与`toLocaleString()`和`toString()`一样，会因浏览器差异而定，因此不能用于用户界面一致的显示日期。
 
 #### 5.1.3 日期/时间的组件方法
+
 1. `getTime()`:返回日期的毫秒表示，与`valueof()`相同；
 2. `setTime(milliseconds)`:
 
@@ -536,6 +601,7 @@ console.log(time);                    // 2022-09-03T04:33:00.000Z
 ### 5.2 RegExp方法
 
 #### 5.2.1 正则表达式基础
+
 1. 正则表达式的格式为：/pattern(模式)/flags(标记)；
 2. 表示匹配模式的标记主要有以下：
    (1) `g`：全局模式，表示查找字符串的全部内容，不是查找到第一个就停止；
@@ -591,7 +657,9 @@ console.log(str.match(/\d\d/g)); // [ '19', '90', '28']
 > **注意**：纯`\d`时可匹配任意多个数字，但是前面如果有其它字符时，只能匹配一个。
 
 #### 5.2.2 正则表达式进阶（bilibili）
-##### 1. 正则表达式与传统方法的区别：
+
+##### 1. 正则表达式与传统方法的区别
+
 ``` js
 // 传统方法提取字符串中的数字
 let str = "abcd1862dcndna1563"
@@ -602,9 +670,12 @@ console.log(numberStr);
 // 正则表达式提取字符串中的数字
 console.log(str.match(/\d/g).join(""));
 ```
-##### 2. 正则表达式的创建方法：
+
+##### 2. 正则表达式的创建方法
+
    (1) `//`字面量创建正则表达式，书写简单但不能识别**变量**；
    (2) `new RegExp("字符"或变量,"匹配模式")`，对象创建中正则不用用`//`；
+
 ``` js
 // 字面量创建正则表达式
 let name = "fandongxiang";
@@ -620,7 +691,9 @@ let reg2 = new RegExp(str,"g");           // 变量
 console.log(reg1.test(name));
 console.log(reg2.test(name));
 ```
-###### 3. `|`或运算符：表示或运算；
+
+###### 3. `|`或运算符：表示或运算
+
 ``` js
 // 或运算符
 // 检测“010”或“020”地区的电话号码
@@ -633,11 +706,14 @@ console.log(/^(010|020)\-\d{7,8}$/.test(tel3));       // false
 console.log(/^(010|020)\-\d{7,8}$/.test(tel3));       // false
 console.log(/^(010|020)\-\d{7,8}$/.test(tel4));       // false
 ```
+
 > **注意**：这里的`(abc|de)`必须是要么是`abc`要么是`de`，而原子组中的`[abcde]`是`a`、`b`、`c`、`d`、`e`中的任意一个；
 
 ##### 4. 转义字符
-(1) 字面量中转义字符用`\`表示即可； 
+
+(1) 字面量中转义字符用`\`表示即可；
 (2) 对象创建的正则中，因为传入的是字符串，而字符串的单个`\`是自动忽略的，所以需要用`\\`进行转义；
+
 ``` js
 // 转义
 let str = "2.33";
@@ -668,8 +744,10 @@ console.log(/^\d+\.\d+$/.test(str));    // false
 console.log(/^\d+\.\d+$/.test(num));    // true 
 console.log(.33 === 0.33);              // true
 ```
+
 ##### 5. 字符边界
-(1) `//`：没有字符边界时表示字符串中只要包含正则就能匹配成功； 
+
+(1) `//`：没有字符边界时表示字符串中只要包含正则就能匹配成功；
 (2) `/^$/`：有字符边界时表示字符串必须头尾都符合正则才能匹配成功；
 
 ``` js
@@ -683,7 +761,9 @@ console.log(/^\d$/.test(str2));          // false
 ```
 
 ##### 6. 元字符
+
 1. `[\s\S]`、`[\d\D]`、`[\w\W]`会匹配任何字符；
+
 ``` js
 // 模板字面量表示字符串
 let message = `
@@ -715,12 +795,15 @@ console.log(html.match(/<span>[\s\S]+<\/span>/));   // '<span>\n    123abc_&&@@\
 console.log(html.match(/<span>[\w\W]+<\/span>/));   // '<span>\n    123abc_&&@@\n  </span>'
 console.log(html.match(/<span>[\D\d]+<\/span>/));   // '<span>\n    123abc_&&@@\n  </span>'
 ```
+
 ##### 7. 汉字与字符属性
+
 1. 匹配汉字与字符可以用`/\p{sc=Han}+/gu`来匹配;
 2. `\p{L}`表示匹配所有字母；
 3. `\p{N}`表示匹配所有数字，类似与`\d`；
 4. `\P{L}`表示匹配所有非字母，类似于`^\p{L}`；
 5. `\P{N}`表示匹配所有非数字，类似于`^\p{N}`或`^\d`；
+
 ``` js
 // 匹配汉字
 let str = "fantasy你好啊,001我很好";
@@ -732,8 +815,10 @@ console.log(str.match(/\P{N}+/gu));          // [ 'fantasy你好啊,', '我很�
 ```
 
 ##### 8. 原子表
+
 1. `[]`原子表的使用：匹配原子表中的任意一项字符；
 2. `[]`原子表中的`()`、`.`、`+`就表示普通的符号，不用转义，而`-`在原子表中表示区间匹配，需要转义成`\-`；
+
 ``` js
 // 原子表的使用：匹配日期
 let date1 = "2022-09-11";
@@ -751,7 +836,9 @@ console.log(str.match(/.+/g));        // [ '   fan', '   dong', '   ' ]
 console.log(str.match(/.+/gs));       // [ '\n   fan\n   dong\n\n' ]
 console.log(str.match(/[\s\S]+/g));   // [ '\n   fan\n   dong\n\n' ]
 ```
+
 ##### 9. 原子组
+
 1. `()`包起来的是原子组，使用后可用`\1`重复对应使用前面的原子组；
 2. 使用原子组后，用`match()`输出后显示原子组的内容；
 
@@ -765,6 +852,7 @@ let str = `
 let reg = /<(h[1-6])>([\s\S])*<\/\1>/g
 console.log(str.match(reg)[0].replace(/[\n\s]/g,''));  // <h1>这是一个HTML标签内容</h1>
 ```
+
 ### 5.3 原始值包装类型
 
 > 为了方便操作原始值，ECMAScript提供了3中特殊的引用类型：Boolean、Number和String。它们既具备原始值类型，也具备其它引用类型的特点，用到各自的方法和属性时，后台会创建一个响应的**原始包装类型对象**，从而暴露出操作原始值的各种方法。
@@ -772,6 +860,7 @@ console.log(str.match(reg)[0].replace(/[\n\s]/g,''));  // <h1>这是一个HTML�
 1. 引用类型与原始值包装类型的主要区别在于生命周期。通过`new`创建的引用类型的实例，会在离开作用域时销毁，而自动创建的原始值包装类型对象则只存在于访问它的那行代码期间。
 2. 使用`new Object()`传入原始类型时，能够根据原始值的类型返回相应原始值包装类型的实例；
 3. 用`new`调用原始值包装类型的构造函数，与调用同名的转型函数不一致。
+
 ``` js
 // 原始值包装类型生命周期
 let s1 = 'some text';
@@ -795,8 +884,10 @@ console.log(typeof obj);       // object
 ```
 
 #### 5.3.1 Boolean
+
 1. 布尔表达式中使用Boolean对象容易引起误会；
 2. `Boolean`对象使用`instanceof`判断时域原始值不同；
+
 ``` js
 // Boolean对象
 let falseObject = new Boolean(false);
@@ -809,12 +900,15 @@ console.log(typeof falseValue);               // boolean
 console.log(falseObject instanceof Boolean);  // true 
 console.log(falseValue instanceof Boolean);   // false
 ```
+
 #### 5.3.2 Number
+
 1. `number.toString(底数)`，返回相应基数的字符串参数；
 2. `number.toFixed(位数)`，返回包含指定小数点位数的数值字符串；
 3. `number.toExponenttial(位数)`，返回以科学计数法表示的数值字符串；
 4. `number.toPrecision(总位数)`，根据情况返回最合理的输出结果，可能是科学计数法，也可能是固定长度；
 5. `Number.isInteger()`方法用于辨别一个有小数点的数是否为整数；
+
 ``` js
 // Number原始包装类型
 let num1 = 10;
@@ -831,7 +925,9 @@ console.log(Number.isInteger(1.01)); // false
 ```
 
 #### 5.3.3 String
+
 ##### 5.3.3.1 字符串方法
+
 1. `string.charAt(索引位置)`，返回指定字符串索引位置的字符；
 2. `string.charCodeAt(索引位置)`，返回指定字符串索引位置字符编码
 3. `String.fromCharCode()`，根据指定的UTF-16码元创建字符串中的字符；
@@ -848,6 +944,7 @@ console.log(str.concat(',',' ','h','i','!'));                // "hello world, hi
 ```
 
 ##### 5.3.3.2 字符串截取方法
+
 1. `string.slice(参数1，参数2)`，截取从参数1到参数2的字符，当参数为负值时，截取位置变为字符串长度+参数；
 2. `string.substring(参数1，参数2)`，截取从参数1到参数2的字符，当参数为负值时，会将所有参数转化为0；
 3. `string.substr(参数1，参数2)`，截取从参数1开始，长度为参数2的字符，当参数为负值时，将第一个负值参数转换为字符串长度加上该负值，而第二个负值转换为0
@@ -863,8 +960,9 @@ console.log(str.substr(-6,3));                               // "  wo"
 ```
 
 ###### 5.3.3.3 字符串定位方法
+
 1. `string.indexOf("字符",【参数2】)`，从参数2（缺省默认0）位置开始查找从头查找字符的位置，如果不存在返回`-1`；
-2.  `string.lastIndexOf("字符",【餐宿2】)`,从参数2（缺省默认0）位置开始查找从末尾查找字符的位置，如果不存在返回`-1`。
+2. `string.lastIndexOf("字符",【餐宿2】)`,从参数2（缺省默认0）位置开始查找从末尾查找字符的位置，如果不存在返回`-1`。
 
 ``` js
 // 定位字符串
@@ -894,6 +992,7 @@ console.log(arr);                        // [4,7]
 ```
 
 ##### 5.3.3.4 字符串包含方法
+
 1. `string.startsWith('字符串1',[开始位置])`,在开始位置（默认为0）检查字符串是否以字符串1开头，存在返回`true`，不存在返回`false`；
 2. `string.endsWith('字符串1',[长度])`,在给定长度（默认整个字符串）的字符串内，检查字符串是否以字符串1结尾，存在返回`true`，不存在返回`false`；
 3. `string.includes('字符串1')`，检查整个字符串是否包含字符串，存在返回`true`，不存在返回`false`；
@@ -911,9 +1010,10 @@ console.log(message.endsWith('bar',7));        // true
  
 console.log(message.includes('bar'));          // true
 console.log(message.includes('baz'));          // true
-```                                                                             
+```
 
 ###### 5.3.3.5 trim()方法
+
 1. `string.trim()`，创建字符串的一个副本，清除字符串的前后空格；
 2. `string.trimStart()`，创建字符串的一个副本，清除字符串的前空格；
 3. `string.trimEnd()`，创建字符串的一个副本，清除字符串的后空格；
@@ -927,6 +1027,7 @@ console.log(stringValue.trimEnd());         // ' hello world'
 ```
 
 ###### 5.3.3.6 repeat() 方法
+
 1. `string.repeat(number)`，表示要将字符串复制多少次；
 
 ``` js
@@ -936,6 +1037,7 @@ console.log(stringValue.repeat(5) + 'xiangzai');   // ha ha ha ha ha xiangzai
 ```
 
 ##### 5.3.3.7 padStart()和padEnd()
+
 1. `string.padStart(填充长度，[‘填充字符串’])`，用填充字符串从头将字符串填充到指定长度，默认用空格填充；
 2. `string.padEnd(填充长度，[‘填充字符串’])`，用填充字符串从尾将字符串填充到指定长度，默认用空格填充；
 3. 填充字符串长度小于原始字符串长度时，返回原始字符串。
@@ -948,7 +1050,9 @@ console.log(stringValue.padStart(8,'.'));   // '.....foo'
 console.log(stringValue.padEnd(8,'.'));     // 'foo.....'
 console.log(stringValue.padEnd(2));         // 'foo'
 ```
+
 ##### 5.3.3.8 字符串迭代与解构
+
 1. 字符串的原型上暴露了一个@@iterator方法，可将每个字符串进行迭代；
 2. `...string`方法可以方便的将字符串解构成一个个字符；
 
@@ -960,6 +1064,7 @@ console.log([...stringValue]);  // [ 'a', 'b', 'c', 'd', 'e' ]
 ```
 
 ##### 5.3.3.9 字符串大小写转换
+
 1. `string.toUpperCase()`和`string.toLocalUpperCase`都可以将字符串转换为大写，但是`string.toLocalUpperCase`会根据特定地区实现；
 2. `string.toLowerCase()`和`string.toLocalLowerCase`都可以将字符串转换为小写，但是`string.toLocalLowerCase`会根据特定地区实现；
 3. 当不知道特定地区时，最好使用特定的转换方法；
@@ -974,11 +1079,6 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 ```
 
 ##### 5.3.3.10 字符串模式匹配方法
+
 1. `string.match()`，
 2. `string.search()`，
-
-
-
-
-
-

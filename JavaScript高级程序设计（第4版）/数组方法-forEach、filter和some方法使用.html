@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #query {
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 20px auto;
+            width: 500px;
+        }
+
+        input {
+            width: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="query">
+        <span>请输入查询价格范围：</span>
+        <input type="text" class="start">-
+        <input type="text" class="end">
+        <button class="price">查询</button>
+
+        <span>请输入查询商品名称：</span>
+        <input type="text" class="item">
+        <button class="item-query">查询</button>
+        <p></p>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>商品</th>
+                    <th>价格</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let data = [
+            {
+                id: 1,
+                item: "小米",
+                price: 999
+            },
+            {
+                id: 2,
+                item: "华为",
+                price: 1999
+            },
+            {
+                id: 3,
+                item: "vivo",
+                price: 3999
+            },
+            {
+                id: 4,
+                item: "oppo",
+                price: 2999
+            }
+        ]
+
+        let price_start = document.querySelector('.start');
+        let price_end = document.querySelector('.end');
+        let price_query = document.querySelector('.price');
+        let item = document.querySelector('.item');
+        let item_query = document.querySelector('.item-query');
+        var tbody = document.querySelector('tbody')
+        let warn = document.querySelector('p')
+        // 渲染数据到页面
+        function setDate(arr) {
+            tbody.innerHTML = ''
+            arr.forEach(element => {
+                str = `<td>${element.id}</td><td>${element.item}
+                    </td><td>${element.price}</td>`
+                let tr = document.createElement('tr')
+                tr.innerHTML = str
+                tbody.appendChild(tr)
+            });
+        }
+        setDate(data)
+
+        // 查询相应价格区间的商品
+        price_query.addEventListener('click', () => {
+            let newData = data.filter(element => {
+                return element.price >= price_start.value &&
+                    element.price <= price_end.value
+            });
+            setDate(newData)
+        })
+
+        // 按名称查询商品
+        item_query.addEventListener('click',() => {
+            let newArr = []
+            data.some(element => {
+                if (element.item === item.value) {
+                    newArr.push(element)
+                    return true;
+                }
+            })
+            setDate(newArr)
+        })
+
+        // 价格输入限制
+        price_start.addEventListener('keyup',function() {
+            if (this.value)
+            warn.innerHTML = ''
+            let value =  this.value.match(/^\d+$/g)
+            if (!value) {
+                this.value = this.value.replace(this.value.match(/\D/g),'')
+                warn.innerHTML = "请输入数字！"
+            }
+        });
+        price_start.addEventListener('blur',function() {
+                warn.innerHTML = ''
+        });
+    </script>
+</body>
+
+</html>
