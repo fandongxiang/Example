@@ -625,7 +625,15 @@
 //    </h1>
 // `
 // let reg = /<(h[1-6])>([\s\S])*<\/\1>/g
-// console.log(str.match(reg)[0].replace(/[\n\s]/g,''));  // <h1>这是一个HTML标签内容</h1>
+// console.log(str.match(reg)[0].replace(/[\n\s]/g, '')); // <h1>这是一个HTML标签内容</h1>
 
+// console.log(new Date(Date.parse("2022-09-12")));
+// console.log(new Date(Date.parse(parseISOLocal("2022-9-12 00:00:00"))));
+// console.log(new Date(Date.parse("2022/9/12 00:00:00")));
+// console.log(new Date(Date.parse("2022/9/12")));
 
+// function parseISOLocal(s) {
+//     var b = s.split(/\D/);
+//     return new Date(b[0], b[1] - 1, b[2]);
 
+// }

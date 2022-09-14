@@ -34,6 +34,7 @@
         <span>请输入查询商品名称：</span>
         <input type="text" class="item">
         <button class="item-query">查询</button>
+        <button class="clear">清除查询</button>
         <p></p>
         <table border="1">
             <thead>
@@ -80,6 +81,7 @@
         let item_query = document.querySelector('.item-query');
         var tbody = document.querySelector('tbody')
         let warn = document.querySelector('p')
+        let clear = document.querySelector('.clear')
         // 渲染数据到页面
         function setDate(arr) {
             tbody.innerHTML = ''
@@ -127,6 +129,21 @@
         price_start.addEventListener('blur',function() {
                 warn.innerHTML = ''
         });
+
+        price_query.addEventListener('click',() => {
+            warn.innerHTML = ''
+            if (price_start.value >= price_end.value) {
+                warn.innerHTML = "起始价格不能大于结束价格！"
+            }
+            if (!(price_start.value && price_end.value)) {
+                warn.innerHTML = "价格不能为空！"
+            }
+        })
+
+        // 清除查询
+        clear.addEventListener('click',() => {
+            setDate(data)
+        })
     </script>
 </body>
 
