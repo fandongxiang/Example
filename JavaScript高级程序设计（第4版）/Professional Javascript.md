@@ -906,12 +906,12 @@ let number = Number(value);    // 转型函数
 console.log(typeof number);    // number
 let obj = new Number(value);   // 构造函数
 console.log(typeof obj);       // object
-```
+ ```
 
 #### 5.3.1 Boolean
 
 1. 布尔表达式中使用Boolean对象容易引起误会；
-2. `Boolean`对象使用`instanceof`判断时域原始值不同；
+2. `Boolean`对象使用`instanceof`判断时与原始值不同；
 
 ``` js
 // Boolean对象
@@ -976,6 +976,7 @@ console.log(str.concat(',',' ','h','i','!'));                // "hello world, hi
 
 ``` js
 // 截取字符串
+const str  = 'hello world';
 console.log(str.slice(5,8));                                 // "  wo"
 console.log(str.substring(5,8));                             // "  wo"
 console.log(str.substr(5,3));                                // "  wo"
@@ -984,10 +985,14 @@ console.log(str.substring(-7,5));                            // "hello"
 console.log(str.substr(-6,3));                               // "  wo"   
 ```
 
+<<<<<<< HEAD
 ##### 5.3.3.3 字符串定位方法
+=======
+###### 5.3.3.3 字符串查找方法
+>>>>>>> 413f9ae1fcd32a968fd4b8a2a4eba866bf5c2a7a
 
 1. `string.indexOf("字符",【参数2】)`，从参数2（缺省默认0）位置开始查找从头查找字符的位置，如果不存在返回`-1`；
-2. `string.lastIndexOf("字符",【餐宿2】)`,从参数2（缺省默认0）位置开始查找从末尾查找字符的位置，如果不存在返回`-1`。
+2. `string.lastIndexOf("字符",【参数2】)`,从参数2（缺省默认0）位置开始查找从末尾查找字符的位置，如果不存在返回`-1`。
 
 ``` js
 // 定位字符串
