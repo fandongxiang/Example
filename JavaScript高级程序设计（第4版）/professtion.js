@@ -625,9 +625,8 @@
 //    </h1>
 // `
 // let reg = /<(h[1-6])>([\s\S])*<\/\1>/g
-// console.log(str.match(reg)[0].replace(/[\n\s]/g, '')); // <h1>这是一个HTML标签内容</h1>
+// console.log(str.match(reg)[0].replace(/[\n\s]/g,''));  // <h1>这是一个HTML标签内容</h1>
 
-<<<<<<< HEAD
 // let arr = [{ name: 'fan', sex: 'gen' }, { name: 'wen', sex: 'male' }];
 // let newArr = arr.map(Element => {
 //   Element.hello = 'nihao'
@@ -643,18 +642,8 @@ let puller = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2', 'E1', 'E2'];
 // puller.forEach((element, index) => {
 //     puller[index] = element + 'c';
 //   })
-=======
-// console.log(new Date(Date.parse("2022-09-12")));
-// console.log(new Date(Date.parse(parseISOLocal("2022-9-12 00:00:00"))));
-// console.log(new Date(Date.parse("2022/9/12 00:00:00")));
-// console.log(new Date(Date.parse("2022/9/12")));
->>>>>>> 413f9ae1fcd32a968fd4b8a2a4eba866bf5c2a7a
 
-// function parseISOLocal(s) {
-//     var b = s.split(/\D/);
-//     return new Date(b[0], b[1] - 1, b[2]);
 
-<<<<<<< HEAD
 // let res = [
 //     // { zooms: 'A1', amount: 2 },
 //     { zooms: 'A2', amount: 2 },
@@ -739,6 +728,3 @@ let puller = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2', 'E1', 'E2'];
 let global = function() {
   return this
 }();
-=======
-// }
->>>>>>> 413f9ae1fcd32a968fd4b8a2a4eba866bf5c2a7a
