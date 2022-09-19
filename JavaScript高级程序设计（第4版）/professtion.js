@@ -627,5 +627,104 @@
 // let reg = /<(h[1-6])>([\s\S])*<\/\1>/g
 // console.log(str.match(reg)[0].replace(/[\n\s]/g,''));  // <h1>这是一个HTML标签内容</h1>
 
+// let arr = [{ name: 'fan', sex: 'gen' }, { name: 'wen', sex: 'male' }];
+// let newArr = arr.map(Element => {
+//   Element.hello = 'nihao'
+//   return Element;
+// })
+// console.log(newArr);
+
+// var shuiguo = ["Banana", "Orange", "Apple", "Mango"];
+// shuiguo.splice(2, 0, "Lemon");
+// console.log(shuiguo);
+
+let puller = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2', 'E1', 'E2'];
+// puller.forEach((element, index) => {
+//     puller[index] = element + 'c';
+//   })
 
 
+// let res = [
+//     // { zooms: 'A1', amount: 2 },
+//     { zooms: 'A2', amount: 2 },
+//     { zooms: 'B1', amount: 2 },
+//     { zooms: 'B2', amount: 2 },
+//     { zooms: 'C1', amount: 2 },
+//     { zooms: 'C2', amount: 2 },
+//     { zooms: 'D1', amount: 2 },
+//     { zooms: 'D2', amount: 2 },
+//     { zooms: 'E1', amount: 2 },
+//     // { zooms: 'E2', amount: 2 },
+//   ]
+// console.log(res.pop().zooms == 'E2');
+
+// if (res.slice(-1).zooms !== 'E2') {
+//   res.push({ zooms: 'E2', amount: 0 })
+// }
+// puller.map((element, index) => {
+//   if (element == res[index].zooms) {
+//     return puller[index] = res[index].amount
+//   } else {
+//     res.splice(index, 0, 'abc');
+//     return puller[index] = 0;
+//   }
+// })
+// console.log(puller);
+
+// // string.match()
+// const str = 'abbcbbbdbbbbebbbbbb';
+// const reg1 = /b+/g;
+// const reg2 = /f/g
+// let matches1 = str.match(reg1);
+// let matches2 = str.match(reg2);
+// console.log(matches1); // [ 'bb', 'bbb', 'bbbb', 'bbbbbb' ]
+// console.log(matches2); // null
+// // string.search()
+// let search1 = str.search(reg1);
+// let search2 = str.search(reg2);
+// console.log(search1); // 1
+// console.log(search2); // -1
+// // string.replace()
+// let replace1 = str.replace('b', 'f');
+// let replace2 = str.replace(/b/, 'f');
+// let replace3 = str.replace(/b/g, 'f');
+// console.log(replace1); // afbcbbbdbbbbebbbbbb
+// console.log(replace2); // afbcbbbdbbbbebbbbbb
+// console.log(replace3); // affcfffdffffeffffff
+
+// // string.replace()
+// let str = 'abc12345#$*%';
+// let newStr = str.replace(/([^\d]*)(\d*)([^\w]*)/, function(match, p1, p2, p3, offset, string) {
+//   return [p1,p2,p3].join('-');
+// })
+// console.log(newStr);
+
+// // string.split()
+// const str1 = 'cat,fish,monkey,dog';
+// const str2 = 'Harry Trump ;Fred Barney; Helen Rigby ';
+// const str3 = "Hello 1 word. Sentence number 2."
+// const str4 = 'ca,bc,a,bca,bca,bc';
+// console.log(str1.split(',')); // [ 'cat', 'fish', 'monkey', 'dog' ]
+// console.log(str1.split(/[^,]+/)); // [ '', ',', ',', ',', '' ]
+// console.log(str2.split(/\s*(?:;|$)\s*/)); // ['Harry Trump','Fred Barney','Helen Rigby','']
+// console.log(str3.split(/\d/)); // [ 'Hello ', ' word. Sentence number ', '.' ]
+// console.log(str4.split(['a', 'b'])); // [ 'c', 'c,', 'c', 'c', 'c' ]
+
+// // string.localeCompare()
+// function determineOrder(value, compareValue) {
+//   let result = value.localeCompare(compareValue);
+//   if (result > 0) {
+//     return `${value}在${compareValue}后头`
+//   } else if (result < 0) {
+//     return `${value}在${compareValue}前头`
+//   } else {
+//     return `${value}与${compareValue}相等`
+//   }
+// }
+// console.log(determineOrder('yellow', 'red'));
+// console.log(determineOrder('yellow', 'yellow'));
+// console.log(determineOrder('yellow', 'zoo'));
+
+let global = function() {
+  return this
+}();

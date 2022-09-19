@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取下拉菜单值</title>
+    <script src="../assets/JQuery.js"></script>
+</head>
+
+<body>
+    请选择片区：
+    <select name="" id="select">
+    <option>A</option>
+    <option>B</option>
+    <option>C</option>
+    <option>D</option>
+    <option>E</option>
+  </select>
+
+    <script>
+        // 原生js
+        // let select = document.querySelector('select');
+        // let option = document.querySelector('option');
+        // console.log(select.children[1].value);
+        // select.addEventListener('change', function() {
+        //     let index = this.selectedIndex;
+        //     let value = this.children[index].value;
+        //     alert(value)
+        // })
+
+        // jquery
+        $('select').change(function() {
+            let index = this.selectedIndex;
+            let value = $('option').eq(index).val();
+            alert(value)
+        })
+    </script>
+</body>
+
+</html>

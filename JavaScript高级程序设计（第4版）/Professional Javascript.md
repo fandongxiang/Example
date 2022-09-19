@@ -984,7 +984,7 @@ console.log(str.substring(-7,5));                            // "hello"
 console.log(str.substr(-6,3));                               // "  wo"   
 ```
 
-###### 5.3.3.3 字符串定位方法
+##### 5.3.3.3 字符串定位方法
 
 1. `string.indexOf("字符",【参数2】)`，从参数2（缺省默认0）位置开始查找从头查找字符的位置，如果不存在返回`-1`；
 2. `string.lastIndexOf("字符",【餐宿2】)`,从参数2（缺省默认0）位置开始查找从末尾查找字符的位置，如果不存在返回`-1`。
@@ -1037,7 +1037,7 @@ console.log(message.includes('bar'));          // true
 console.log(message.includes('baz'));          // true
 ```
 
-###### 5.3.3.5 trim()方法
+##### 5.3.3.5 trim()方法
 
 1. `string.trim()`，创建字符串的一个副本，清除字符串的前后空格；
 2. `string.trimStart()`，创建字符串的一个副本，清除字符串的前空格；
@@ -1051,7 +1051,7 @@ console.log(stringValue.trimStart());       // 'hello world '
 console.log(stringValue.trimEnd());         // ' hello world'
 ```
 
-###### 5.3.3.6 repeat() 方法
+##### 5.3.3.6 repeat() 方法
 
 1. `string.repeat(number)`，表示要将字符串复制多少次；
 
@@ -1105,5 +1105,115 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 
 ##### 5.3.3.10 字符串模式匹配方法
 
-1. `string.match()`，
-2. `string.search()`，
+1. `string.match()`，匹配一个正则表达式，当传入一个非正则时会隐式调用`new RegExp(obj)`转换，匹配到字符串返回字符串数组，未匹配到返回`null`；
+2. `string.search()`，匹配一个正则表达式，返回第一个匹配位置索引，如果未匹配到返回`-1`；
+   ``` js
+  // string.match()
+    const str = 'abbcbbbdbbbbebbbbbb';
+    const reg1 = /b+/g;
+    const reg2 = /f/g
+    let matches1 = str.match(reg1);
+    let matches2 = str.match(reg2);
+    console.log(matches1); // [ 'bb', 'bbb', 'bbbb', 'bbbbbb' ]
+    console.log(matches2); // null
+
+    // string.search()
+    let search1 = str.search(reg1);
+    let search2 = str.search(reg2);
+    console.log(search1); // 1
+    console.log(search2); // -1
+
+    // string.replace()
+    let replace1 = str.replace('b', 'f');
+    let replace2 = str.replace(/b/, 'f');
+    let replace3 = str.replace(/b/g, 'f');
+    console.log(replace1); // afbcbbbdbbbbebbbbbb
+    console.log(replace2); // afbcbbbdbbbbebbbbbb
+    console.log(replace3); // affcfffdffffeffffff
+
+    // string.replace()
+    let str = 'abc12345#$*%';
+    let newStr = str.replace(/([^\d]*)(\d*)([^\w]*)/, function(match, p1,     p2, p3, offset, string) {
+      return [p1,p2,p3].join('-');
+    })
+    console.log(newStr);
+   ```
+3. `string.replace()`
+   （1）当传入一个字符串的时候，只会替换第一个字符串；
+   （2）当传入一个不带全局标志`g`的正则时，只会替换第一个字符串；
+   （3）当传入一个待全局标志`g`的正则时，会替换所有的字符串；
+   （4）当第二个值传入一个函数时，第一个参数`match`为匹配的字符串，第二个参数`p1,p2...`等为正则中第n个括号包裹的值，`offset`为匹配到的字符串相对于原字符串的偏移量，`string`为被匹配的原字符串；
+4. `string.split()`：方法使用指定的**分隔符字符串**将一个**String对象**分割成子**字符串数组**；
+   （1）可以传入第二个参数作为限制数组的数量；
+   （2）可以传入正则对字符串进行分隔；
+   （3）可以传入数组进行分隔；
+   ``` js
+    // string.replace()
+    let replace1 = str.replace('b', 'f');
+    let replace2 = str.replace(/b/, 'f');
+    let replace3 = str.replace(/b/g, 'f');
+    console.log(replace1); // afbcbbbdbbbbebbbbbb
+    console.log(replace2); // afbcbbbdbbbbebbbbbb
+    console.log(replace3); // affcfffdffffeffffff
+
+    // string.replace()
+    let str = 'abc12345#$*%';
+    let newStr = str.replace(/([^\d]*)(\d*)([^\w]*)/, function(match, p1, p2, p3, offset, string) {
+      return [p1,p2,p3].join('-');
+    })
+    console.log(newStr);
+
+    // string.split()
+    const str1 = 'cat,fish,monkey,dog';
+    const str2 = 'Harry Trump ;Fred Barney; Helen Rigby ';
+    const str3 = "Hello 1 word. Sentence number 2."
+    const str4 = 'ca,bc,a,bca,bca,bc';
+    console.log(str1.split(',')); // [ 'cat', 'fish', 'monkey', 'dog' ]
+    console.log(str1.split(/[^,]+/)); // [ '', ',', ',', ',', '' ]
+    console.log(str2.split(/\s*(?:;|$)\s*/)); // ['Harry Trump','Fred     Barney','Helen Rigby','']
+    console.log(str3.split(/\d/)); // [ 'Hello ', ' word. Sentence number ',    '.' ]
+    console.log(str4.split(['a', 'b'])); // [ 'c', 'c,', 'c', 'c', 'c' ]
+   ```
+
+##### 5.3.3.11 localeCompare()方法
+
+1. 按照字符串方法，字符串应该排在字符串参数前头，则返回负值（通常是`-1`）; 
+2. 按照字符串方法，字符串等于字符串，则返回0（通常是`0`）; 
+3. 按照字符串方法，字符串应该排在字符串参数后头，则返回正值（通常是`1`）;
+4. 因为不同地区返回的值不同，所以最好用`if`进行判断；
+   
+   ```js
+    // string.localeCompare()
+    function determineOrder(value, compareValue) {
+      let result = value.localeCompare(compareValue);
+      if (result > 0) {
+        return `${value}在${compareValue}后头`
+      } else if (result < 0) {
+        return `${value}在${compareValue}前头`
+      } else {
+        return `${value}与${compareValue}相等`
+      }
+    }
+    console.log(determineOrder('yellow', 'red'));
+    console.log(determineOrder('yellow', 'yellow'));
+    console.log(determineOrder('yellow', 'zoo'));   
+   ```
+
+#### 5.4 单例内置对象
+
+##### 5.4.1 Global
+
+1. `Global`对象任何对象都不能显示的访问它，它作为兜底对象，针对的是不属于任何对象的属性和方法；
+2. 事实上，不存在全局变量或全局函数这种东西，在全局作用域中定义的变量和函数都会变成`Global`对象的属性；
+3. `isNaN()`、`isFinite()`、`parseInt()`、`parseFloat()`，实际上都是`Global`对象的方法；
+4. `Global`对象有很多属性，比如`undefined`，`NaN`，`Object`，`Array`，`Function`，`Boolean`，`String`，`Number`，`Date`，`RegExp`，`Error`，`Symbol`，`TypeError`，`SyntaxError`等等。
+5. 没有直接访问`Global`对象的方式，但浏览器将`window`对象实现为`Global`对象的代理，因此，所有全局作用域中声明的变量和函数都变成了`window`的属性；
+
+##### 5.4.2 Math
+
+
+
+
+
+
+
