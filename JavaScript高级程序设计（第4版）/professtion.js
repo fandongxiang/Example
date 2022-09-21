@@ -725,6 +725,108 @@ let puller = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2', 'E1', 'E2'];
 // console.log(determineOrder('yellow', 'yellow'));
 // console.log(determineOrder('yellow', 'zoo'));
 
-let global = function() {
-  return this
-}();
+// let global = function() {
+//   return this
+// }();
+
+// // min() max()
+// let max = Math.max(1, 2, 4, 5, 8);
+// let min = Math.min(1, 2, 4, 5, 8);
+// console.log(max);           // 8
+// console.log(min);           // 1
+
+// let arr = [1, 2, 4, 5, 8]
+// let arrMax = Math.max(...arr);
+// let arrMin = Math.min(...arr);
+// console.log(arrMax);        // 8
+// console.log(arrMin);        // 1
+
+// // math方法
+// console.log(Math.ceil(25.9));      // 26 
+// console.log(Math.ceil(25.5));      // 26
+// console.log(Math.ceil(25.1));      // 26
+
+// console.log(Math.floor(25.9));     // 25 
+// console.log(Math.floor(25.5));     // 25 
+// console.log(Math.floor(25.1));     // 25
+
+// console.log(Math.round(25.9));     // 26
+// console.log(Math.round(25.5));     // 26
+// console.log(Math.round(25.1));     // 25
+
+// console.log(Math.fround(0.4));     // 0.4000000059604645
+// console.log(Math.fround(0.5));     // 0.5
+// console.log(Math.fround(25.9));    // 25.899999618530273
+
+// // math.random
+// function selectFrom(lowerValue, upperValue) {
+//   let choices = upperValue - lowerValue + 1;
+//   return Math.floor(Math.random() * choices + lowerValue)
+// };
+// console.log(selectFrom(0, 10));
+// const arr = ['red', 'yellow', 'blue', 'black', 'white', 'pink'];
+// console.log(arr[selectFrom(0, arr.length - 1)]);
+
+// // math其它方法
+// console.log(Math.abs(-3));      // 3
+// console.log(Math.abs(-3.5));    // 3.5
+// console.log(Math.trunc(3.55));  // 3
+
+// 第6章 集合引用类型
+
+// // Object
+// let person = {
+//   'name': 'fandongxiang',
+//   'first name': 'fan',
+//   'sex': '男'
+// }
+// let str = 'sex'
+// console.log(person.str);            // undefined
+// console.log(person[str]);           // '男'
+// console.log(person['first name']);  // fan
+
+// // Array 的创建
+// let color = new Array('blue', 'blank', 'red', 'pink')
+// console.log(color);         // [ 'blue', 'blank', 'red', 'pink' ]
+// let num = new Array(3);
+// console.log(num);          // [ <3 empty items> ]
+// console.log(num.length);  // 3
+
+// // 字符串会被拆分为单字符串字符
+// let str = 'abcde';
+// console.log(Array.from(str)); // [ 'a', 'b', 'c', 'd', 'e' ]
+
+// // Array.from() 浅拷贝
+// let p1 = [1, 3, 5, 9];
+// let p2 = p1;
+// let p3 = Array.from(p1)
+// console.log(p1 === p2); // true
+// console.log(p3); // [ 1, 3, 5, 9 ]
+// console.log(p1 === p3); // false
+
+// // Array.of()
+// console.log(Array.of(1, 2, 3, 4, 5)); // [ 1, 2, 3, 4, 5 ]
+
+// // 数组索引添加删除元素
+// let colors = ['red', 'blank', 'green'];
+// colors.length = 2;
+// console.log(colors); // [ 'red', 'blank' ]
+// colors.length = 3;
+// console.log(colors); // [ 'red', 'blank', <1 empty item> ]
+// console.log(colors[2]); // undefined
+
+// colors[colors.length] = 'yellow';
+// colors[colors.length] = 'white';
+// console.log(colors);  // [ 'red', 'blank', <1 empty item>, 'yellow', 'white' ]
+
+// // 检测数组
+// let array = [1, 2, 35, 4];
+// console.log(array instanceof Array);   // true
+// console.log(Array.isArray(array));     // true  
+
+// 数组迭代器
+let colors = ['red', 'blank', 'green'];
+console.log(colors.keys()); // 返回迭代器
+console.log(Array.from(colors.keys())); // [ 0, 1, 2 ]
+console.log(Array.from(colors.values())); // [ 'red', 'blank', 'green' ]
+console.log(Array.from(colors.entries())); // [ [ 0, 'red' ], [ 1, 'blank' ], [ 2, 'green' ] ]

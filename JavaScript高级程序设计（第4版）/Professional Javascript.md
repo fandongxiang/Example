@@ -1211,6 +1211,216 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 
 ##### 5.4.2 Math
 
+1. Math对象属性
+   （1）`Math.E`：自然对数的基数`e`的值；
+   （2）`Math.PI`：π的值；
+2. min()和max()方法
+   求得一组数中的最大值和最小值；可以用数组解构方式求得数组中的最大值和最小值。
+
+   ```js
+      // min() max()
+      let max = Math.max(1, 2, 4, 5, 8);
+      let min = Math.min(1, 2, 4, 5, 8);
+      console.log(max);           // 8
+      console.log(min);           // 1
+
+      let arr = [1, 2, 4, 5, 8]
+      let arrMax = Math.max(...arr);
+      let arrMin = Math.min(...arr);
+      console.log(arrMax);        // 8
+      console.log(arrMin);        // 1  
+   ```
+
+3. 舍入方法
+   （1）`Math.ceil()`：向上舍入为最近的整数；
+   （2）`Math.floor()`：向下舍入最近的整数；
+   （3）`Math.round()`：执行四舍五入；
+   （4）`Math.fround()`：返回数值最接近的单精度（32位）浮点值表示；
+
+   ```js
+    // math方法
+      console.log(Math.ceil(25.9));      // 26 
+      console.log(Math.ceil(25.5));      // 26
+      console.log(Math.ceil(25.1));      // 26
+      
+      console.log(Math.floor(25.9));     // 25 
+      console.log(Math.floor(25.5));     // 25 
+      console.log(Math.floor(25.1));     // 25
+      
+      console.log(Math.round(25.9));     // 26
+      console.log(Math.round(25.5));     // 26
+      console.log(Math.round(25.1));     // 25
+        
+      console.log(Math.fround(0.4));     // 0.4000000059604645
+      console.log(Math.fround(0.5));     // 0.5
+      console.log(Math.fround(25.9));    // 25.899999618530273
+   ```  
+
+4. Math.random()方法
+   返回一个0到1之间的随机数，包括0但不包含1.可以用`Math.floor`方法使得能够选取到0-10.
+
+   ``` js
+    // math.random
+    function selectFrom(lowerValue, upperValue) {
+      let choices = upperValue - lowerValue + 1;
+      return Math.floor(Math.random() * choices + lowerValue)
+    };
+    console.log(selectFrom(0, 10));
+    const arr = ['red', 'yellow', 'blue', 'black', 'white', 'pink'];
+    console.log(arr[selectFrom(0, arr.length - 1)]);
+   ```
+
+5. Math的其它方法
+   （1）`Math.abs(x)`：返回x的绝对值；
+   （1）`Math.trunc(x)`：返回x的整数部分，删除所有小数；
+
+    ``` js
+      // math其它方法
+      console.log(Math.abs(-3));      // 3
+      console.log(Math.abs(-3.5));    // 3.5
+      console.log(Math.trunc(3.55));  // 3
+    ```
+
+## 第6章 集合引用类型
+
+### 6.1 Object
+
+#### 6.1.1 Object 对象的创建方法
+
+1. 使用`new Object()`构造函数创建；
+2. 使用`{}`字面量创建；
+
+#### 6.1.2 Object 对象属性的读取方法
+
+1. `Object.`点语法可以读取对象，但不能读取特殊格式和变量对象的属性；
+2. `Object[]`中括号语法可以读取正常属性外，还可读取特殊格式和变量；
+
+  ``` js
+    // Object
+    let person = {
+      'name': 'fandongxiang',
+      'first name': 'fan',
+      'sex': '男'
+    }
+    let str = 'sex'
+    console.log(person.str);            // undefined
+    console.log(person[str]);           // '男'
+    console.log(person['first name']);  // fan
+  ```
+
+### Array
+
+#### 6.2.1 创建数组
+
+1. 可以使用`new Array()`方法创建数组，但只传入一个数字时，表示创建一个`length`为多少的数组；
+2. 可以使用`[]`数组字面量的方法创建数组；
+
+  ``` js
+    // Array 的创建
+    let color = new Array('blue', 'blank', 'red', 'pink')
+    console.log(color);         // [ 'blue', 'blank', 'red', 'pink' ]
+    let num = new Array(3);
+    console.log(num);          // [ <3 empty items> ]
+    console.log(num.length);  // 3
+  ```
+
+3. `Array.from()`：将类数组解构转换为数组实例；
+
+    ``` js
+      // 字符串会被拆分为单字符串字符
+      let str = 'abcde';
+      console.log(Array.from(str)); // [ 'a', 'b', 'c', 'd', 'e' ]
+
+      // Array.from() 浅拷贝
+      let p1 = [1, 3, 5, 9];
+      let p2 = p1;
+      let p3 = Array.from(p1)
+      console.log(p1 === p2);   // true
+      console.log(p3);          // [ 1, 3, 5, 9 ]
+      console.log(p1 === p3);   // false
+    ```
+
+4. `Array.of()`：将一组参数转换为数组实例。
+
+  ```js
+    // Array.of() 将字符参数转换为数组，注意不能传入字符串
+    let str = '1,2,23,45,red';
+    console.log(Array.of(1, 2, 3, 4, 5));   // [ 1, 2, 3, 4, 5 ]
+  ```
+
+#### 6.2.2 数组空位
+
+`[,,,,]`数组空位占有`length`值，但是其值为`undefined`.
+
+#### 6.2.3 数组索引
+
+1. 可以通过设置数组的索引值来增加和删除元素；
+2. 可方便的通过`array[array.length]`向数组不断追加元素；
+
+  ``` js
+    // 数组索引添加删除元素
+    let colors = ['red', 'blank', 'green'];
+    colors.length = 2;
+    console.log(colors);      // [ 'red', 'blank' ]
+    colors.length = 3;
+    console.log(colors);      // [ 'red', 'blank', <1 empty item> ]
+    console.log(colors[2]);   // undefined
+
+    olors[colors.length] = 'yellow';
+    colors[colors.length] = 'white';
+    console.log(colors);  // [ 'red', 'blank', <1 empty item>, 'yellow', 'white' ]
+  ```
+
+#### 6.2.4 检测数组
+
+1. 使用`instanceof`操作符来检测；
+2. 使用`Array.isArray()`方法来检测；
+
+  ``` js
+    // 检测数组
+    let array = [1, 2, 35, 4];
+    console.log(array instanceof Array);   // true
+    console.log(Array.isArray(array));     // true  
+  ```
+
+#### 6.2.5 迭代器方法
+
+1. `array.keys()`：返回数组索引的迭代器；
+2. `array.values()`：返回数组元素的迭代器；
+3. `array.entries()`：返回数组索引/值对的迭代器；
+
+  ``` js
+    // 数组迭代器
+    let colors = ['red', 'blank', 'green'];
+    console.log(colors.keys()); // 返回迭代器
+    console.log(Array.from(colors.keys())); // [ 0, 1, 2 ]
+    console.log(Array.from(colors.values())); // [ 'red', 'blank', 'green' ]
+    console.log(Array.from(colors.entries())); // [ [ 0, 'red' ], [ 1, 'blank' ], [ 2, 'green' ] ]
+  ```
+
+#### 6.2.6 复制和填充方法
+
+1. `array.fill(element,startIndex,[endIndex])`：用元素将开始索引位置到结束索引位置元素替换，如果结束索引缺省，则从开始索引位置填充到尾部；
+2. `array.copyWithin(插入索引位置，[开始索引位置]，[结束索引位置])`：复制开始到结束索引位置的值，插入到指定索引位置；
+3. 以上两种方法都不会重写原数组，所以需要新数组接受。
+
+  ``` js
+
+  ```
+
+#### 6.2.7 转换方法
+
+1. `array.join('')`:调用与`array.toString()`相同方法，将数组转换为以特点分隔符相连的字符串，如果没指定分隔符，则仍以`,`相连；
+
+#### 6.2.8 栈方法
+1. `array.push(element)`：向数组尾部追加一个元素；
+2. `array.pop()`：删除数组尾部元素，不传入任何参数，返回被删除的元素，**并且会重写数组**；
+3. 以上两种方法组合就可以模拟栈方法，**后进先出(LIFO)**；
+
+#### 6.2.9 队列方法
+1. `array.shift()`:删除数组头部元素，不传入任何参数，返回被删除的元素，**并且会重写数组**；
+2. `array.unshift()`：在数组头部添加元素，返回添加后的数组**长度**；
+3. `push`和`shift`方法组合就可模拟队列方法，**先进先出(FIFO)**；
 
 
 
