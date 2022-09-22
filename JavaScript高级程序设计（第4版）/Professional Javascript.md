@@ -974,15 +974,19 @@ console.log(str.concat(',',' ','h','i','!'));                // "hello world, hi
 2. `string.substring(参数1，参数2)`，截取从参数1到参数2的字符，当参数为负值时，会将所有参数转化为0；
 3. `string.substr(参数1，参数2)`，截取从参数1开始，长度为参数2的字符，当参数为负值时，将第一个负值参数转换为字符串长度加上该负值，而第二个负值转换为0
 
-``` js
-// 截取字符串
-console.log(str.slice(5,8));                                 // "  wo"
-console.log(str.substring(5,8));                             // "  wo"
-console.log(str.substr(5,3));                                // "  wo"
-console.log(str.slice(-6,-3));                               // "  wo"            
-console.log(str.substring(-7,5));                            // "hello"
-console.log(str.substr(-6,3));                               // "  wo"   
-```
+  ``` js
+    // 截取字符串
+    const str  = 'hello world';
+    console.log(str.slice(5,8));                                 // "  wo"
+    console.log(str.substring(5,8));                             // "  wo"
+    console.log(str.substr(5,3));                                // "  wo"
+             
+    console.log(str.substring(-7,5));                            // "hello"
+    console.log(str.substr(-6,3));                               // "  wo"   
+
+  ```
+
+> **注意**：字符串截取方法slice()和splice()方法，截取范围都不包括参数2.
 
 ##### 5.3.3.3 字符串定位方法
 
@@ -1326,19 +1330,18 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 
 3. `Array.from()`：将类数组解构转换为数组实例；
 
-    ``` js
-      // 字符串会被拆分为单字符串字符
-      let str = 'abcde';
-      console.log(Array.from(str)); // [ 'a', 'b', 'c', 'd', 'e' ]
-
-      // Array.from() 浅拷贝
-      let p1 = [1, 3, 5, 9];
-      let p2 = p1;
-      let p3 = Array.from(p1)
-      console.log(p1 === p2);   // true
-      console.log(p3);          // [ 1, 3, 5, 9 ]
-      console.log(p1 === p3);   // false
-    ```
+  ``` js
+    // 字符串会被拆分为单字符串字符
+    let str = 'abcde';
+    console.log(Array.from(str)); // [ 'a', 'b', 'c', 'd', 'e' ]
+    // Array.from() 浅拷贝
+    let p1 = [1, 3, 5, 9];
+    let p2 = p1;
+    let p3 = Array.from(p1)
+    console.log(p1 === p2);   // true
+    console.log(p3);          // [ 1, 3, 5, 9 ]
+    console.log(p1 === p3);   // false
+  ```
 
 4. `Array.of()`：将一组参数转换为数组实例。
 
@@ -1400,27 +1403,144 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 
 #### 6.2.6 复制和填充方法
 
-1. `array.fill(element,startIndex,[endIndex])`：用元素将开始索引位置到结束索引位置元素替换，如果结束索引缺省，则从开始索引位置填充到尾部；
-2. `array.copyWithin(插入索引位置，[开始索引位置]，[结束索引位置])`：复制开始到结束索引位置的值，插入到指定索引位置；
-3. 以上两种方法都不会重写原数组，所以需要新数组接受。
+1. `array.fill(element,startIndex,[endIndex])`：用元素将开始索引位置到结束索引位置元素替换（**不包含结束索引位置**），如果结束索引缺省，则从开始索引位置填充到尾部；
+2. `array.copyWithin(插入索引位置，[开始索引位置]，[结束索引位置])`：复制开始到结束索引位置的值（**不包含结束索引位置的值**），插入到指定索引位置；
+3. 以上两种方法都会重写原数组。
 
   ``` js
-
+    // array.fill() array.copyWithin()
+    let num = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    console.log(num.fill(7, 3, 5)); // [ 0, 1, 2, 7, 7, 5, 6, 7, 8, 9]
+    console.log(num.copyWithin(7, 3, 5)); // [ 0, 1, 2, 7, 7, 5, 6, 7, 7, 9]
   ```
 
 #### 6.2.7 转换方法
 
 1. `array.join('')`:调用与`array.toString()`相同方法，将数组转换为以特点分隔符相连的字符串，如果没指定分隔符，则仍以`,`相连；
 
+  ``` js
+    // array.join()
+    let str = ['a', 'b', 'c', 'd', 'e'];
+    console.log(str.join()); // 'a,b,c,d,e'
+    console.log(str.join(' ')); // 'a b c d e'
+  ```
+
 #### 6.2.8 栈方法
 1. `array.push(element)`：向数组尾部追加一个元素；
 2. `array.pop()`：删除数组尾部元素，不传入任何参数，返回被删除的元素，**并且会重写数组**；
 3. 以上两种方法组合就可以模拟栈方法，**后进先出(LIFO)**；
 
+  ``` js
+    // 数组栈方法
+    let str = ['a', 'b', 'c', 'd', 'e'];
+    console.log(str.push('f')); // 6
+    console.log(str); // [ 'a', 'b', 'c', 'd', 'e', 'f' ]
+    console.log(str.pop()); // 'f'
+    console.log(str); // [ 'a', 'b', 'c', 'd', 'e' ]
+  ```
+
 #### 6.2.9 队列方法
 1. `array.shift()`:删除数组头部元素，不传入任何参数，返回被删除的元素，**并且会重写数组**；
 2. `array.unshift()`：在数组头部添加元素，返回添加后的数组**长度**；
 3. `push`和`shift`方法组合就可模拟队列方法，**先进先出(FIFO)**；
+
+  ``` js
+    // 数组队列方法
+    let str = ['a', 'b', 'c', 'd', 'e'];
+    console.log(str.shift()); // 'a'
+    console.log(str); // [ 'b', 'c', 'd', 'e' ]
+    console.log(str.unshift('a'));  // 5
+  ```
+
+> 数组插入和删除方法，都会重写数组，插入方法都返回插入后的元素个数，删除方法都返回删除的元素。
+
+#### 6.2.10 排序方法
+
+1. `array.reverse()`：反转数组，直接返回反转后的数组，并且会重写数组；
+2. `array.sort()`：默认按照**字符串顺序**而不是数字顺序排序，要想按照数字顺序排序，必须传入一个比较函数。升序排序返回`-1`，降序排列返回`1`，相等返回`0`。
+
+  ``` js
+    // reverse() sort()
+    let num = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    console.log(num.reverse()); // [ 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 ]
+    console.log(num); // [ 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 ]
+
+    let num2 = [0, 1, 5, 15, 4, 44]
+    console.log(num2.sort()); // [ 0, 1, 15, 4, 44, 5 ]
+    console.log(num2); // [ 0, 1, 15, 4, 44, 5 ]
+
+    function ascending(value1, value2) {
+      if (value1 < value2) {
+        return -1;
+      } else if (value1 > value2) {
+        return 1
+      } else {
+        return 0;
+      }
+    };
+
+    function descending(value1, value2) {
+      if (value1 < value2) {
+        return 1;
+      } else if (value1 > value2) {
+        return -1;
+      } else {
+        return 0
+      }
+    };
+    console.log(num2.sort(ascending)); // [ 0, 1, 4, 5, 15, 44 ]
+    console.log(num2.sort(descending)); // [ 44, 15, 5, 4, 1, 0 ]
+    // 箭头函数写法
+    console.log(num2.sort((a, b) => a < b ? 1 : a > b ? -1 : 0)); // [ 44, 15, 5, 4, 1, 0 ]
+  ```
+
+#### 6.2.11 操作方法
+
+1. `array.concat()`：将一个元素或数组并到另一个数组中；不会重写当前数组；
+2. `array.slice(index1,[index2])`：将一个数组从索引位置截取到索引位置2，当位置2缺省时，截取索引1之后所有元素，不会重写数组；
+
+  ``` js
+    let num1 = [1, 2, 3, 4, 5];
+    let num2 = [7, 8, 9, 10];
+    console.log(num1.concat(6, num2)); // [ 1, 2, 3, 4,  5, 6, 7, 8, 9, 10 ]
+    console.log(num1); // [ 1, 2, 3, 4, 5 ]
+
+    let colors = ['red', 'blank', 'green', 'white', 'pink'];
+    console.log(colors.slice(1));
+    ['blank', 'green', 'white', 'pink']
+    console.log(colors.slice(1, 3)); // [ 'blank', 'green' ]
+    console.log(colors); // [ 'red', 'blank', 'green', 'white', 'pink' ]
+
+    let str = 'hello world';
+    console.log(str.slice(1, 3));
+  ```
+
+3. `array.splice()`：可以实现数组的删除、插入和替换，会重写数组：
+   （a）删除：`splice(开始位置，删除数量)`：传入2个参数，从开始索引位置删除指定数量元素，返回被删除元素数组；
+   （b）插入：`splice(开始位置，0，元素1，元素2，...)`：传入3个参数，其中第2个参数要删除元素的个数必须为`0`；
+   （c）替换：
+
+  ``` js
+    // Array.spice()
+    // 删除
+    let colors = ['red', 'blank', 'green', 'yellow'];
+    console.log(colors.splice(1, 2)); // [ 'blank', 'green' ]
+    console.log(colors); // [ 'red', 'yellow' ]
+    // 插入
+    console.log(colors.splice(1, 0, 'pink', 'white')); // []
+    console.log(colors); // [ 'red', 'pink', 'white', 'yellow' ]
+    // 替换
+    console.log(colors.splice(1, 1, 'blue', 'yellow')); // [ 'pink' ]
+    console.log(colors); // [ 'red', 'blue', 'yellow', 'white', 'yellow' ]
+  ```
+
+> **注意**：concat()和slice()不会重写数组，splice()会重写数组，总是返回被删除的数组元素。
+
+#### 6.2.12 搜索和位置方法
+
+1. `array.indexOf(value,[index])`：从头开始搜索位置搜索元素，存在返回元素位置，不存在返回`-1`；
+2. `array.lastIndexOf(value,[index])`：从头开始搜索位置搜索元素，存在返回元素位置，不存在返回`-1`；
+
 
 
 

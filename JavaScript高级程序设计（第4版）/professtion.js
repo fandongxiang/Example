@@ -824,9 +824,96 @@ let puller = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2', 'E1', 'E2'];
 // console.log(array instanceof Array);   // true
 // console.log(Array.isArray(array));     // true  
 
-// 数组迭代器
-let colors = ['red', 'blank', 'green'];
-console.log(colors.keys()); // 返回迭代器
-console.log(Array.from(colors.keys())); // [ 0, 1, 2 ]
-console.log(Array.from(colors.values())); // [ 'red', 'blank', 'green' ]
-console.log(Array.from(colors.entries())); // [ [ 0, 'red' ], [ 1, 'blank' ], [ 2, 'green' ] ]
+// // 数组迭代器
+// let colors = ['red', 'blank', 'green'];
+// console.log(colors.keys()); // 返回迭代器
+// console.log(Array.from(colors.keys())); // [ 0, 1, 2 ]
+// console.log(Array.from(colors.values())); // [ 'red', 'blank', 'green' ]
+// console.log(Array.from(colors.entries())); // [ [ 0, 'red' ], [ 1, 'blank' ], [ 2, 'green' ] ]
+
+// // array.fill() array.copyWithin()
+// let num = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+// console.log(num.fill(7, 3, 5)); // [ 0, 1, 2, 7, 7, 5, 6, 7, 8, 9]
+// console.log(num.copyWithin(7, 3, 5)); // [ 0, 1, 2, 7, 7, 5, 6, 7, 7, 9]
+
+// // array.join()
+// let str = ['a', 'b', 'c', 'd', 'e'];
+// console.log(str.join()); // 'a,b,c,d,e'
+// console.log(str.join(' ')); // 'a b c d e'
+
+// // 数组栈方法
+// let str = ['a', 'b', 'c', 'd', 'e'];
+// console.log(str.push('f')); // 6
+// console.log(str); // [ 'a', 'b', 'c', 'd', 'e', 'f' ]
+// console.log(str.pop()); // 'f'
+// console.log(str); // [ 'a', 'b', 'c', 'd', 'e' ]
+
+// // 数组队列方法
+// let str = ['a', 'b', 'c', 'd', 'e'];
+// console.log(str.shift()); // 'a'
+// console.log(str); // [ 'b', 'c', 'd', 'e' ]
+// console.log(str.unshift('a'));  // 5
+
+// // reverse() sort()
+// let num = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+// console.log(num.reverse()); // [ 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 ]
+// console.log(num); // [ 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 ]
+
+// let num2 = [0, 1, 5, 15, 4, 44]
+// console.log(num2.sort()); // [ 0, 1, 15, 4, 44, 5 ]
+// console.log(num2); // [ 0, 1, 15, 4, 44, 5 ]
+
+// function ascending(value1, value2) {
+//   if (value1 < value2) {
+//     return -1;
+//   } else if (value1 > value2) {
+//     return 1
+//   } else {
+//     return 0;
+//   }
+// };
+
+// function descending(value1, value2) {
+//   if (value1 < value2) {
+//     return 1;
+//   } else if (value1 > value2) {
+//     return -1;
+//   } else {
+//     return 0
+//   }
+// };
+// console.log(num2.sort(ascending)); // [ 0, 1, 4, 5, 15, 44 ]
+// console.log(num2.sort(descending)); // [ 44, 15, 5, 4, 1, 0 ]
+// // 箭头函数写法
+// console.log(num2.sort((a, b) => a < b ? 1 : a > b ? -1 : 0)); // [ 44, 15, 5, 4, 1, 0 ]
+
+// let num1 = [1, 2, 3, 4, 5];
+// let num2 = [7, 8, 9, 10];
+// console.log(num1.concat(6, num2)); // [ 1, 2, 3, 4,  5, 6, 7, 8, 9, 10 ]
+// console.log(num1); // [ 1, 2, 3, 4, 5 ]
+
+// let colors = ['red', 'blank', 'green', 'white', 'pink'];
+// console.log(colors.slice(1));
+// ['blank', 'green', 'white', 'pink']
+// console.log(colors.slice(1, 3)); // [ 'blank', 'green' ]
+// console.log(colors); // [ 'red', 'blank', 'green', 'white', 'pink' ]
+
+// let str = 'hello world';
+// console.log(str.slice(1, 3));
+
+// // Array.spice()
+// // 删除
+// let colors = ['red', 'blank', 'green', 'yellow'];
+// console.log(colors.splice(1, 2)); // [ 'blank', 'green' ]
+// console.log(colors); // [ 'red', 'yellow' ]
+// // 插入
+// console.log(colors.splice(1, 0, 'pink', 'white')); // []
+// console.log(colors); // [ 'red', 'pink', 'white', 'yellow' ]
+// // 替换
+// console.log(colors.splice(1, 1, 'blue', 'yellow')); // [ 'pink' ]
+// console.log(colors); // [ 'red', 'blue', 'yellow', 'white', 'yellow' ]
+
+let num = [1, 2, 3, 4, 5, 4, 3, 2, 4, 1]
+console.log(num.lastIndexOf(3, 2));
+console.log(num.indexOf(3, 6));
+console.log(num.lastIndexOf(4, 5));
