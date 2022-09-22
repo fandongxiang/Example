@@ -1538,9 +1538,100 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 
 #### 6.2.12 搜索和位置方法
 
+##### 1. 严格相等
+
 1. `array.indexOf(value,[index])`：从头开始搜索位置搜索元素，存在返回元素位置，不存在返回`-1`；
 2. `array.lastIndexOf(value,[index])`：从头开始搜索位置搜索元素，存在返回元素位置，不存在返回`-1`；
+3. `array.includes()`：返回要查找的元素是否存在，存在返回`true`，不存在返回`false`。
 
+  ``` js
+    let num = [1, 2, 3, 4, 5, 4, 3, 2, 4, 1]
+    console.log(num.lastIndexOf(2, 2));
+    console.log(num.indexOf(3, 6));
+    console.log(num.lastIndexOf(4, 5));
+  ```
+
+##### 2. 断言函数
+
+1. `array.find((element,index,array) => ...)`：寻找第一个符合条件的数组的元素；
+2. `array.findIndex((element,index,array) => ...)`：寻找第一个符合条件的数组的索引；
+3. 以上两个方法，找到第一个符合条件的元素后停止遍历，类似数组的`some()`方法；
+
+  ``` js
+    // array.find
+    const person = [{
+        name: 'Matt',
+        age: 27
+      },
+      {
+        name: 'Bob',
+        age: 29
+      }
+    ];
+    console.log(person.find(element => element.age < 28)); // { name: 'Matt', age: 27 }
+    console.log(person.findIndex(element => element.age < 28)); // 0
+  ```
+
+#### 6.2.13 迭代方法
+
+1. `every()`：对数组的每一祥都运行传入的函数，如果对每一项函数都返回`true`，则这个方法返回`true`；
+2. `filter()`：对数组的每一项都运行传入的函数，函数返回`true`的项会组成数组之后返回；
+3. `forEach()`：对数组的每一项都运行传入的函数，没有返回值，相当于简答的`for`循环遍历；
+4. `map()`：对数组每一项都运行传入的函数，返回由每次函数调用的结果构成的数组；
+5. `some()`：对数组每一项都运行传入的函数，如果有一项函数返回`true`，则这个方法返回`true`；
+
+  ``` js
+    // 数组迭代方法
+    let num = [1, 2, 3, 4, 5, 4, 3, 2, 1];
+    // every()
+    let everyResults = num.every((element, index, array) => element > 2);
+    console.log(everyResults); // false
+
+    // some()
+    let someResults = num.some((element, index, array) => element > 2);
+    let findElement = num.some(element => {
+      if (element > 4) {
+        result = element; // 不加var，为全局变量
+        return true;
+      }
+    })
+    console.log(someResults); // true
+    console.log(result); // 5
+
+    // filter()
+    let filterResult = num.filter(element => element > 2);
+    console.log(filterResult); // 5
+
+    // map()
+    let mapResult = num.map(element => element * 2); // [ 3, 4, 5, 4, 3 ]
+    console.log(mapResult); // [ 2, 4, 6, 8, 10, 8, 6, 4, 2 ]
+
+    // forEach()
+    let newNum = [];
+    let forEachResult = num.forEach(element => {
+      if (element > 2) newNum.push(element)
+    });
+    console.log(newNum);  // [ 3, 4, 5, 4, 3 ]
+  ```
+
+#### 6.2.14 归并方法
+
+1. `array.reduce((prev,cur,index,array))`：其中`prev`是上一个归并值，cur是当前项，会在每次循环时将上一个归并值传入函数；
+2. `array.reduceRight()`：与`reduce()`类似，但是从数组末尾进行归并；
+
+  ``` js
+    // 数组归并
+    let values = [1, 2, 3, 4, 5];
+    console.log(values.reduce((prev, cur) => prev + cur)) // 15
+    console.log(values.reduceRight((prev, cur) => prev + cur)); // 15
+    console.log(values.reduce((prev, cur) => prev * cur)) // 120
+  ```
+
+### 6.3 定型数组
+
+略
+
+### 6.4 
 
 
 

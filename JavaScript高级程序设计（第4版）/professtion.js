@@ -913,7 +913,58 @@ let puller = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2', 'E1', 'E2'];
 // console.log(colors.splice(1, 1, 'blue', 'yellow')); // [ 'pink' ]
 // console.log(colors); // [ 'red', 'blue', 'yellow', 'white', 'yellow' ]
 
-let num = [1, 2, 3, 4, 5, 4, 3, 2, 4, 1]
-console.log(num.lastIndexOf(3, 2));
-console.log(num.indexOf(3, 6));
-console.log(num.lastIndexOf(4, 5));
+// let num = [1, 2, 3, 4, 5, 4, 3, 2, 4, 1]
+// console.log(num.lastIndexOf(2, 2));
+// console.log(num.indexOf(3, 6));
+// console.log(num.lastIndexOf(4, 5));
+
+// // array.find
+// const person = [{
+//     name: 'Matt',
+//     age: 27
+//   },
+//   {
+//     name: 'Bob',
+//     age: 29
+//   }
+// ];
+// console.log(person.find(element => element.age < 28)); // { name: 'Matt', age: 27 }
+// console.log(person.findIndex(element => element.age < 28)); // 0
+
+// // 数组迭代方法
+// let num = [1, 2, 3, 4, 5, 4, 3, 2, 1];
+// // every()
+// let everyResults = num.every((element, index, array) => element > 2);
+// console.log(everyResults); // false
+
+// // some()
+// let someResults = num.some((element, index, array) => element > 2);
+// let findElement = num.some(element => {
+//   if (element > 4) {
+//     result = element; // 不加var，为全局变量
+//     return true;
+//   }
+// })
+// console.log(someResults); // true
+// console.log(result); // 5
+
+// // filter()
+// let filterResult = num.filter(element => element > 2);
+// console.log(filterResult); // 5
+
+// // map()
+// let mapResult = num.map(element => element * 2); // [ 3, 4, 5, 4, 3 ]
+// console.log(mapResult); // [ 2, 4, 6, 8, 10, 8, 6, 4, 2 ]
+
+// // forEach()
+// let newNum = [];
+// let forEachResult = num.forEach(element => {
+//   if (element > 2) newNum.push(element)
+// });
+// console.log(newNum);  // [ 3, 4, 5, 4, 3 ]
+
+// 数组归并
+let values = [1, 2, 3, 4, 5];
+console.log(values.reduce((prev, cur) => prev + cur)) // 15
+console.log(values.reduceRight((prev, cur) => prev + cur));
+console.log(values.reduce((prev, cur) => prev * cur)) // 120
