@@ -1631,7 +1631,37 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 
 略
 
-### 6.4 
+### 6.4 Map
+
+#### 6.4.1 Map类型的创建及增删改查
+
+1. `new Map()`类型的创建：通过`new`加构造函数的形式创建一个空映射，并可以在空映射中赋值；
+2. `set()`：可以向映射中添加键值，并可以用多个操作符连缀起来；
+3. `get()`：可以通过键获取映射中的值，返回值，如果没有返回`undefined`；
+4. `has()`：可以检测映射中是否存在相应键，返回布尔值；
+5. `delete()`：删除映射中某项键值对，成功删除返回`true`，否则返回`false`；
+6. `clear()`：清空映射中所有的键值对，清空后返回`undefined`；
+7. `Map.size`：返回映射中键值对的数量；
+
+  ``` js
+    // Map
+    const m = new Map();
+    m.set('first name', 'fan')
+      .set('last name', 'dong');
+    const m1 = new Map([
+      ['color', 'yellow'],
+      ['rgb', '255,255,0']
+    ])
+    console.log(m.size); // 2
+    console.log(m.delete('first name')); // true
+    console.log(m.has('first name')); // false
+    console.log(m.get('first name')); // undefined
+    console.log(m.clear()); // undefined
+    console.log(m.size); // 0
+  ```
+
+#### 6.4.2 顺序与迭代
+
 
 
 
