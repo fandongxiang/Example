@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>首页</title>
+  <!-- <script src="./js/JQuery.js"></script> -->
+  <script src="../assets/JQuery.js"></script>
+</head>
+
+<body>
+  <h1>这是首页</h1>
+  <!-- <a href="../test.html">点击跳转</a> -->
+  <a href="./assets/test.html">测试</a>
+
+  <script>
+    $(function() {
+      $.ajax({
+        type: 'OPTIONS',
+        url: '/test/options',
+        success: (res) => {
+          console.log(res);
+        }
+      })
+    })
+  </script>
+</body>
+
+</html>
