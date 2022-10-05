@@ -1662,6 +1662,60 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 
 #### 6.4.2 顺序与迭代
 
+待补充
+
+#### 6.4.3 选择Map还是Object
+
+1. 内存占用：map大约比Object多存储50%的键/值对；
+2. 插入性能：消耗相当，map稍快；
+3. 查找速度：大量查找操作，Object更好一些；
+4. 删除性能：设计大量删除操作，毫无疑问选择map。
+
+### 6.5 WeakMap
+
+> ES6新增“弱映射”（WeakMap）是一种新的集合类型，为这门语言带来了增强的键值对存储机制。它是map的兄弟，“weak”描述的是Javascript垃圾回收程序对待“弱映射”中键的方式。
+
+#### 6.5.1 基本API
+
+> 使用`new WeakMap()`来实例化一个空的`WeakMap`，其余操作同`Map`。
+> 注意：WeakMap中的键只能时对象，如果时基本类型会报错~
+
+  ``` js
+    // WeakMap
+    const key1 = { id: 1 },
+      key2 = { id: 2 }
+    const wm = new WeakMap([
+      [key1, 'val1'],
+      ['BADKEY', 'val2'],
+      [key2, 'val3']
+    ]);
+
+    TypeError: Invalid value used as weak map key
+  ```
+
+#### 6.5.2 弱键
+
+> 弱键就是该键不属于正式的引用时，不会阻止垃圾回收，如下例中的空对象键，因为没有指向这个对象的其它引用，所以这行代码执行完成后，这个对象就会被当作垃圾回收：
+
+  ``` js
+    const wm = new WeakMap();
+    wm.set({},'val')
+  ```
+
+#### 6.5.3 不可迭代键
+
+不能遍历和迭代。
+
+#### 6.5.4 应用场景
+
+`WeakMap`集合主要用于优化内存回收，比如HTML中一个元素被删除，设置该元素为`null`可以实现内存回收，但如果该元素被另一个对象引用，则不会回收。这是只要把该元素作为`WeakMap`的键来保存，即可回收。
+
+### 6.5 Set
+
+
+
+
+
 
 
 
