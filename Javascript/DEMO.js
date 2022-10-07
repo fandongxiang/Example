@@ -994,3 +994,319 @@ let puller = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2', 'E1', 'E2'];
 // ]);
 
 // TypeError: Invalid value used as weak map key
+
+// // Set 集合
+// const m1 = new Set([1, 4, 'apple', 'red', 1, 4])
+// const m2 = new Set().add('red')
+//   .add('blue')
+//   .add('black')
+//   .add('pink')
+// console.log(m1); // Set(4) { 1, 4, 'apple', 'red' }
+// console.log(m2); // Set(4) { 'red', 'blue', 'black', 'pink' }
+
+// console.log(m1.size); // 4
+// console.log(m2.has('yellow'));  // false
+// console.log(m2.delete('black'));  // true
+
+// const s = new Set(['val1', 'val2', 'val3']);
+// console.log(s.values === s[Symbol.iterator]); // true
+// console.log(s.keys === s[Symbol.iterator]); // true
+// for (let value of s.values()) {
+//   console.log(value);
+// } // 输出 val1 val2 val3
+// for (let value of s[Symbol.iterator]()) {
+//   console.log(value);
+// } // 输出 val1 val2 val3
+
+// const s = new Set([1, 2, 3, 4, 5, 2, 1]);
+// console.log(s instanceof Set);  // true
+// const a = [...s]
+// console.log(a); // [ 1, 2, 3, 4, 5 ]
+// console.log(a instanceof Array);  // true
+
+// Set 并集
+// const union = (setA, setB) => {
+//   const unionAb = new Set()
+//   setA.forEach(value => {
+//     unionAb.add(value)
+//   });
+//   setB.forEach(value => {
+//     unionAb.add(value)
+//   });
+//   return unionAb
+// }
+
+// const SetA = new Set([1, 2, 3, 4, 5])
+// const SetB = new Set([3, 4, 5, 6, 7])
+// let unionAb = union(SetA, SetB);
+// console.log(unionAb); // Set(7) { 1, 2, 3, 4, 5, 6, 7 }
+
+// // Set 交集
+// const SetA = new Set([1, 2, 3, 4, 5])
+// const SetB = new Set([3, 4, 5, 6, 7])
+
+// const intersection = (setaA, setB) => {
+//   const intersection = new Set()
+//   setaA.forEach(value => {
+//     if (setB.has(value)) {
+//       intersection.add(value)
+//     }
+//   });
+//   return intersection
+// }
+// let intersectionAb = intersection(SetA, SetB)
+// console.log(intersectionAb); // Set(3) { 3, 4, 5 }
+
+// // Set 差集
+// const SetA = new Set([1, 2, 3, 4, 5])
+// const SetB = new Set([3, 4, 5, 6, 7])
+
+// const difference = (setA, setB) => {
+//   const difference = new Set()
+//   setA.forEach(value => {
+//     if (!SetB.has(value)) {
+//       difference.add(value)
+//     }
+//   })
+//   setB.forEach(value => {
+//     if (!SetA.has(value)) {
+//       difference.add(value)
+//     }
+//   })
+//   return difference
+// }
+// const differenceAb = difference(SetA, SetB)
+// console.log(differenceAb); // Set(4) { 1, 2, 6, 7 }
+
+// 第7章 迭代器和生成器
+// 可迭代对象
+let arr = [1, 2, 3, 4, 5, 6]
+let str = 'hello'
+let map = new Map([
+  ['key1', 'val1'],
+  ['key2', 'val2'],
+  ['key3', 'val3']
+])
+let obj = { name: 'fan' }
+
+// for (let value of arr) {
+//   console.log(value); // 依次输出 1 2 3 4 5 6
+// }
+
+// for (let value of str) {
+//   console.log(value); // 依次输出 h e l l o
+// }
+
+// for (let value of map) {
+//   console.log(value); // 依次输出 [ 'key1', 'val1' ] [ 'key2', 'val2' ] [ 'key3', 'val3' ]
+// }
+
+// for (let value of obj) {
+//   console.log(value); // TypeError: obj is not iterable,对象不是可迭代对象
+// }
+
+// console.log(arr[Symbol.iterator]()); // Object [Array Iterator] {}
+// console.log(str[Symbol.iterator]()); // Object [String Iterator] {}
+// console.log(map[Symbol.iterator]()); // [Map Entries] { [ 'key1', 'val1' ], [ 'key2', 'val2' ], [ 'key3', 'val3' ] }
+// console.log(obj[Symbol.iterator]()); // obj[Symbol.iterator] is not a function
+
+// let arrIter = arr[Symbol.iterator]();
+// console.log(arrIter.next()); // { value: 1, done: false }
+// console.log(arrIter.next()); // { value: 2, done: false }
+// console.log(arrIter.next()); // { value: 3, done: false }
+// console.log(arrIter.next()); // { value: 4, done: false }
+// console.log(arrIter.next()); // { value: 5, done: false }
+// console.log(arrIter.next()); // { value: 6, done: false }
+// console.log(arrIter.next()); // { value: undefined, done: true }
+
+// let SimpleClass = {
+//   data: [1, 2, 3, 4, 5],
+//   name: [7, 8, 9],
+//   [Symbol.iterator]() {
+//     let index = 0;
+//     return {
+//       next: () => {
+//         if (index < this.name.length) {
+//           return { value: this.name[index++], done: false }
+//         } else {
+//           return { done: true } 
+//         }
+//       }
+//     }
+//   }
+// }
+
+// for (const val of SimpleClass) {
+//   console.log(val) //'1' '2' '3' '4' '5'
+// }
+
+// let SimpleClass = {
+//   data: [1, 2, 3],
+//   [Symbol.iterator]() {
+//     let index = 0;
+//     return {
+//       next: () => {
+//         if (index < this.data.length) {
+//           return { value: this.data[index++], done: false }
+//         } else {
+//           return { value: undefined, done: true }
+//         }
+//       }
+//     }
+//   }
+// }
+// let iter = SimpleClass[Symbol.iterator]()
+// console.log(iter.next()); // { value: 1, done: false }
+// console.log(iter.next()); // { value: 2, done: false }
+// console.log(iter.next()); // { value: 3, done: false }
+// console.log(iter.next()); // { value: undefined, done: true }
+// for (let value of SimpleClass) {
+//   console.log(value); // 依次输出 1 2 3 
+// }
+
+
+
+// // // yield 传参
+// function* myYield2(x) {
+//   let y = 2 * (yield(x + 1));
+//   let z = yield(y + 3);
+//   console.log(x, y);
+//   return (x + y + z)
+// }
+// var num = myYield2(3)
+// console.log(num.next()) //{value: 4, done: false}
+// console.log(num.next(2)) //{value: 7, done: false}
+// console.log(num.next(2)) //{value: 9, done: false}
+// console.log(num.next(2)) //{value: undefined, done: true}
+
+// console.log('-------------------');
+
+// function* foo() {
+//   const value1 = 10
+//   console.log(value1)
+//   const n = yield value1
+
+//   const value2 = 20 + n
+//   console.log(value2)
+//   yield value2
+
+//   const value3 = 30
+//   console.log(value3)
+//   yield value3
+
+//   console.log('函数执行结束~')
+// }
+// const genertor = foo()
+
+// console.log(genertor.next()) // 10 { value: 10, done: false }
+// console.log(genertor.next()) // 120 { value: 10, done: false }
+// console.log(genertor.next()) // 30 { value: 30, done: false }
+// console.log(genertor.next()) // 函数执行结束~ { value: undefined, done: true }
+
+// 生成器
+// function add(x) {
+//   return ++x;
+// }
+
+// function* genFunc(x) {
+//   let y = yield add(x);
+//   let z = yield add(y);
+//   yield add(z)
+// };
+
+// let iter = genFunc(0);
+
+// let result1 = iter.next().value;
+// console.log(result1);
+// let result2 = iter.next(result1).value
+// console.log(result2);
+// let result3 = iter.next(result2).value
+// console.log(result3);
+// iter.next()
+
+function XxxxAPI(x) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(++x)
+    }, 1000)
+  })
+}
+
+// // 基于Promise写法
+// XxxxAPI(0).then(result1 => {
+//   console.log(`第1次请求结果为：${result1}`);
+//   return XxxxAPI(result1)
+// }).then(result2 => {
+//   console.log(`第1次请求结果为：${result2}`);
+//   return XxxxAPI(result2)
+// }).then(result3 => {
+//   console.log(`第1次请求结果为：${result3}`);
+//   return XxxxAPI(result3)
+// })
+
+// // 生成器创建迭代器的写法
+// function* genfunc(x) {
+//   let result1 = yield XxxxAPI(x)
+//   console.log(`第1次请求结果为：${result1}`);
+//   let result2 = yield XxxxAPI(x)
+//   console.log(`第1次请求结果为：${result2}`);
+//   let result3 = yield XxxxAPI(x)
+//   console.log(`第1次请求结果为：${result3}`);
+// }
+// let iter = genfunc(0);
+// // iter.next().value 拿到Promise对象
+// iter.next().value.then(result1 => {
+//     return iter.next(result1).value
+//   }).then(result2 => {
+//     return iter.next(result2).value
+//   }).then(result3 => {
+//     return iter.next(result3).value
+//   })
+
+// // Symbol 特点
+// let s1 = Symbol();
+// let s2 = Symbol();
+// console.log(typeof s1);  // symbol
+// console.log(s1 === s2); // false
+// let s3 = Symbol('red')
+// let s4 = Symbol('red')
+// console.log(s3 === s4);  // false
+
+// // Symbol.for()
+// let s1 = Symbol.for('foo')
+// let s2 = Symbol.for('foo')
+// let s3 = Symbol('foo')
+// console.log(s1 === s2); // true
+// console.log(s1 === s3); // false
+
+// console.log(Symbol.keyFor(s1)); // foo
+// console.log(Symbol.keyFor(s3)); // undefined
+// console.log(Symbol.keyFor(123)); // TypeError: 123 is not a symbol
+
+// // 符号属性
+// let name = Symbol('name')
+// let sex = Symbol('sex')
+// let person = {
+//   [name]: 'fantasy',
+//   [sex]: '男',
+//   like: 'play',
+//   height: 178
+// }
+// console.log(person[name]); // fantasy
+// console.log(person.sex); // undefined
+
+// for (key in person) {
+//   console.log(person[key]); // 依次输出 play 178
+// }
+
+// // Set 遍历
+// let s1 = new Set([1, 2, 3, 4, 5]);
+// s1.forEach((Element, index, array) => {
+//   console.log(Element); // 依次输出 1 2 3 4 5
+//   console.log(index); // 依次输出 1 2 3 4 5
+//   console.log(array); // 依次输出 set对象
+// })
+
+// for (let value of s1) {
+//   console.log(value);  // 依次输出 1 2 3 4 5
+// }

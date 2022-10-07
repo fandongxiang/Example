@@ -188,9 +188,72 @@ function capitalize(word) {
 console.log(`${ capitalize("hello")},${ capitalize("world")}!`);   // Hello,World!
 ```
 
-#### symbol 类型
+#### 3.4.7 Symbol 类型
 
-#### Object 类型
+> Symbol是ES6新增的数据类型，也称为“符号”。符号是原始值，且符号的值是唯一的，不可变的。符号的用途是确保对象属性使用唯一的标识符。
+
+##### 3.4.7.1 Symbol的基本特性
+
+1. 符号本身是原始类型，`typeof`操作符识别为`Symbol`类型；
+2. 符号是唯一的，两个符号不能相等；
+3. 符号可以传入描述，但与符号定义和标识完全无关。可以用`.discription`获取描述。
+4. 符号没有字面量语法，并且不能与`new`关键词使用；
+
+  ``` js
+    // Symbol 特点
+    let s1 = Symbol();
+    let s2 = Symbol();
+    console.log(typeof s1);  // symbol
+    console.log(s1 === s2); // false
+    let s3 = Symbol('red')
+    let s4 = Symbol('red')
+    console.log(s3 === s4);  // false   
+  ```
+
+##### 3.4.7.2 Symbol.for()实现共享和重用
+
+  ``` js
+    // Symbol.for()
+    let s1 = Symbol.for('foo')
+    let s2 = Symbol.for('foo')
+    let s3 = Symbol('foo')
+    console.log(s1 === s2); // true
+    console.log(s1 === s3); // false
+
+    console.log(Symbol.keyFor(s1)); // foo
+    console.log(Symbol.keyFor(s3)); // undefined
+    console.log(Symbol.keyFor(123)); // TypeError: 123 is not a symbol
+  ```
+
+##### 3.4.7.3 使用符号作为属性
+
+1. 作为属性时，要加`[]`；
+2. 对象调用`Symbol`属性的键时，只能用`[]`形式调用；
+3. 作为属性时，无法遍历；
+
+  ``` js
+    // 符号属性
+    let name = Symbol('name')
+    let sex = Symbol('sex')
+    let person = {
+      [name]: 'fantasy',
+      [sex]: '男',
+      like: 'play',
+      height: 178
+    }
+    console.log(person[name]); // fantasy
+    console.log(person.sex); // undefined
+
+    for (key in person) {
+      console.log(person[key]); // 依次输出 play 178
+    }
+  ```
+
+##### 3.4.7.4 常用内置符号
+
+> ES6引入了一批常用内置符号（well-known symbol），用于暴露语言内部行为，开发者可直接访问、重写或模拟这些行为。这些符号最重要用途之一是重新定义它们，从而改变原生结构的行为。
+
+#### 3.4.8 Object 类型
 
 ### 3.5 操作符
 
@@ -1712,13 +1775,406 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 
 ### 6.5 Set
 
+> 集合是一门新的数据结构————由一组无序且不重复的项组成的结构，为Javascript带来了集合数据结构，它可以用作消除重复元素，也可以用作进行交集、并集、差集等数学运算。
 
+#### 6.6.1 基本API
 
+1. `new Set()`：创建一个空集合；
+2. `new Set(['val1','val2',...])`：创建并初始化集合；
+3. `.add()`：向集合添加值；
+4. `.has()`：查询集合，返回布尔值；
+5. `.size`：返回集合数量；注意后面没有括号；
+6. `.delete()`：删除集合元素，成功删除返回`true`；
+7. `.clear()`：清空集合，成功清空返回`true`。
+   
+   ``` js
+    // Set 集合
+    const m1 = new Set([1, 4, 'apple', 'red', 1, 4])
+    const m2 = new Set().add('red')
+      .add('blue')
+      .add('black')
+      .add('pink')
+    console.log(m1); // Set(4) { 1, 4, 'apple', 'red' }
+    console.log(m2); // Set(4) { 'red', 'blue', 'black', 'pink' }
 
+    console.log(m1.size); // 4
+    console.log(m2.has('yellow'));  // false
+    console.log(m2.delete('black'));  // true
+   ```
 
+#### 6.6.2 顺序与迭代
 
+> 集合实例提供一个迭代器（Iterator），能以插入顺序生成集合内容，可以通过`vallues()`方法或及其别名`keys()`（或者`Symbol.iterator`属性，它引用`values()`），取得这个迭代器。
 
+   ``` js
+    const s = new Set(['val1', 'val2', 'val3']);
+    console.log(s.values === s[Symbol.iterator]); // true
+    console.log(s.keys === s[Symbol.iterator]); // true
+    for (let value of s.values()) {
+      console.log(value);
+    } // 输出 val1 val2 val3
+    for (let value of s[Symbol.iterator]()) {
+      console.log(value);
+    } // 输出 val1 val2 val3
+   ```
 
+1. 因为`values()`是默认迭代器，所以可以直接对集合实例使用扩展操作，把集合转换为数组。
+   
+  ``` js
+    const s = new Set([1, 2, 3, 4, 5, 2, 1]);
+    console.log(s instanceof Set);  // true
+    const a = [...s]
+    console.log(a); // [ 1, 2, 3, 4, 5 ]
+    console.log(a instanceof Array);  // true
+  ```
 
+2. Set类型的遍历，可以用`forEach`或`for of`遍历。
 
+  ``` js
+    // Set 遍历
+    let s1 = new Set([1, 2, 3, 4, 5]);
+    s1.forEach((Element, index, array) => {
+      console.log(Element); // 依次输出 1 2 3 4 5
+      console.log(index); // 依次输出 1 2 3 4 5
+      console.log(array); // 依次输出 set对象
+    })
+    
+    for (let value of s1) {
+      console.log(value);  // 依次输出 1 2 3 4 5
+    }
+  ```
 
+#### 6.6.3 定义正式集合操作
+
+1. 模拟两个集合并集操作
+
+  ``` js
+    // Set 并集
+    const union = (setA, setB) => {
+      const unionAb = new Set()
+      setA.forEach(value => {
+        unionAb.add(value)
+      });
+      setB.forEach(value => {
+        unionAb.add(value)
+      });
+      return unionAb
+    }
+
+    const SetA = new Set([1, 2, 3, 4, 5])
+    const SetB = new Set([3, 4, 5, 6, 7])
+    let unionAb = union(SetA, SetB);
+    console.log(unionAb); // Set(7) { 1, 2, 3, 4, 5, 6, 7 }
+  ```
+
+2. 模拟两个集合交集操作
+
+  ``` js
+    // Set 交集
+    const SetA = new Set([1, 2, 3, 4, 5])
+    const SetB = new Set([3, 4, 5, 6, 7])
+
+    const intersection = (setaA, setB) => {
+      const intersection = new Set()
+      setaA.forEach(value => {
+        if (setB.has(value)) {
+          intersection.add(value)
+        }
+      });
+      return intersection
+    }
+    let intersectionAb = intersection(SetA, SetB)
+    console.log(intersectionAb); // Set(3) { 3, 4, 5 }
+  ```
+
+3. 模拟两个集合差集操作
+
+  ``` js
+    // 差集
+    const SetA = new Set([1, 2, 3, 4, 5])
+    const SetB = new Set([3, 4, 5, 6, 7])
+
+    const difference = (setA, setB) => {
+      const difference = new Set()
+      setA.forEach(value => {
+        if (!SetB.has(value)) {
+          difference.add(value)
+        }
+      })
+      setB.forEach(value => {
+        if (!SetA.has(value)) {
+          difference.add(value)
+        }
+      })
+      return difference
+    }
+    const differenceAb = difference(SetA, SetB)
+    console.log(differenceAb) 
+  ```
+
+### 6.7 WeakSet 
+
+> WeakSet中的“Weak”描述的是JavaScript垃圾回收程序中对待“弱集合”中值的回收方式。
+
+### 6.8 迭代与扩展操作
+
+> Array、所有定型数组、Map、Set都支持顺序迭代，可以进行扩展操作。详细待第7章介绍。
+
+## 第7章 迭代器与生成器
+
+> 迭代：从一个数据集合中按照一定顺序，不断取出数据的过程。
+> 迭代器：可以对数据集合实现迭代功能的”东西“。它无需了解与其关联的可迭代对象的结构，只需要知道如何取得连续的值。
+> 生成器：用来创建迭代器。
+
+### 7.1 理解迭代
+
+#### 7.1.1 迭代和遍历区别
+
+1. 【过程】：迭代强调的依次取出，不能确定可以取出的值有多少，也不能保证去把数据全部取完；
+2. 【结果】：遍历必须保证数据的长度，循环不断的全部取出，针对于数据量过的情况下使用遍历，需要时间过长。
+
+#### 7.1.2 通用迭代器
+
+由于以下原因，通过遍历来执行例程并不理想；
+1. **迭代之前需要事先知道如何使用数据结构**。比如数组要通过取得数组对象，再通过下标遍历，但并不适用于说有数据结构。
+2. **遍历顺序并不是数据结构固有**。通过递增索引访问数据只是使用数组，并不适用于其它具有隐式顺序的数据结构。
+
+#### 7.1.3 可迭代的数据集合特征
+
+1. 具有`[Symbol.iterator]()`迭代对象，并能用该对象的`next()`方法迭代。
+
+  ``` js
+    let arr = [1, 2, 3, 4, 5, 6]
+    let str = 'hello'
+    let map = new Map([
+        ['key1', 'val1'],
+        ['key2', 'val2'],
+        ['key3', 'val3']
+      ])
+    let obj = { name: 'fan' }
+  
+    console.log(arr[Symbol.iterator]()); // Object [Array Iterator] {}
+    console.log(str[Symbol.iterator]()); // Object [String Iterator] {}
+    console.log(map[Symbol.iterator]()); // [Map Entries] { [   'key1',   'val1' ], [ 'key2', 'val2' ], [ 'key3', 'val3' ] }
+    console.log(obj[Symbol.iterator]()); // obj[Symbol.iterator] is   not   a function
+  
+    let arrIter = arr[Symbol.iterator]();
+    console.log(arrIter.next()); // { value: 1, done: false }
+    console.log(arrIter.next()); // { value: 2, done: false }
+    console.log(arrIter.next()); // { value: 3, done: false }
+    console.log(arrIter.next()); // { value: 4, done: false }
+    console.log(arrIter.next()); // { value: 5, done: false }
+    console.log(arrIter.next()); // { value: 6, done: false }
+    console.log(arrIter.next()); // { value: undefined, done: true }
+  ```
+
+2. 可以用`for of `遍历的对象为可迭代对象，如下：
+
+  ``` js
+    // 可迭代对象
+    let arr = [1, 2, 3, 4, 5, 6]
+    let str = 'hello'
+    let map = new Map([
+      ['key1', 'val1'],
+      ['key2', 'val2'],
+      ['key3', 'val3']
+    ])
+    let obj = { name: 'fan' }
+
+    for (let value of arr) {
+      console.log(value); // 依次输出 1 2 3 4 5 6
+    }
+
+    for (let value of str) {
+      console.log(value); // 依次输出 h e l l o
+    }
+
+    for (let value of map) {
+      console.log(value); // 依次输出 [ 'key1', 'val1' ] [ 'key2',    'val2' ] [ 'key3', 'val3' ]
+    }
+
+    for (let value of obj) {
+      console.log(value); // TypeError: obj is not iterable,对象不是可迭    代对象
+    }
+  ```
+
+  ``` html 
+    <body>
+      <button>第1个按钮</button>
+      <button>第2个按钮</button>
+      <button>第3个按钮</button>
+      <button>第4个按钮</button>
+      <button>第5个按钮</button>
+      <button>第6个按钮</button>
+      <script>
+        let btns = document.querySelectorAll('button');
+        for (let element of btns) {
+          console.log(element);  // 依次输出各按钮
+        }
+      </script>
+    </body>
+  ```
+
+### 7.2 迭代器模式
+
+#### 7.2.1 可迭代器协议
+
+实际写代码过程中，不需要显式调用这个工厂函数来生成迭代器。实现可迭代协议的所有类型，会自动兼容接受可迭代对象的任何语言特性。接受可迭代对象的原生语言特性包括：
+1. `for-of`循环；
+2. 数组解构；
+3. 扩展操作符；
+4. Array.from()；
+5. 创建集合；
+6. 创建映射；
+7. Promise.all()接受由期约组成的可迭代对象；
+8. Promise.race()接受由期约组成的可迭代对象；
+9. yield*操作符，在生成器中使用。
+
+#### 7.2.2 自定义可迭代器
+
+1. 通过自定义迭代器实现`Object`对象可迭代性：
+   
+  ``` js
+    let SimpleClass = {
+      data: [1, 2, 3],
+      [Symbol.iterator]() {
+        let index = 0;
+        return {
+          next: () => {
+            if (index < this.data.length) {
+              return { value: this.data[index++], done: false }
+            } else {
+              return { value: undefined, done: true }
+            }
+          }
+        }
+      }
+    }
+    let iter = SimpleClass[Symbol.iterator]()
+    console.log(iter.next()); // { value: 1, done: false }
+    console.log(iter.next()); // { value: 2, done: false }
+    console.log(iter.next()); // { value: 3, done: false }
+    console.log(iter.next()); // { value: undefined, done: true }
+    for (let value of SimpleClass) {
+      console.log(value); // 依次输出 1 2 3 
+    }
+  ```
+
+### 7.3 生成器
+
+> 用来创建迭代器。
+
+#### 7.3.1 生成器的创建
+
+1. 生成器是一个函数，但`function`后面带着`*`，并且函数体内有关键字`yield`（产出）;
+2. 生成器函数调用后不会执行，只是创建了一个迭代器，只有使用`next()`方法才调用，并且自动按照迭代器的形式包装成`{value: ,done: }`对象。
+
+  ``` js
+    // 生成器
+    function* genFunc() {
+      yield 1;
+      yield 2;
+      yield 'yellow';
+      yield 'red'
+    };
+    let iter = genFunc();
+    console.log(iter.next()); // { value: 1, done: false }
+    console.log(iter.next()); // { value: 2, done: false }
+    console.log(iter.next()); // { value: 'yellow', done: false }
+    console.log(iter.next()); // { value: 'red', done: false }
+    console.log(iter.next()); // { value: undefined, done: true }
+  ```
+
+#### 7.3.2 yield 传参
+
+1. 我们在调用`next()`函数的时候，可以给它传递参数，那么这个参数会作为**上一个yield语句的返回值**;
+2. 当不传参时，上次`yield`返回的值下次是无法使用；
+3. 比如以下例子：执行第二次`next()`调用时，如果不传入值，则`n`为`undefined`导致`value2`为`NaN`；当给`next(100)`传入100时，则上次`yield value1`的返回值`n`为`100`，`value2`为`120`。
+  ``` js
+    function* foo() {
+  const value1 = 10
+  console.log(value1)
+  const n = yield value1
+
+  const value2 = 20 + n
+  console.log(value2)
+  yield value2
+
+  const value3 = 30
+  console.log(value3)
+  yield value3
+
+  console.log('函数执行结束~')
+  }
+  const genertor = foo()
+
+  console.log(genertor.next()) // 10 { value: 10, done: false }
+  console.log(genertor.next(100)) // 120 { value: 10, done: false }
+  console.log(genertor.next()) // 30 { value: 30, done: false }
+  console.log(genertor.next()) // 函数执行结束~ { value: undefined, done: true }
+  ```
+
+#### 7.3.3 生成器的应用场景
+
+> 异步请求循环嵌套调用：一个异步请求结果作为下一次异步请求的输入。
+
+1. Promise写法
+
+  ``` js
+    function XxxxAPI(x) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(++x)
+        }, 1000)
+      })
+    }
+
+    // 基于Promise写法
+    XxxxAPI(0).then(result1 => {
+      console.log(`第1次请求结果为：${result1}`);
+      return XxxxAPI(result1)
+    }).then(result2 => {
+      console.log(`第1次请求结果为：${result2}`);
+      return XxxxAPI(result2)
+    }).then(result3 => {
+      console.log(`第1次请求结果为：${result3}`);
+      return XxxxAPI(result3)
+    })
+  ```
+
+2. 生成器创建迭代器写法：
+
+  ``` js
+    function XxxxAPI(x) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(++x)
+        }, 1000)
+      })
+    }
+
+    // 生成器创建迭代器的写法
+    function* genfunc(x) {
+      let result1 = yield XxxxAPI(x)
+      console.log(`第1次请求结果为：${result1}`);
+      let result2 = yield XxxxAPI(x)
+      console.log(`第1次请求结果为：${result2}`);
+      let result3 = yield XxxxAPI(x)
+      console.log(`第1次请求结果为：${result3}`);
+    }
+    let iter = genfunc(0);
+    // iter.next().value 拿到Promise对象
+    iter.next().value.then(result1 => {
+        return iter.next(result1).value
+      }).then(result2 => {
+        return iter.next(result2).value
+      }).then(result3 => {
+        return iter.next(result3).value
+      })
+  ```
+
+3. async-await写法
+
+  ``` js
+
+  ```
