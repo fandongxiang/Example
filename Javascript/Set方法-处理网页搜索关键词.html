@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      padding: 200px;
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    li {
+      border: 1px solid #ddd;
+      padding: 10px;
+      width: 200px;
+    }
+    
+    li:nth-of-type(odd) {
+      background-color: yellowgreen;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="text" name="search">
+  <ul></ul>
+
+
+  <script>
+    let obj = {
+      data: new Set(),
+      keyWords(word) {
+        this.data.add(word)
+      },
+      show() {
+        let ul = document.querySelector('ul')
+        ul.innerHTML = ''
+        this.data.forEach((value) => {
+          ul.innerHTML += `<li>${value}</li>`
+        })
+      }
+    }
+    let search = document.querySelector('[name="search"]')
+    search.addEventListener('blur', function() {
+      obj.keyWords(this.value);
+      obj.show()
+    })
+  </script>
+</body>
+
+</html>

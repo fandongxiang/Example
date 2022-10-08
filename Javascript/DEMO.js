@@ -1080,14 +1080,14 @@ let puller = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2', 'E1', 'E2'];
 
 // 第7章 迭代器和生成器
 // 可迭代对象
-let arr = [1, 2, 3, 4, 5, 6]
-let str = 'hello'
-let map = new Map([
-  ['key1', 'val1'],
-  ['key2', 'val2'],
-  ['key3', 'val3']
-])
-let obj = { name: 'fan' }
+// let arr = [1, 2, 3, 4, 5, 6]
+// let str = 'hello'
+// let map = new Map([
+//   ['key1', 'val1'],
+//   ['key2', 'val2'],
+//   ['key3', 'val3']
+// ])
+// let obj = { name: 'fan' }
 
 // for (let value of arr) {
 //   console.log(value); // 依次输出 1 2 3 4 5 6
@@ -1224,13 +1224,13 @@ let obj = { name: 'fan' }
 // console.log(result3);
 // iter.next()
 
-function XxxxAPI(x) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(++x)
-    }, 1000)
-  })
-}
+// function XxxxAPI(x) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(++x)
+//     }, 1000)
+//   })
+// }
 
 // // 基于Promise写法
 // XxxxAPI(0).then(result1 => {
@@ -1310,3 +1310,323 @@ function XxxxAPI(x) {
 // for (let value of s1) {
 //   console.log(value);  // 依次输出 1 2 3 4 5
 // }
+
+// const union = (setA, setB) => {
+//   return new Set([...setA, ...setB])
+// }
+
+// const SetA = new Set([1, 2, 3, 4, 5])
+// const SetB = new Set([3, 4, 5, 6, 7])
+// let unionAb = union(SetA, SetB);
+// console.log(unionAb); // Set(7) { 1, 2, 3, 4, 5, 6, 7 }
+
+// // Set 交集
+// const SetA = new Set([1, 2, 3, 4, 5])
+// const SetB = new Set([3, 4, 5, 6, 7])
+
+// const intersection = (setA, setB) => {
+//   return new Set(
+//     [...setA].filter((item) => {
+//       return setB.has(item)
+//     })
+//   )
+// }
+// let intersectionAb = intersection(SetA, SetB)
+// console.log(intersectionAb); // Set(3) { 3, 4, 5 }
+
+// // 差集 A-B
+// const SetA = new Set([1, 2, 3, 4, 5])
+// const SetB = new Set([3, 4, 5, 6, 7])
+
+// const difference = (setA, setB) => {
+//   return new Set(
+//     [...setA].filter((item) => {
+//       return !setB.has(item)
+//     })
+//   )
+// }
+
+// const differenceAb = difference(SetA, SetB)
+// console.log(differenceAb)
+
+// // weakSet 弱引用特性
+// let obj = { name: 'fantasy' }
+// let edu = obj;
+// obj = null; // obj 被清空了，但是因为 edu 引用，所以edu 还是存在
+// console.log(edu); // { name: 'fantasy' }
+
+// let set = new WeakSet()
+// set.add(edu)
+// console.log(set);
+
+
+// // async-await
+// function XxxxAPI(x) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(++x)
+//     }, 1000)
+//   })
+// }
+
+// // 封装函数
+// function asyncFunc(genFn, ...params) {
+//   let iter = genFn(...params);
+//   // 使用递归的思想
+//   const next = x => {
+//     let { value, done } = iter.next(x);
+//     if (done) return;
+//     value.then(next)
+//   };
+//   next()
+// };
+
+// asyncFunc(function* genfunc(x) {
+//   let y = yield XxxxAPI(x)
+//   console.log(`第1次请求结果为：${y}`);
+//   let z = yield XxxxAPI(y)
+//   console.log(`第1次请求结果为：${z}`);
+//   let m = yield XxxxAPI(z)
+//   console.log(`第1次请求结果为：${m}`);
+// }, 0)
+
+// 第8章 对象、类与面向对象编程
+
+
+// 对象数据属性
+// // configurable
+// let person = { name: 'fantasy' };
+// Object.defineProperty(person, 'name', {
+//   configurable: false,
+//   value: 'fantasy'
+// });
+// delete person.name
+// console.log(person.name); // // fantasy
+
+// Object.defineProperty(person, 'name', {
+//   writable: false,
+//   value: 'fantasy'
+// });
+// person.name = "Bob";
+// console.log(person.name);  // fantasy
+
+// 访问器属性
+// let book = {
+//   _year: 2017,
+//   edition: 1
+// }
+// Object.defineProperty(book, 'year', {
+//   get() {
+//     return this._year
+//   },
+//   set(newValue) {
+//     if (newValue > 2017) {
+//       this._year = newValue;
+//       this.edition += newValue - 2017;
+//     }
+//   }
+// });
+// book.year = 2018;
+// console.log(book.edition); // 2
+
+// let book = {};
+// Object.defineProperties(book, {
+//   year_: {
+//     value: 2017
+//   },
+
+//   edition: {
+//     value: 1
+//   },
+
+//   year: {
+//     get() {
+//       return this.year_
+//     }
+//   },
+
+//   set(newValue) {
+//     if (newValue > 2017) {
+//       this.year_ = newValue;
+//       this.edition += newValue - 2017
+//     }
+//   }
+// });
+// console.log(book); // {}
+// console.log(book.year_); // 2017 
+// console.log(book.year); // 2017
+// book.year = 2018;
+// console.log(book.edition);
+// let description = Object.getOwnPropertyDescriptors(book)
+// console.log(description);
+// // 输出
+// {
+//   year_: {
+//     value: 2017,
+//     writable: false,
+//     enumerable: false,
+//     configurable: false
+//   },
+//   edition: { value: 1, writable: false, enumerable: false, configurable: false },
+//   year: {
+//     get: [Function: get],
+//     set: undefined,
+//     enumerable: false,
+//     configurable: false
+//   },
+//   set: {
+//     value: undefined,
+//     writable: false,
+//     enumerable: false,
+//     configurable: false
+//   }
+// }
+
+// // 对象合并
+// let a = { name: 'fantasy' };
+// let b = { sex: '男' };
+// console.log(Object.assign(a, b)); // { name: 'fantasy', sex: '男' }
+
+// // Object.is()
+// console.log(NaN === NaN); // false
+// console.log(+0 === -0); // true
+// console.log(+0 === 0); // true
+// console.log(-0 === 0); // true
+
+// console.log(Object.is(NaN, NaN)); // true
+// console.log(Object.is(+0, -0)); // false
+// console.log(Object.is(+0, 0)); // true
+// console.log(Object.is(-0, 0)); // false
+
+// // 属性值简写
+// let name = 'fantasy';
+// let person = { name };
+// console.log(person); // { name: 'fantasy' }
+
+// // 可计算属性
+// const nameKey = 'name';
+// const ageKey = 'age';
+// const jobcKey = 'job';
+// let person = {
+//   [nameKey]: 'Bob',
+//   [ageKey]: 18,
+//   [jobcKey]: 'Software engineer'
+// }
+// console.log(person); // { name: 'Bob', age: 18, job: 'Software engineer' }
+
+// // 可以对属性值做复杂运算
+// let uniqueToken = 0;
+// function getUniqueKey(key) {
+//   return `${key}_${uniqueToken++}`
+// }
+// let otherPerson = {
+//   [getUniqueKey(nameKey)]: 'fantasy',
+//   [getUniqueKey(ageKey)]: 25,
+//   [getUniqueKey(jobcKey)]: 'writter'
+// }
+// console.log(otherPerson); // { name_0: 'fantasy', age_1: 25, job_2: 'writter' }
+
+// // 简写方法名
+// let person = {
+//   sayName(name) {
+//     console.log(`My name is ${name}`);
+//   }
+// };
+// person.sayName('Bob') // My name is Bob
+
+// // 兼容计算属性
+// const methodKey = 'sayName'
+// let otherPerson = {
+//   [methodKey](name) {
+//     console.log(`My name is ${name}`);
+//   }
+// };
+// otherPerson.sayName('fantasy') // My name is fantasy
+
+// let person = {
+//   name: 'fantasy',
+//   age: 27,
+//   job: {
+//     title: 'engineer'
+//   }
+// }
+
+// // 简单解构
+// let { name: userName, age: userAge, job: userJob } = person;
+// console.log(userName, userAge, userJob); // fantasy 27 { title: 'engineer' }
+
+// // 简写解构
+// let { name, age, job } = person;
+// console.log(name, age, job); // fantasy 27 { title: 'engineer' }
+
+// // 嵌套解构和部分解构
+// let { job: { title } } = person;
+// console.log(title); // engineer
+
+// // 函数传参解构
+// function printPerson(foo, { name, age }, bar) {
+//   console.log(arguments);
+//   console.log(name, age);
+// }
+// printPerson('1st', person, '2nd') // [Arguments] { '0': '1st', '1': { name: 'fantasy', age: 27, job: { title: 'engineer' } }, '2': '2nd' }  fantasy 27
+
+// // 工厂模式
+// function createPerson(name, age, job) {
+//   return o = {
+//     name,
+//     age,
+//     job,
+//     sayName() {
+//       console.log(this.name);
+//     }
+//   }
+// };
+// let person1 = createPerson('Bob', 27, 'engineer')
+// let person2 = createPerson('Nick', 28, 'doctor')
+// console.log(person1); // { name: 'Bob', age: 27, job: 'engineer', sayName: [Function: sayName] }
+// console.log(person2); // { name: 'Nick', age: 28, job: 'doctor', sayName: [Function: sayName] }
+
+// 构造函数
+function Person(name, age, job) {
+  this.name = name;
+  this.age = age;
+  this.job = job;
+  this.sayName = function() {
+    console.log(this.name);
+  }
+}
+let person1 = new Person('Bob', 27, 'engineer');
+let person2 = new Person('Nick', 28, 'doctor');
+console.log(person1); // Person { name: 'Bob', age: 27, job: 'engineer', sayName: [Function (anonymous)] }
+console.log(person1.sayName()); // Bob
+console.log(person2); // Person { name: 'Nick', age: 28, job: 'doctor', sayName: [Function (anonymous)] }
+console.log(person2.sayName()); // Nick
+
+// // person1和2分别保存者Person的实例，使用constructor对象类型标识属性检测到它们都指向Person
+// console.log(person1.constructor == Person); // true
+// console.log(person2.constructor == Person); // true
+
+// // person1和2是Object的实例，同时也是Person的实例
+// console.log(person1 instanceof Object); // true
+// console.log(person1 instanceof Person); // true
+// console.log(person2 instanceof Object); // true
+// console.log(person2 instanceof Person); // true
+
+console.log(person1.sayName == person2.sayName); // false
+
+function Person1(name, age, job) {
+  this.name = name;
+  this.age = age;
+  this.job = job;
+  this.sayName = sayName
+}
+
+function sayName() {
+  console.log(this.name);
+};
+let person3 = new Person1('Bob', 27, 'engineer');
+let person4 = new Person1('Nick', 28, 'doctor');
+
+person3.sayName(); // Bob
+person4.sayName(); // Nick
+console.log(person3.sayName == person4.sayName); // true

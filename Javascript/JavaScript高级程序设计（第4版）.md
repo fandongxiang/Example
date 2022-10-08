@@ -1823,6 +1823,7 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
   ``` js
     const s = new Set([1, 2, 3, 4, 5, 2, 1]);
     console.log(s instanceof Set);  // true
+
     const a = [...s]
     console.log(a); // [ 1, 2, 3, 4, 5 ]
     console.log(a instanceof Array);  // true
@@ -1851,14 +1852,7 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
   ``` js
     // Set 并集
     const union = (setA, setB) => {
-      const unionAb = new Set()
-      setA.forEach(value => {
-        unionAb.add(value)
-      });
-      setB.forEach(value => {
-        unionAb.add(value)
-      });
-      return unionAb
+      return new Set([...setA,...setB])
     }
 
     const SetA = new Set([1, 2, 3, 4, 5])
@@ -1874,15 +1868,14 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
     const SetA = new Set([1, 2, 3, 4, 5])
     const SetB = new Set([3, 4, 5, 6, 7])
 
-    const intersection = (setaA, setB) => {
-      const intersection = new Set()
-      setaA.forEach(value => {
-        if (setB.has(value)) {
-          intersection.add(value)
-        }
-      });
-      return intersection
+    const intersection = (setA, setB) => {
+      return new Set(
+        [...setA].filter((item) => {
+          return setB.has(item)
+        })
+      )
     }
+    
     let intersectionAb = intersection(SetA, SetB)
     console.log(intersectionAb); // Set(3) { 3, 4, 5 }
   ```
@@ -1890,31 +1883,78 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 3. 模拟两个集合差集操作
 
   ``` js
-    // 差集
+    // 差集 A-B
     const SetA = new Set([1, 2, 3, 4, 5])
     const SetB = new Set([3, 4, 5, 6, 7])
 
     const difference = (setA, setB) => {
-      const difference = new Set()
-      setA.forEach(value => {
-        if (!SetB.has(value)) {
-          difference.add(value)
-        }
-      })
-      setB.forEach(value => {
-        if (!SetA.has(value)) {
-          difference.add(value)
-        }
-      })
-      return difference
+      return new Set(
+        [...setA].filter((item) => {
+          return !setB.has(item)
+        })
+      )
     }
+
     const differenceAb = difference(SetA, SetB)
-    console.log(differenceAb) 
+    console.log(differenceAb)
+  ```
+
+#### 6.6.4 使用Set处理网页搜索关键词
+
+  ``` html 
+    <body>
+      <input type="text" name="search">
+      <ul></ul>
+
+
+      <script>
+        let obj = {
+          // 使用Set属性自动筛除重复项
+          data: new Set(),
+          keyWords(word) {
+            this.data.add(word)
+          },
+          show() {
+            let ul = document.querySelector('ul')
+            ul.innerHTML = ''
+            this.data.forEach((value) => {
+              ul.innerHTML += `<li>${value}</li>`
+            })
+          }
+        }
+        let search = document.querySelector('[name="search"]')
+        search.addEventListener('blur', function() {
+          obj.keyWords(this.value);
+          obj.show()
+        })
+      </script>
+    </body>
   ```
 
 ### 6.7 WeakSet 
 
 > WeakSet中的“Weak”描述的是JavaScript垃圾回收程序中对待“弱集合”中值的回收方式。
+
+#### 6.7.1 WeakSet弱引用特性
+
+  ``` js
+    // weakSet 弱引用特性
+    let obj = {
+      name: 'fantasy'
+    }
+    let edu = obj;
+    obj = null; // obj 被清空了，但是因为 edu 引用，所以edu 还是存在
+    console.log(edu); // { name: 'fantasy' }
+
+    let set = new WeakSet()
+    set.add(edu)
+    console.log(set); // WeakSet { name: 'fantasy' }
+
+    edu = null;
+    setTimeout(() => {
+      console.log(set);
+    }, 2000)
+  ```
 
 ### 6.8 迭代与扩展操作
 
@@ -2157,24 +2197,461 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
     function* genfunc(x) {
       let result1 = yield XxxxAPI(x)
       console.log(`第1次请求结果为：${result1}`);
-      let result2 = yield XxxxAPI(x)
+      let result2 = yield XxxxAPI(result1)
       console.log(`第1次请求结果为：${result2}`);
-      let result3 = yield XxxxAPI(x)
-      console.log(`第1次请求结果为：${result3}`);
+      let result3 = yield XxxxAPI(result2)
+      console.log(`第1次请求结果为：${result3}`); 
     }
     let iter = genfunc(0);
     // iter.next().value 拿到Promise对象
+    <!-- 注意：这里的result1和生成器的result1不是一回事，生成器result为了next()传参后将值传递给下一次 XxxxAPI(result)，而这里result是Promise返回的x++的值-->
     iter.next().value.then(result1 => {
-        return iter.next(result1).value
+        return iter.next(result1).value   // 给next()传参，使yield XxxxAPI(x)值为
       }).then(result2 => {
-        return iter.next(result2).value
+        return iter.next(result2).value  // return 出去的是Promise对象，但Promise会自动读取里面的值
       }).then(result3 => {
         return iter.next(result3).value
       })
   ```
 
-3. async-await写法
+3. 封装迭代器函数
 
   ``` js
+    function XxxxAPI(x) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(++x)
+        }, 1000)
+      })
+    }
 
+    // 生成器创建迭代器的写法
+    function* genfunc(x) {
+      let y = yield XxxxAPI(x)
+      console.log(`第1次请求结果为：${y}`);
+      let z = yield XxxxAPI(y)
+      console.log(`第1次请求结果为：${z}`);
+      let m = yield XxxxAPI(z)
+      console.log(`第1次请求结果为：${m}`);
+    }
+
+    // // 封装前将代码整理如下：
+    // iter.next().value.then(result1 => {
+    //   return iter.next(result1).value.then(result2 => {
+    //     return iter.next(result2).value.then(result3 => {
+    //       return iter.next(result3).value
+    //     })
+    //   })
+    // })
+
+    // 封装函数
+    function asyncFunc(genFn, ...params) {
+      let iter = genFn(...params);
+      // 使用递归的思想
+      const next = x => {
+        let { value, done } = iter.next(x);
+        if (done) return;
+        value.then(next)
+      };
+      next()
+    };
+
+    asyncFunc(genfunc, 0)
   ```
+
+4. async-await
+
+  ``` js
+    function XxxxAPI(x) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(++x)
+        }, 1000)
+      })
+    }
+
+    // 封装函数
+    function asyncFunc(genFn, ...params) {
+      let iter = genFn(...params);
+      // 使用递归的思想
+      const next = x => {
+        let { value, done } = iter.next(x);
+        if (done) return;
+        value.then(next)
+      };
+      next()
+    };
+
+    asyncFunc(function* genfunc(x) {
+      let y = yield XxxxAPI(x)
+      console.log(`第1次请求结果为：${y}`);
+      let z = yield XxxxAPI(y)
+      console.log(`第1次请求结果为：${z}`);
+      let m = yield XxxxAPI(z)
+      console.log(`第1次请求结果为：${m}`);
+    }, 0)
+  ```
+
+## 第8章 对象、类与面向对象编程
+
+### 8.1 理解对象
+
+> 对象为一组属性的无序集合。
+
+#### 8.1.1 属性的类型
+
+> ECMA-262使用一些内部特性来描述属性的特征，开发者不能在Javascript中直接访问这些属性，为了将某个特性标识为内部特性，规范会用两个中括号把特性的名称括起来，比如[[Enumerable]]。
+
+##### 8.1.1.1 数据属性
+
+数据属性包含一个保存数据值的位置。值会从这个位置读取，也会写入到这个位置。数据属性有4个特征描述它们的行为：
+1. `[[Configurable]]`：表示属性书否可以通过`delete`删除并重新定义，默认为`true`；
+2. `[[Enumberable]]`：表示属性书否可以通过`for in`循环返回，默认为`true`；
+3. `[[Writeable]]`：表示属性书否可以被修改，默认为`true`；
+4. `[[Value]]`：包含属性实际值，为读取和写入属性的位置，默认为`undefined`；
+5. `Object.defineProperty()`：接受3个参数，第一个值为
+
+  ``` js
+    // configurable
+    let person = { name: 'fantasy' };
+    Object.defineProperty(person, 'name', {
+      configurable: false,
+      value: 'fantasy'
+    });
+    delete person.name
+    console.log(person.name);
+
+    Object.defineProperty(person, 'name', {
+      writable: false,
+      value: 'fantasy'
+    });
+    person.name = "Bob";
+    console.log(person.name);  // fantasy    
+  ```
+
+##### 8.1.1.2 访问器属性
+
+> 访问器函数不包括数据值。它们包含一个获取（getter）函数和一个设置（setter）函数。在读取访问器属性是，会调用获取函数，这个函数的责任就是返回一个有效的值。在访问器属性是，会调用设置函数并传入新值，这个函数必须决定对数据做出什么修改。它包含4个属性；
+
+1. `[[Configurable]]`：表示属性书否可以通过`delete`删除并重新定义，默认为`true`；
+2. `[[Enumberable]]`：表示属性书否可以通过`for in`循环返回，默认为`true`；
+3. `[[Get]]`：获取函数，在读取属性时调用，默认为`undefined`；
+4. `[[Set]]`：设置函数，在写入属性时调用，默认为`undefined`；
+
+  ``` js
+    // 访问器属性：设置一个属性会导致一些其它属性发生变化
+    let book = {
+      _year: 2017,
+      edition: 1
+    }
+    Object.defineProperty(book, 'year', {  // year 被定义为访问器属性
+      get() {
+        return this._year
+      },
+      set(newValue) {
+        if (newValue > 2017) {
+          this._year = newValue;
+          this.edition += newValue - 2017;
+        }
+      }
+    });
+    book.year = 2018;
+    console.log(book.edition);  // 2
+  ```
+
+##### 8.1.2 定义多个属性
+
+> 类似`Object.defineProperty`，`Object.defineProperties`可以同时设置多个属性。
+
+  ``` js
+    let book = {};
+    Object.defineProperties(book, {
+      year_: {
+        value: 2017
+      },
+
+      edition: {
+        value: 1
+      },
+
+      year: {
+        get() {
+          return this.year_
+        }
+      },
+
+      set(newValue) {
+        if (newValue > 2017) {
+          this.year_ = newValue;
+          this.edition += newValue - 2017
+        }
+      }
+    });
+    console.log(book); // {}
+    console.log(book.year_); // 2017 
+    console.log(book.year); // 2017
+    book.year = 2018;
+    console.log(book.edition);
+  ```
+
+##### 8.1.3 读取属性的特性
+
+> `Object.getOwnPropertyDescriptors`可以yong
+
+  ``` js
+    let description = Object.getOwnPropertyDescriptors(book)
+    console.log(description);
+    // 输出
+    {
+      year_: {
+        value: 2017,
+        writable: false,
+        enumerable: false,
+        configurable: false
+      },
+      edition: { value: 1, writable: false, enumerable: false, configurable: false },
+      year: {
+        get: [Function: get],
+        set: undefined,
+        enumerable: false,
+        configurable: false
+      },
+      set: {
+        value: undefined,
+        writable: false,
+        enumerable: false,
+        configurable: false
+      }
+    }
+  ```
+
+##### 8.1.4 合并对象
+
+> 合并两个对象也称为“混入”，是将两个对象合并的得到属性加强，包括里面的方法。
+
+  ``` js
+    // 对象合并
+    let a = { name: 'fantasy' };
+    let b = { sex: '男' };
+    console.log(Object.assign(a, b)); // { name: 'fantasy', sex: '男' }
+  ```
+
+##### 8.1.5 对象标识及相等判断
+
+> 为了解决ES6之前对象相等判断不明确问题，ES6引入了`Object.is()`方法，输入两个值判断`====`返回布尔值。
+
+  ``` js
+    // Object.is()
+    console.log(NaN === NaN); // false
+    console.log(+0 === -0); // true
+    console.log(+0 === 0); // true
+    console.log(-0 === 0); // true
+
+    console.log(Object.is(NaN, NaN)); // true
+    console.log(Object.is(+0, -0)); // false
+    console.log(Object.is(+0, 0)); // true
+    console.log(Object.is(-0, 0)); // false
+  ```
+
+##### 8.1.6 增强的对象语法
+
+> ES6提供很多对象的语法糖。
+
+1. 属性值简写：属性名和变量名相同时，可以只写一个；
+   
+  ``` js
+    // 属性值简写
+    let name = 'fantasy';
+    let person = { name };
+    console.log(person); // { name: 'fantasy' }
+  ```
+
+2. 可计算属性：之前要创建动态属性必须通过`[]`赋值语法挨个赋值，现在可以通过`[]`计算属性直接给对象赋予动态属性值，甚至可以对属性值进行复杂运算。
+
+  ``` js
+    // 可计算属性
+    const nameKey = 'name';
+    const ageKey = 'age';
+    const jobcKey = 'job';
+    let person = {
+      [nameKey]: 'Bob',
+      [ageKey]: 18,
+      [jobcKey]: 'Software engineer'
+    }
+    console.log(person); // { name: 'Bob', age: 18, job: 'Software engineer' }
+
+    // 可以对属性值做复杂运算
+    let uniqueToken = 0;
+    function getUniqueKey(key) {
+      return `${key}_${uniqueToken++}`
+    }
+    let otherPerson = {
+      [getUniqueKey(nameKey)]: 'fantasy',
+      [getUniqueKey(ageKey)]: 25,
+      [getUniqueKey(jobcKey)]: 'writter'
+    }
+    console.log(otherPerson); // { name_0: 'fantasy', age_1: 25, job_2: 'writter' }
+  ```
+
+3. 简写方法名：不用再用方法名+`：`+匿名函数表达式来定义对象方法，直接写函数就行，并且和计算属性兼容。
+
+  ``` js
+    // 简写方法名
+    let person = {
+      sayName(name) {
+        console.log(`My name is ${name}`);
+      }
+    };
+    person.sayName('Bob') // My name is Bob
+
+    // 兼容计算属性
+    const methodKey = 'sayName'
+    let otherPerson = {
+      [methodKey](name) {
+        console.log(`My name is ${name}`);
+      }
+    };
+    otherPerson.sayName('fantasy') // My name is fantasy
+  ```
+
+##### 8.1.7 对象解构
+
+1. ES6中新增了解构语法，如果让变量直接使用属性值时可以简写;
+2. 解构赋值时可以同时定义新变量，并给新变量;
+3. 解构时可以嵌套解构；
+4. 函数传参时也可以进行解构；
+
+  ``` js
+    let person = {
+      name: 'fantasy',
+      age: 27,
+      job: {
+        title: 'engineer'
+      }
+    }
+
+    // 简单解构
+    let { name: userName, age: userAge, job: userJob } = person;
+    console.log(userName, userAge, userJob); // fantasy 27 { title: 'engineer' }
+
+    // 简写解构
+    let { name, age, job } = person;
+    console.log(name, age, job); // fantasy 27 { title: 'engineer' }
+
+    // 嵌套解构和部分解构
+    let { job: { title } } = person;
+    console.log(title); // engineer
+
+    // 函数传参解构
+    function printPerson(foo, { name, age }, bar) {
+      console.log(arguments);
+      console.log(name, age);
+    }
+    printPerson('1st', person, '2nd') // [Arguments] { '0': '1st', '1': { name: 'fantasy', age: 27, job: { title: 'engineer' } }, '2': '2nd' }  fantasy 27
+  ```
+
+### 8.2 创建对象
+
+#### 8.2.1 概述
+
+略
+
+#### 8.2.2 工厂模式
+
+> 工厂模式时一种众所周知的设计模式，广泛应用于软件工程领域，用于抽象创建特定对象的过程。
+> 这种工厂模式虽然可以解决创建多个类似对象的问题，但没有解决对象标识问题（即新创建对象是什么类型）。
+
+  ``` js
+    // 工厂模式
+    function createPerson(name, age, job) {
+      return o = {
+        name,
+        age,
+        job,
+        sayName() {
+          console.log(this.name);
+        }
+      }
+    };
+    let person1 = createPerson('Bob', 27, 'engineer')
+    let person2 = createPerson('Nick', 28, 'doctor')
+    console.log(person1); // { name: 'Bob', age: 27, job: 'engineer', sayName: [Function: sayName] }
+    console.log(person2); // { name: 'Nick', age: 28, job: 'doctor', sayName: [Function: sayName] }
+  ```
+
+#### 8.2.3 构造函数模式
+
+##### 8.2.3.1 构造函数基本结构
+
+构造函数和工厂函数的结构区别：
+1. 没有显式的创建对象；
+2. 属性和方法直接赋值给了`this`；
+3. 没有`return`；
+4. 必须通过`new`调用；
+
+  ``` js
+    // 构造函数
+    function Person(name, age, job) {
+      this.name = name;
+      this.age = age;
+      this.job = job;
+      this.sayName = function() {
+        console.log(this.name);
+      }
+    }
+    let person1 = new Person('Bob', 27, 'engineer');
+    let person2 = new Person('Nick', 28, 'doctor');
+    console.log(person1); // Person { name: 'Bob', age: 27, job: 'engineer', sayName: [Function (anonymous)] }
+    console.log(person1.sayName()); // Bob
+    console.log(person2); // Person { name: 'Nick', age: 28, job: 'doctor', sayName: [Function (anonymous)] }
+    console.log(person2.sayName()); // Nick
+
+    // person1和2分别保存者Person的实例，使用constructor对象类型标识属性检测到它们都指向Person
+    console.log(person1.constructor == Person); // true
+    console.log(person2.constructor == Person); // true
+
+    // person1和2是Object的实例，同时也是Person的实例
+    console.log(person1 instanceof Object); // true
+    console.log(person1 instanceof Person); // true
+    console.log(person2 instanceof Object); // true
+    console.log(person2 instanceof Person); // true
+  ```
+
+##### 8.2.3.2 构造函数问题
+
+> 构造函数定义的方法会在每个实例上都创建一遍。可以通过把方法定义在函数外解决，这样虽然解决了相同逻辑的函数重复定义的问题，但会造成作用域和结构混乱。
+
+  ``` js
+    function Person(name, age, job) {
+    this.name = name;
+    this.age = age;
+    this.job = job;
+    this.sayName = function() {
+      console.log(this.name);
+    }
+    }
+    let person1 = new Person('Bob', 27, 'engineer');
+    let person2 = new Person('Nick', 28, 'doctor');
+
+    console.log(person1.sayName == person2.sayName); // false
+
+    function Person1(name, age, job) {
+      this.name = name;
+      this.age = age;
+      this.job = job;
+      this.sayName = sayName
+    }
+    function sayName() {
+      console.log(this.name);
+    };
+    let person3 = new Person1('Bob', 27, 'engineer');
+    let person4 = new Person1('Nick', 28, 'doctor');
+
+    person3.sayName(); // Bob
+    person4.sayName(); // Nick
+    console.log(person3.sayName == person4.sayName); // true
+  ```
+
+  #### 8.2.4 原型模式
+
+  

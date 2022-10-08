@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // weakSet 弱引用特性
+    let obj = {
+      name: 'fantasy'
+    }
+    let edu = obj;
+    obj = null; // obj 被清空了，但是因为 edu 引用，所以edu 还是存在
+    console.log(edu); // { name: 'fantasy' }
+
+    let set = new WeakSet()
+    set.add(edu)
+    console.log(set); // WeakSet { name: 'fantasy' }
+
+    edu = null;
+    setTimeout(() => {
+      console.log(set);
+    }, 2000)
+  </script>
+</body>
+
+</html>
