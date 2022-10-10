@@ -1,5 +1,7 @@
 # JavaScript高级程序设计（第4版）
 
+[TOC]
+
 ## 第三章 语言基础
 
 ### 3.4 数据类型
@@ -2294,13 +2296,16 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 
 ## 第8章 对象、类与面向对象编程
 
+> 类抽象了对象的公共部分，它泛指某一大类。对象特指某一个，通过类实例化一个具体的对象。
+> 类是对象的模板，对象是类的实例。
+
 ### 8.1 理解对象
 
 > 对象为一组属性的无序集合。
 
 #### 8.1.1 属性的类型
 
-> ECMA-262使用一些内部特性来描述属性的特征，开发者不能在Javascript中直接访问这些属性，为了将某个特性标识为内部特性，规范会用两个中括号把特性的名称括起来，比如[[Enumerable]]。
+> ECMA-262使用一些内部特性来描述属性的特征，开发者不能在Javascript中直接访问这些属性，为了将某个特性标识为内部特性，规范会用两个中括号把特性的名称括起来，比如`[[Enumerable]]`。
 
 ##### 8.1.1.1 数据属性
 
@@ -2309,7 +2314,7 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 2. `[[Enumberable]]`：表示属性书否可以通过`for in`循环返回，默认为`true`；
 3. `[[Writeable]]`：表示属性书否可以被修改，默认为`true`；
 4. `[[Value]]`：包含属性实际值，为读取和写入属性的位置，默认为`undefined`；
-5. `Object.defineProperty()`：接受3个参数，第一个值为
+5. `Object.defineProperty()`：接受3个参数，第一个值为定义的对象，第二个值为属性，第三个值为特征对象。
 
   ``` js
     // configurable
@@ -2356,6 +2361,7 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
       }
     });
     book.year = 2018;
+    console.log(book._year); // 2018
     console.log(book.edition);  // 2
   ```
 
@@ -2396,7 +2402,7 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 
 ##### 8.1.3 读取属性的特性
 
-> `Object.getOwnPropertyDescriptors`可以yong
+> `Object.getOwnPropertyDescriptors`可以用来读取属性四个特征的值。
 
   ``` js
     let description = Object.getOwnPropertyDescriptors(book)
@@ -2550,7 +2556,7 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
     printPerson('1st', person, '2nd') // [Arguments] { '0': '1st', '1': { name: 'fantasy', age: 27, job: { title: 'engineer' } }, '2': '2nd' }  fantasy 27
   ```
 
-### 8.2 创建对象
+### 8.2 构造函数和原型
 
 #### 8.2.1 概述
 
@@ -2558,7 +2564,8 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 
 #### 8.2.2 工厂模式
 
-> 工厂模式时一种众所周知的设计模式，广泛应用于软件工程领域，用于抽象创建特定对象的过程。
+> 工厂模式时一种众所周知的设计模式，广泛应用于软件工程领域，用于抽象创建特定对象的过程；
+> 工厂函数：它是一个函数，它是用来**创建对象**，它像工厂一样，“生产”出来的函数都是“标准件”（拥有相同属性和方法）；
 > 这种工厂模式虽然可以解决创建多个类似对象的问题，但没有解决对象标识问题（即新创建对象是什么类型）。
 
   ``` js
@@ -2617,7 +2624,46 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
     console.log(person2 instanceof Person); // true
   ```
 
-##### 8.2.3.2 构造函数问题
+##### 8.2.3.2 构造函数执行顺序
+
+`new`在执行时会做四件事情；
+1. 在内存中创建一个新的空对象；
+2. 让`this`指向这个新的对象；
+3. 执行构造函数里面的代码，给这个新对象添加属性和方法；
+4. 返回这个新对象（所以构造函数里面不需要`return`）；
+
+##### 8.2.3.3 实例成员和静态成员
+
+1. 实例成员：就是构造函数内部通过`this`添加的成员；
+2. 实例成员只能通过实例化的对象来访问，不能通过构造函数来访问；
+3. 静态成员：在构造函数本身上添加的成员；
+4. 静态成员只能通过构造函数访问，不能通过实例化对象访问；
+5. `.hasOwnProperty()`：可以用来确定访问的是实例成员（实例属性）还是静态成员（静态属性）。
+
+  ``` js
+    function Person(name, age, job) {
+      this.name = name;
+      this.age = age;
+      this.job = job;
+      this.sayName = function() {
+        console.log(this.name);
+      }
+    }
+    let Bob = new Person('Bob', 27, 'engineer')
+      // 实例成员 name age sayName
+    console.log(Bob.name); // Bob
+    console.log(Person.name); // Person
+    // 静态成员
+    Person.sex = "男";
+    console.log(Bob.sex); // undefined
+    console.log(Person.sex); // 男
+
+    // hasOwnProperty()
+    console.log(Bob.hasOwnProperty('name')); // true
+    console.log(Bob.hasOwnProperty('sex')); // false
+  ```
+
+##### 8.2.3.4 构造函数问题————浪费内存空间
 
 > 构造函数定义的方法会在每个实例上都创建一遍。可以通过把方法定义在函数外解决，这样虽然解决了相同逻辑的函数重复定义的问题，但会造成作用域和结构混乱。
 
@@ -2649,9 +2695,247 @@ console.log(stringValue.toLocaleLowerCase());          // 'hello world'
 
     person3.sayName(); // Bob
     person4.sayName(); // Nick
-    console.log(person3.sayName == person4.sayName); // true
+    console.lo g(person3.sayName == person4.sayName); // true
   ```
 
-  #### 8.2.4 原型模式
+#### 8.2.4 原型模式
 
-  
+> 原型是一个对象，也称为原型对象。它的作用是共享构造函数属性，节约内存空间，解决构造函数内部定义方法浪费内存空间的问题。
+
+##### 8.2.4.1 原型对象
+
+1. 构造函数通过原型分类的函数是所有对象所**共享的**。
+2. Javascript规定，每一个构造函数都有一个`prototype`属性，指向另一个对象。`prototype`就是一个对象，这个对象拥有的属性和方法，都会被构造函数所拥有。
+3. 一般情况下，公共属性定义到构造函数里面，公共的方法我们放到原型对象身上。
+
+  ``` js
+    // 原型对象
+    function Person(name, age, job) {
+      this.name = name;
+      this.age = age;
+      this.job = job;
+    }
+
+    Person.prototype.sayName = function() {
+      console.log(`My name is ${this.name}`);
+    }
+
+    let Bob = new Person('Bob', 27, 'engineer');
+    let Nick = new Person('Nick', 18, 'doctor')
+    Bob.sayName() // My name is Bob
+    Nick.sayName() // My name is Nick
+
+    console.log(Bob.sayName() === Nick.sayName()); // true
+  ```
+
+##### 8.2.4.2 对象原型
+
+1. `__proto`：对象都会有一个属性`__proto__`指向构造函数的`prototype`原型对象，之所以对象可以使用构造函数`prototype`原型对象的属性方法，就是因为对象有`__proto__`原型的存在；
+2. 对象方法查找规则：首先在对象身上查找有没有该方法，没有然后顺着`__proto__`，去查找构造函数原型对象`prototype`身上去查找该方法；
+
+  ``` js
+    // 证明构造函数的原型对象 === 实例化对象的原型
+    function Person(name, age, job) {
+      this.name = name;
+      this.age = age;
+      this.job = job;
+    }
+
+    Person.prototype.sayName = function() {
+      console.log(`My name is ${this.name}`);
+    }
+
+    let Bob = new Person('Bob', 27, 'engineer');
+    let Nick = new Person('Nick', 18, 'doctor')
+
+    console.log(Bob.__proto__ === Person.prototype); // true
+  ```
+
+##### 8.2.4.3 constructor 构造函数
+
+1. 对象原型（`__proto__`）和构造函数原型（`prototype`）对象里面都有一个属性`constructor`属性，`constructor`我们称为构造函数，因为它们指回构造函数本身。
+2. `constructor`主要用于记录该对象引用哪个构造函数，
+3. 很多情况下，我们需要手动的利用 `constructor`让原型对象重新指向原来的构造函数。比如以对象形式给`prototype`赋值；
+
+  ``` js
+    Person.prototype = {
+      sayName() {
+        console.log(`My name is ${this.name}`);
+      },
+      sayJob() {
+        console.log(`My job is ${this.job}`);
+      }
+    }
+
+    let Bob = new Person('Bob', 27, 'engineer');
+    let Nick = new Person('Nick', 18, 'doctor')
+
+    // 构造函数和类中没有 constructor 属性
+    console.log(Person.prototype);
+    console.log(Bob.__proto__);
+
+    // constructor 也不指回构造函数了
+    console.log(Person.prototype.constructor); // [Function: Object]
+    console.log(Bob.__proto__.constructor); // [Function: Object]
+
+    // 重新指回 构造函数
+    Person.prototype = {
+      constructor: Person,
+      sayName() {
+        console.log(`My name is ${this.name}`);
+      },
+      sayJob() {
+        console.log(`My job is ${this.job}`);
+      }
+    }; 
+    console.log(Person.prototype.constructor); // [Function: Person]
+    console.log(Bob.__proto__.constructor); // [Function: Person]
+  ```
+
+##### 8.2.4.4 构造函数、实例、原型对象三者关系
+
+<img src="./image/01-构造函数、实例、原型对象三者关系.png">
+
+##### 8.2.4.5 原型链
+
+1. 原型对象作为对象，它也存在一个`__proto__`属性，它指向`Object`里的`prototype`属性。
+2. `Object`作为对象，它也由一个构造函数创建，它的`protoype`里的`__proto__`指向`null`；
+
+  ``` js
+    function Person(name, age, job) {
+      this.name = name;
+      this.age = age;
+      this.job = job;
+    }
+
+    // 原型对象中的 __proto__ 指向
+    console.log(Person.prototype.__proto__ === Object.prototype); // true
+
+    // Object对象中的 __proto__ 指向
+    console.log(Object.prototype.__proto__); // null
+  ```
+
+<img src="./image/02-原型链.png">
+
+##### 8.2.4.6 原型链成员查找规则
+
+1. 先查找**对象自身**是否有该属性，有返回该属性，没有查找对应原型对象；
+2. 再查找**构造函数原型对象**是否有该属性，有返回原型对象属性，没有查找Object对象；
+3. 再查找**Object原型对象**是否有该属性，有返回Object原型对象属性，无返回`null`；
+4. 属性查找依据“就近原则”，即：自身属性>构造函数原型对象属性>Object原型对象属性
+
+  ``` js
+    // 原型链成员查找规则
+    function Person() {};
+    let person = new Person();
+
+    // 无属性时
+    console.log(person.name); // undefined
+
+    // Object 原型对象有属性
+    Object.prototype.name = 'Bob';
+    console.log(person.name); // Bob
+
+    // 构造函数 原型对象有属性
+    Person.prototype.name = 'Nick';
+    console.log(person.name); // Nick
+
+    // 对象自身有属性
+    person.name = 'fantasy';
+    console.log(person.name); // fantasy
+
+    // 解决为什么对象自身没有方法，但可以调用疑惑？
+    let person = {}; // 本身没有 toString() 属性
+    console.log(person.toString()); // [object Object]
+  ````
+
+##### 8.2.4.7 原型对象中this指向问题
+
+1. 在构造函数中，里面`this`指向的是对象实例；
+2. 原型对象里面的`this`指向的也是对象实例；
+
+  ``` js
+    // 原型对象 this 指向问题
+    function Person() {}
+    var that;
+    Person.prototype.sing = function() {
+      that = this
+      console.log('I can sing!');
+    }
+    let person = new Person()
+    person.sing() // I can sing!
+    console.log(that === person); // true
+  ```
+
+##### 8.2.4.8 利用原型对象扩展内置对象方法
+
+> 原生Array.prototype原型对象中没有数组求和方法，可以手动给原型对象中添加求和方法，使得之后数组都有该方法。
+
+  ``` js
+    // 为 Array 原型对象添加求和方法
+    Array.prototype.sum = function() {
+      return this.reduce((prev, current) => {
+        return prev + current;
+      }, 0)
+    }
+    let arr = [1, 2, 3, 4, 5];
+    console.log(arr.sum());  // 15
+  ```
+
+##### 8.2.4.9 原型和in操作符
+
+#### 8.2.5 对象迭代
+
+### 8.3 继承
+
+#### 8.3.1 call 方法
+
+> 在ES6之前并没有给我们提供`extends`继承。我们通过构造函数+原型对象模拟实现继承，被称为组合继承。
+
+1. `fn.call()`：第一个传入的参数为将`this`指向的新对象，其余为普通参数；
+2. 不传参时调用函数，传参时改变函数`this`的指向。
+
+  ``` js
+    // call
+    function fn() {
+      console.log(this);
+    }
+
+    // 不传参调用
+    fn() // windows 对象
+    fn.call() // windows 对象
+
+    // 传参改变 this 指向
+    let person = { name: 'Nick' };
+    fn.call(person) // { name: 'Nick' }
+  ```
+
+#### 8.3.2 借用父构造函数继承属性
+
+> 核心原理：通过`call()`把父类型的`this`指向子类型的`this`，这样就可以实现子类型继承父类型的属性。
+
+  ``` js
+    // 构造函数继承
+    function Father(name, age) {
+      this.name = name;
+      this.age = age;
+      this.sayName = function() {
+        console.log(`My name is ${this.name}`);
+      }
+    }
+
+    function Son(name, age, score) {
+      Father.call(this, name, age);
+      this.score = score;
+    }
+
+    let son = new Son('Bob', 17, 100)
+    console.log(son); // Son { name: 'Bob', age: 17, sayName: [Function     (anonymous)], score: 100 }
+    son.sayName(); // My name is Bob
+  ```
+
+#### 8.2.3 利用原型对象继承方法
+
+``` js
+
+```

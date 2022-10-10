@@ -10,22 +10,47 @@
 
 <body>
   <script>
-    // weakSet 弱引用特性
-    let obj = {
-      name: 'fantasy'
-    }
-    let edu = obj;
-    obj = null; // obj 被清空了，但是因为 edu 引用，所以edu 还是存在
-    console.log(edu); // { name: 'fantasy' }
+    // // weakSet 弱引用特性
+    // let obj = {
+    //   name: 'fantasy'
+    // }
+    // let edu = obj;
+    // obj = null; // obj 被清空了，但是因为 edu 引用，所以edu 还是存在
+    // console.log(edu); // { name: 'fantasy' }
 
-    let set = new WeakSet()
-    set.add(edu)
-    console.log(set); // WeakSet { name: 'fantasy' }
+    // let set = new WeakSet()
+    // set.add(edu)
+    // console.log(set); // WeakSet { name: 'fantasy' }
 
-    edu = null;
-    setTimeout(() => {
-      console.log(set);
-    }, 2000)
+    // edu = null;
+    // setTimeout(() => {
+    //   console.log(set);
+    // }, 2000)
+    // function Person(name, age, job) {
+    //   this.name = name;
+    //   this.age = age;
+    //   this.job = job;
+    //   this.sayName = function() {
+    //     console.log(this.name);
+    //   }
+    // }
+    // console.dir(Person)
+    // Person.prototype.sayName = function() {
+    //   console.log(`My name is ${this.name}`);
+    // }
+
+    // let Bob = new Person('Bob', 27, 'engineer');
+    // let Nick = new Person('Nick', 18, 'doctor')
+    // console.log(Bob);
+
+    // console.log(Person.prototype);
+    // console.log(Bob.__proto__);
+
+    // console.log(Bob.__proto__ === Person.prototype);
+
+    let person = {}; // 
+    console.log(person);
+    console.log(person.toString());
   </script>
 </body>
 

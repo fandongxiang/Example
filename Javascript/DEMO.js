@@ -1586,21 +1586,21 @@ let puller = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2', 'E1', 'E2'];
 // console.log(person1); // { name: 'Bob', age: 27, job: 'engineer', sayName: [Function: sayName] }
 // console.log(person2); // { name: 'Nick', age: 28, job: 'doctor', sayName: [Function: sayName] }
 
-// 构造函数
-function Person(name, age, job) {
-  this.name = name;
-  this.age = age;
-  this.job = job;
-  this.sayName = function() {
-    console.log(this.name);
-  }
-}
-let person1 = new Person('Bob', 27, 'engineer');
-let person2 = new Person('Nick', 28, 'doctor');
-console.log(person1); // Person { name: 'Bob', age: 27, job: 'engineer', sayName: [Function (anonymous)] }
-console.log(person1.sayName()); // Bob
-console.log(person2); // Person { name: 'Nick', age: 28, job: 'doctor', sayName: [Function (anonymous)] }
-console.log(person2.sayName()); // Nick
+// // 构造函数
+// function Person(name, age, job) {
+//   this.name = name;
+//   this.age = age;
+//   this.job = job;
+//   this.sayName = function() {
+//     console.log(this.name);
+//   }
+// }
+// let person1 = new Person('Bob', 27, 'engineer');
+// let person2 = new Person('Nick', 28, 'doctor');
+// console.log(person1); // Person { name: 'Bob', age: 27, job: 'engineer', sayName: [Function (anonymous)] }
+// console.log(person1.sayName()); // Bob
+// console.log(person2); // Person { name: 'Nick', age: 28, job: 'doctor', sayName: [Function (anonymous)] }
+// console.log(person2.sayName()); // Nick
 
 // // person1和2分别保存者Person的实例，使用constructor对象类型标识属性检测到它们都指向Person
 // console.log(person1.constructor == Person); // true
@@ -1612,21 +1612,213 @@ console.log(person2.sayName()); // Nick
 // console.log(person2 instanceof Object); // true
 // console.log(person2 instanceof Person); // true
 
-console.log(person1.sayName == person2.sayName); // false
+// console.log(person1.sayName == person2.sayName); // false
 
-function Person1(name, age, job) {
+// function Person1(name, age, job) {
+//   this.name = name;
+//   this.age = age;
+//   this.job = job;
+//   this.sayName = sayName
+// }
+
+// function sayName() {
+//   console.log(this.name);
+// };
+// let person3 = new Person1('Bob', 27, 'engineer');
+// let person4 = new Person1('Nick', 28, 'doctor');
+
+// person3.sayName(); // Bob
+// person4.sayName(); // Nick
+// console.log(person3.sayName == person4.sayName); // true
+
+// function Person(name, age, job) {
+//   this.name = name;
+//   this.age = age;
+//   this.job = job;
+//   this.sayName = function() {
+//     console.log(this.name);
+//   }
+// }
+// let Bob = new Person('Bob', 27, 'engineer')
+//   // 实例成员 name age sayName
+// console.log(Bob.name); // Bob
+// console.log(Person.name); // Person
+// // 静态成员
+// Person.sex = "男";
+// console.log(Bob.sex); // undefined
+// console.log(Person.sex); // 男
+
+
+// // 原型对象
+// function Person(name, age, job) {
+//   this.name = name;
+//   this.age = age;
+//   this.job = job;
+// }
+
+// // Person.prototype.sayName = function() {
+// //   console.log(`My name is ${this.name}`);
+// // }
+
+// // Person.prototype = {
+// //   sayName() {
+// //     console.log(`My name is ${this.name}`);
+// //   },
+// //   sayJob() {
+// //     console.log(`My job is ${this.job}`);
+// //   }
+// // }
+
+// let Bob = new Person('Bob', 27, 'engineer');
+// let Nick = new Person('Nick', 18, 'doctor')
+
+// // // 构造函数和类中没有 constructor 属性
+// // console.log(Person.prototype);
+// // console.log(Bob.__proto__);
+
+// // // constructor 也不指回构造函数了
+// // console.log(Person.prototype.constructor); // [Function: Object]
+// // console.log(Bob.__proto__.constructor); // [Function: Object]
+
+// Person.prototype = {
+//   constructor: Person,
+//   sayName() {
+//     console.log(`My name is ${this.name}`);
+//   },
+//   sayJob() {
+//     console.log(`My job is ${this.job}`);
+//   }
+// }
+
+// // constructor 也不指回构造函数了
+// console.log(Person.prototype.constructor); // [Function: Person]
+// console.log(Bob.__proto__.constructor); // [Function: Person]
+
+// function Person(name, age, job) {
+//   this.name = name;
+//   this.age = age;
+//   this.job = job;
+// }
+
+// // 原型对象中的 __proto__ 指向
+// console.log(Person.prototype.__proto__ === Object.prototype); // true
+
+// // Object对象中的 __proto__ 指向
+// console.log(Object.prototype.__proto__); // null
+
+// Person.prototype = {
+//   constructor: Person,
+//   sayName() {
+//     console.log(`My name is ${this.name}`);
+//   },
+//   sayJob() {
+//     console.log(`My job is ${this.job}`);
+//   }
+// }
+
+// let Bob = new Person('Bob', 27, 'engineer');
+// let Nick = new Person('Nick', 18, 'doctor')
+
+// function Person(name, age, job) {
+//   this.name = name;
+//   this.age = age;
+//   this.job = job;
+//   this.sayName = function() {
+//     console.log(this.name);
+//   }
+// }
+// let Bob = new Person('Bob', 27, 'engineer')
+
+// // 实例成员 name age sayName
+// console.log(Bob.name); // Bob
+// console.log(Person.name); // Person
+// // 静态成员
+// Person.sex = "男";
+// console.log(Bob.sex); // undefined
+// console.log(Person.sex); // 男
+// // hasOwnProperty()
+// console.log(Bob.hasOwnProperty('name')); // true
+// console.log(Bob.hasOwnProperty('sex')); // false
+
+// // 原型链成员查找规则
+// function Person() {};
+// let person = new Person();
+
+// // 无属性时
+// console.log(person.name); // undefined
+
+// // Object 原型对象有属性
+// Object.prototype.name = 'Bob';
+// console.log(person.name); // Bob
+
+// // 构造函数 原型对象有属性
+// Person.prototype.name = 'Nick';
+// console.log(person.name); // Nick
+
+// // 对象自身有属性
+// person.name = 'fantasy';
+// console.log(person.name); // fantasy
+
+// 解决为什么对象自身没有方法，但可以调用疑惑？
+// let person = {}; // 本身没有 toString() 属性
+// console.log(person.toString()); // [object Object]
+
+// // 原型对象 this 指向问题
+// function Person() {}
+// var that;
+// Person.prototype.sing = function() {
+//   that = this
+//   console.log('I can sing!');
+// }
+// let person = new Person()
+// person.sing() // I can sing!
+// console.log(that === person); // true
+
+// // 为 Array 原型对象添加求和方法
+// Array.prototype.sum = function() {
+//   return this.reduce((prev, current) => {
+//     return prev + current;
+//   }, 0)
+// }
+// let arr = [1, 2, 3, 4, 5];
+// console.log(arr.sum());
+
+// // call
+// function fn() {
+//   console.log(this);
+// }
+
+// // 不传参调用
+// fn() // windows 对象
+// fn.call() // windows 对象
+
+// // 传参改变 this 指向
+// let person = { name: 'Nick' };
+// fn.call(person) // { name: 'Nick' }
+
+// 构造函数继承
+function Father(name, age) {
   this.name = name;
   this.age = age;
-  this.job = job;
-  this.sayName = sayName
+}
+Father.prototype.sayName = function() {
+  console.log(`My name is ${this.name}`);
 }
 
-function sayName() {
-  console.log(this.name);
-};
-let person3 = new Person1('Bob', 27, 'engineer');
-let person4 = new Person1('Nick', 28, 'doctor');
+function Son(name, age, score) {
+  Father.call(this, name, age);
+  this.score = score;
+}
 
-person3.sayName(); // Bob
-person4.sayName(); // Nick
-console.log(person3.sayName == person4.sayName); // true
+// 直接利用原型对象赋值，会让父构造函数也拥有子构造函数的方法
+Son.prototype = Father.prototype
+
+Son.prototype.sayAge = function() {
+  console.log(`My age is ${this.age}`);
+}
+
+let father = new Father('Nick', 40)
+let son = new Son('Bob', 17, 100)
+son.sayName() // My name is Bob
+son.sayAge() //My age is 17
+father.sayAge() // My age is 40
